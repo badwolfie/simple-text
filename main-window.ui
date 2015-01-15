@@ -3,34 +3,22 @@
 <interface>
   <requires lib="gtk+" version="3.12"/>
   <requires lib="gtksourceview" version="3.0"/>
-  <object class="GtkBox" id="content">
+  <object class="GtkScrolledWindow" id="scroll">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="orientation">vertical</property>
+    <property name="can_focus">True</property>
+    <property name="shadow_type">in</property>
     <child>
-      <object class="GtkScrolledWindow" id="scroll">
+      <object class="GtkSourceView" id="text_view">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="shadow_type">in</property>
-        <child>
-          <object class="GtkSourceView" id="text_view">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="wrap_mode">word</property>
-            <property name="left_margin">2</property>
-            <property name="right_margin">2</property>
-            <property name="show_line_numbers">True</property>
-            <property name="tab_width">4</property>
-            <property name="auto_indent">True</property>
-            <property name="smart_home_end">always</property>
-          </object>
-        </child>
+        <property name="wrap_mode">word</property>
+        <property name="left_margin">2</property>
+        <property name="right_margin">2</property>
+        <property name="show_line_numbers">True</property>
+        <property name="tab_width">4</property>
+        <property name="auto_indent">True</property>
+        <property name="smart_home_end">always</property>
       </object>
-      <packing>
-        <property name="expand">True</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
     </child>
   </object>
 </interface>

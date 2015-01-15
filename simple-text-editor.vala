@@ -28,6 +28,15 @@ public class SimpleTextEditor : Gtk.Application {
 		
 		var menu = builder.get_object("appmenu") as MenuModel;
 		set_app_menu(menu);
+
+		const string[] accels_new = {"<control>N",null};
+		set_accels_for_action("win.new_tab",accels_new);
+
+		const string[] accels_close = {"<control>W",null};
+		set_accels_for_action("win.close_tab",accels_close);
+
+		const string[] accels_lines = {"<control>L",null};
+		set_accels_for_action("win.toggle_lines",accels_lines);
 	}
 
 	protected override void activate() {
@@ -63,7 +72,6 @@ public class SimpleTextEditor : Gtk.Application {
 
 	public static int main(string[] args) {
 		Gtk.Window.set_default_icon_name ("text-editor");
-
 		var app = new SimpleTextEditor();
 		return app.run(args);
 	}

@@ -17,16 +17,27 @@
   <menu id="window-menu">
     <section>
       <item>
-        <attribute name="label" translatable="yes">About</attribute>
-        <attribute name="action">win.about_window</attribute>
-        <attribute name="accel">F1</attribute>
+        <attribute name="label" translatable="yes">New tab</attribute>
+        <attribute name="action">win.new_tab</attribute>
+        <attribute name="accel">&lt;Primary&gt;n</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Close current tab</attribute>
+        <attribute name="action">win.close_tab</attribute>
+        <attribute name="accel">&lt;Primary&gt;w</attribute>
       </item>
       <item>
         <attribute name="label" translatable="yes">Toggle line numers</attribute>
         <attribute name="action">win.toggle_lines</attribute>
+        <attribute name="accel">&lt;Primary&gt;l</attribute>
       </item>
       </section>
       <section>
+      <item>
+        <attribute name="label" translatable="yes">About</attribute>
+        <attribute name="action">win.about_window</attribute>
+        <attribute name="accel">F1</attribute>
+      </item>
       <item>
         <attribute name="label" translatable="yes">Quit</attribute>
         <attribute name="action">win.quit_window</attribute>
