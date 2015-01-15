@@ -79,6 +79,8 @@ public class MainWindow : ApplicationWindow {
 		add_action(action_quit);
 
 		panel = new Notebook();
+		panel.switch_page.connect(on_switch_tab);
+		
 		panel.set_show_tabs(false);
 		panel.scrollable = true;
 		add_new_tab();
@@ -111,6 +113,16 @@ public class MainWindow : ApplicationWindow {
 			"authors", authors,
 			"version", 0.6
 		);
+	}
+
+	private void on_switch_tab() {
+		var pagina = panel.get_nth_page(panel.get_current_page()) as ScrolledWindow;
+		var hijos = (panel.get_tab_label(pagina) as Box).get_children();
+
+		hijos.foreach(entry => {
+			if(entry.name == "GtkLabel")
+				headerbar.title = (entry as Label).label;
+		});
 	}
 
 	private void new_tab_cb() {
