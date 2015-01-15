@@ -62,7 +62,7 @@ public class SimpleTextEditor : Gtk.Application {
 			"logo-icon-name", "text-editor",
 			"documenters", documenters,
 			"authors", authors,
-			"version", 0.1
+			"version", 0.6
 		);
 	}
 
