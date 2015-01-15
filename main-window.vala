@@ -1,13 +1,15 @@
 using Gtk;
 
 public class MainWindow : ApplicationWindow {
-	private string[]? filename = null;
+	private string untitled = "Untitled";
+	private List<string> filenames;
 	private HeaderBar headerbar;
 	private MenuButton menu_b;
 	private Notebook panel;
 
 	public MainWindow(Gtk.Application app) {
 		Object(application: app);
+		filenames = new List<string>();
 
 		window_position = WindowPosition.CENTER;
 		set_default_size(700,500);
@@ -17,7 +19,7 @@ public class MainWindow : ApplicationWindow {
 	}
 
 	private void create_widgets() {
-		Gtk.Settings.get_default().set("gtk-application-prefer-dark-theme", true);
+		Gtk.Settings.get_default().set("gtk-application-prefer-dark-theme",true);
 
 		var builder = new Builder();
 		try {
@@ -79,16 +81,22 @@ public class MainWindow : ApplicationWindow {
 		add_action(action_quit);
 
 		panel = new Notebook();
-		panel.switch_page.connect(on_switch_tab);
+		panel.switch_page.connect((page,page_num) => {
+			var box = panel.get_tab_label(page) as Box;
+			var label = box.get_children().first().data as Label;
+			headerbar.title = label.label;
+		});
 		
 		panel.set_show_tabs(false);
 		panel.scrollable = true;
+		filenames.append(untitled);
 		add_new_tab();
 		panel.show();
 
 		var accels = new AccelGroup();
 		this.add_accel_group(accels);
 		abrir.add_accelerator("activate",accels,Gdk.Key.O,Gdk.ModifierType.CONTROL_MASK,AccelFlags.VISIBLE);
+		guardar.add_accelerator("activate",accels,Gdk.Key.S,Gdk.ModifierType.CONTROL_MASK,AccelFlags.VISIBLE);
 
 		var vbox = new Box(Orientation.VERTICAL,0);
 		vbox.pack_start(panel,true,true,0);
@@ -111,31 +119,42 @@ public class MainWindow : ApplicationWindow {
 			"logo-icon-name", "text-editor",
 			"documenters", documenters,
 			"authors", authors,
-			"version", 0.6
+			"version", "0.7"
 		);
-	}
-
-	private void on_switch_tab() {
-		var pagina = panel.get_nth_page(panel.get_current_page()) as ScrolledWindow;
-		var hijos = (panel.get_tab_label(pagina) as Box).get_children();
-
-		hijos.foreach(entry => {
-			if(entry.name == "GtkLabel")
-				headerbar.title = (entry as Label).label;
-		});
 	}
 
 	private void new_tab_cb() {
 		add_new_tab();
+		filenames.append(untitled);
 		panel.next_page();
 	}
 
 	private void close_tab_cb() {
+		if(headerbar.title.contains("*")) {
+			var confirmar = new ConfirmExit();
+			confirmar.set_transient_for(this);
+
+			switch(confirmar.run()) {
+				default:
+				case ResponseType.ACCEPT:
+					break;
+				case ResponseType.CANCEL:
+					confirmar.destroy();
+					return;
+				case ResponseType.APPLY:
+					save_tab_to_file();
+					break;
+			}
+
+			confirmar.destroy();
+		}
+
+		filenames.remove(filenames.nth_data(panel.get_current_page()));
 		panel.remove_page(panel.get_current_page());
 		panel.set_show_tabs(panel.get_n_pages()!=1);
-
-		if(filename != null)
-			stdout.printf("Archivo sin guardar.");
+		
+		if(panel.get_n_pages() == 0)
+			headerbar.title = "Simple Text";
 	}
 
 	private void add_new_tab() {
@@ -149,6 +168,8 @@ public class MainWindow : ApplicationWindow {
 
 		var text_view = builder.get_object("text_view") as SourceView;
 		text_view.override_font(Pango.FontDescription.from_string("monospace 11"));
+		text_view.key_release_event.connect(changes_done);
+		// text_view.notify["text"].connect(changes_done);
 
 		// var manager = SourceStyleSchemeManager.get_default();
 		// var def_scheme = manager.get_scheme("monokai-extended");
@@ -171,14 +192,33 @@ public class MainWindow : ApplicationWindow {
 		close.clicked.connect(close_tab_cb);
 
 		var box = new Box(Orientation.HORIZONTAL,20);
-		box.pack_start(new Label("Untitled"),true,true,0);
+		box.pack_start(new Label(untitled),true,true,0);
 		box.pack_start(close,true,true,0);
 		box.show_all();
 
 		panel.append_page(scroll,box);
 		panel.set_show_tabs(panel.get_n_pages()!=1);
 		panel.set_tab_reorderable(scroll,true);
-		headerbar.set_title("Untitled");
+		headerbar.set_title(untitled);
+	}
+
+	private bool changes_done() {
+		var page = panel.get_nth_page(panel.get_current_page()) as ScrolledWindow;
+		var view = page.get_child() as SourceView;
+
+		if(view.buffer.get_modified()) {
+			var box = panel.get_tab_label(page) as Box;
+			var label = box.get_children().first().data as Label;
+
+			if(!headerbar.title.contains("*"))
+				headerbar.title = "*"+headerbar.title;
+			if(!label.label.contains("*"))
+				label.label = "*"+label.label;
+			
+			return false;
+		}
+		
+		return true;
 	}
 
 	private void add_new_tab_from_file() {
@@ -204,7 +244,7 @@ public class MainWindow : ApplicationWindow {
 			box.show_all();
 
 			panel.set_tab_label(page,box);
-			headerbar.set_title(file_chooser.get_filename());
+			headerbar.set_title(file_chooser.get_file().get_basename());
 			open_file(view,file_chooser.get_filename());
 		}
 
@@ -225,7 +265,7 @@ public class MainWindow : ApplicationWindow {
 		var page = panel.get_nth_page(panel.get_current_page()) as ScrolledWindow;
 		var view = page.get_child() as SourceView;
 
-		if((headerbar.title == "Untitled") && (view.buffer.text != "")) {
+		if((filenames.nth_data(panel.get_current_page()) == untitled) && (view.buffer.text != "")) {
 			var file_chooser = new FileChooserDialog("Save File", this,
 				FileChooserAction.SAVE,
 				"Cancel", ResponseType.CANCEL,
@@ -242,13 +282,17 @@ public class MainWindow : ApplicationWindow {
 				box.show_all();
 
 	            panel.set_tab_label(page,box);
-	            headerbar.set_title(file_chooser.get_filename());
+	            headerbar.set_title(file_chooser.get_file().get_basename());
 	            save_file(view,file_chooser.get_filename());
+
+	            filenames.remove(filenames.nth_data(panel.get_current_page()));
+	            filenames.insert(file_chooser.get_filename(),panel.get_current_page());
 	        }
 	        
 	        file_chooser.destroy();
 	    } else {
-	    	save_file(view,headerbar.title);
+	    	string file_name = filenames.nth_data(panel.get_current_page());
+	    	save_file(view,file_name);
 	    }
 	}
 

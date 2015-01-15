@@ -1,6 +1,7 @@
 using Gtk;
 
 public class SimpleTextEditor : Gtk.Application {
+	private static string program_name = null;
 	private MainWindow ventana;
 
 	private const GLib.ActionEntry[] app_entries = {
@@ -62,7 +63,7 @@ public class SimpleTextEditor : Gtk.Application {
 			"logo-icon-name", "text-editor",
 			"documenters", documenters,
 			"authors", authors,
-			"version", 0.6
+			"version", "0.7"
 		);
 	}
 
@@ -72,6 +73,7 @@ public class SimpleTextEditor : Gtk.Application {
 
 	public static int main(string[] args) {
 		Gtk.Window.set_default_icon_name ("text-editor");
+		program_name = Path.get_basename (args [0]);
 		var app = new SimpleTextEditor();
 		return app.run(args);
 	}
