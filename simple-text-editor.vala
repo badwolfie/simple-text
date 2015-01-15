@@ -62,7 +62,6 @@ public class SimpleTextEditor : Gtk.Application {
 	}
 
 	public static int main(string[] args) {
-		Gtk.Settings.get_default().set("gtk-application-prefer-dark-theme", true);
 		Gtk.Window.set_default_icon_name ("text-editor");
 
 		var app = new SimpleTextEditor();

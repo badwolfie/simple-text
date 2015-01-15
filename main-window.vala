@@ -9,13 +9,14 @@ public class MainWindow : ApplicationWindow {
 
 		window_position = WindowPosition.CENTER;
 		set_default_size(700,500);
-		set_title("Sin título");
 		border_width = 0;
 
 		create_widgets();
 	}
 
 	private void create_widgets() {
+		Gtk.Settings.get_default().set("gtk-application-prefer-dark-theme", true);
+
 		var builder = new Builder();
 		try {
 			builder.add_from_file("menu.ui");
@@ -63,38 +64,21 @@ public class MainWindow : ApplicationWindow {
 		add(content);
 	}
 
-	private void mode_changed_cb() {
-		
-	}
-
-	private void get_back() {
-		
-	}
-
 	private void about_window_cb() {
-		string[] authors = {
-			"Ian Hernández <ianyo27@gmail.com>",
-			null
-        };
+		string[] authors = { "Ian Hernández <ianyo27@gmail.com>" };
 
-        string[] documenters = {
-			"Ian Hernández",
-			null
-        };
+        string[] documenters = { "Ian Hernández" };
 
         Gtk.show_about_dialog(this,
-			"program-name",
-			"Simple Text",
+			"program-name", ("Simple Text"),
 			"title","About Simple Text",
-			"version", 0.1,
-			"copyright",
-			"\xc2\xa9 2015 Simple Text authors",
+			"copyright", ("\xc2\xa9 2015 Ian Hernández"),
+			"comments",("A very simple text editor."),
 			"license-type", Gtk.License.GPL_2_0,
-			"comments",
-			"A very simple text editor.",
-			"authors", authors,
+			"logo-icon-name", "text-editor",
 			"documenters", documenters,
-			"logo-icon-name", "text-editor"
+			"authors", authors,
+			"version", 0.1
 		);
 	}
 
