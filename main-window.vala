@@ -3,6 +3,7 @@ using Gtk;
 public class MainWindow : ApplicationWindow {
 	private HeaderBar headerbar;
 	private MenuButton menu_b;
+	private SourceView text_view;
 
 	public MainWindow(Gtk.Application app) {
 		Object(application: app);
@@ -42,12 +43,13 @@ public class MainWindow : ApplicationWindow {
 
 		set_titlebar(headerbar);
 
-		// var accels = new AccelGroup();
-		// this.add_accel_group(accels);
-
 		var action_about = new SimpleAction("about_window",null);
 		action_about.activate.connect(about_window_cb);
 		add_action(action_about);
+
+		var action_lines = new SimpleAction("toggle_lines",null);
+		action_lines.activate.connect(toggle_lines_cb);
+		add_action(action_lines);		
 
 		var action_quit = new SimpleAction("quit_window",null);
 		action_quit.activate.connect(quit_window_cb);
@@ -58,6 +60,9 @@ public class MainWindow : ApplicationWindow {
 		} catch(Error e) {
 			error("Error loading menu UI: %s",e.message);
 		}
+
+		text_view = builder.get_object("text_view") as SourceView;
+		text_view.override_font(Pango.FontDescription.from_string("monospace 10"));
 
 		var content = builder.get_object("content") as Box;
 		content.show();
@@ -80,6 +85,10 @@ public class MainWindow : ApplicationWindow {
 			"authors", authors,
 			"version", 0.1
 		);
+	}
+
+	private void toggle_lines_cb() {
+		text_view.show_line_numbers = !text_view.show_line_numbers;
 	}
 
 	private void quit_window_cb() {
