@@ -1,3 +1,17 @@
-<h1>Simple Text</h1>
+	Simple Text (beta)
+A very simple text and code editor written in Vala.
 
-<p>A very simple text editor written in Vala.</p>
+Currently working:
+	- Open files
+	- Save files
+	- Multiple tabs
+	- Toggle line numbers
+
+Not working:
+	- Syntax highlighting
+	- Style schemes
+	- Auto completion
+	- Brace completion
+
+Known bugs
+	- The close button on tabs closes the current tab instead of the one it should
