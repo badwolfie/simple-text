@@ -17,10 +17,17 @@
   <menu id="window-menu">
     <section>
       <item>
-        <attribute name="label" translatable="yes">New tab</attribute>
+        <attribute name="label" translatable="yes">New file</attribute>
         <attribute name="action">win.new_tab</attribute>
         <attribute name="accel">&lt;Primary&gt;n</attribute>
       </item>
+      <!--<item>
+        <attribute name="label" translatable="yes">Save as</attribute>
+        <attribute name="action">win.save_as</attribute>
+        <attribute name="accel">&lt;Primary&gt;s</attribute>
+      </item>-->
+      </section>
+      <section>
       <item>
         <attribute name="label" translatable="yes">Close current tab</attribute>
         <attribute name="action">win.close_tab</attribute>
