@@ -12,7 +12,7 @@ public class MainWindow : ApplicationWindow {
 		filenames = new List<string>();
 
 		window_position = WindowPosition.CENTER;
-		set_default_size(700,500);
+		set_default_size(850,650);
 		border_width = 0;
 
 		create_widgets();
@@ -86,23 +86,19 @@ public class MainWindow : ApplicationWindow {
 			var label = box.get_children().first().data as Label;
 			headerbar.title = label.label;
 		});
-		
-		panel.set_show_tabs(false);
-		panel.scrollable = true;
-		filenames.append(untitled);
-		add_new_tab();
-		panel.show();
 
 		var accels = new AccelGroup();
 		this.add_accel_group(accels);
 		abrir.add_accelerator("activate",accels,Gdk.Key.O,Gdk.ModifierType.CONTROL_MASK,AccelFlags.VISIBLE);
 		guardar.add_accelerator("activate",accels,Gdk.Key.S,Gdk.ModifierType.CONTROL_MASK,AccelFlags.VISIBLE);
-
-		var vbox = new Box(Orientation.VERTICAL,0);
-		vbox.pack_start(panel,true,true,0);
-		vbox.show();
-
-		add(vbox);
+		
+		panel.set_show_tabs(false);
+		panel.scrollable = true;
+		filenames.append(untitled);
+		add_new_tab();
+		
+		panel.show();
+		add(panel);
 	}
 
 	private void about_window_cb() {
@@ -158,34 +154,13 @@ public class MainWindow : ApplicationWindow {
 	}
 
 	private void add_new_tab() {
-		var builder = new Builder();
-
-		try {
-			builder.add_from_file("main-window.ui");
-		} catch(Error e) {
-			error("Error loading menu UI: %s",e.message);
-		}
-
-		var text_view = builder.get_object("text_view") as SourceView;
-		text_view.override_font(Pango.FontDescription.from_string("monospace 11"));
+		var text_view = new SimpleSourceView();
 		text_view.key_release_event.connect(changes_done);
-		// text_view.notify["text"].connect(changes_done);
-
-		// var manager = SourceStyleSchemeManager.get_default();
-		// var def_scheme = manager.get_scheme("monokai-extended");
-		// if(def_scheme == null)
-		// 	def_scheme = manager.get_scheme("classic");
-
-		// if(def_scheme != null) {
-		// 	var buffer = new SourceBuffer(null);
-		// 	buffer.set_style_scheme(def_scheme);
-		// 	text_view = new SourceView.with_buffer(buffer);
-		// 	text_view.override_font(Pango.FontDescription.from_string("monospace 11"));
-		// } else {
-		// 	stdout.printf("Warning!");
-		// }
-
-		var scroll = builder.get_object("scroll") as ScrolledWindow;
+		text_view.show();
+        
+		var scroll = new ScrolledWindow(null,null);
+		scroll.set_policy(PolicyType.AUTOMATIC,PolicyType.AUTOMATIC);
+		scroll.add(text_view);
 		scroll.show();
 		
 		var close = new Button.from_icon_name("gtk-close",IconSize.MENU);
