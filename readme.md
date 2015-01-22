@@ -1,8 +1,12 @@
 #Simple Text (beta)
-A very simple text and code editor written in Vala.
+- A very simple text and code editor written in Vala.
 
-Compiling: make simple-text
-Requires: vala, gtk+-3.0, gtksourceview-3.0
+---
+
+- Compiling: make simple-text
+- Requires: vala, gtk+-3.0, gtksourceview-3.0
+
+---
 
 #### Currently working:
 * Open files
@@ -11,7 +15,7 @@ Requires: vala, gtk+-3.0, gtksourceview-3.0
 * Toggle line numbers
 * Regular text editor stuff
 
-#### Not working:**
+#### Not working:
 * Syntax highlighting
 * Style schemes
 * Text/Code completion
@@ -19,7 +23,7 @@ Requires: vala, gtk+-3.0, gtksourceview-3.0
 * Re-open last tab
 * To be defined...
 
-#### Known bugs**
+#### Known bugs
 * The close button on tabs closes the current tab instead of the one it 
 	  should
 * Under yet unknown circumstances, it saves the buffer to a file called 
