@@ -92,7 +92,6 @@ public class MainWindow : ApplicationWindow {
 		abrir.add_accelerator("activate",accels,Gdk.Key.O,Gdk.ModifierType.CONTROL_MASK,AccelFlags.VISIBLE);
 		guardar.add_accelerator("activate",accels,Gdk.Key.S,Gdk.ModifierType.CONTROL_MASK,AccelFlags.VISIBLE);
 		
-		panel.set_show_tabs(false);
 		panel.scrollable = true;
 		filenames.append(untitled);
 		add_new_tab();
@@ -125,18 +124,20 @@ public class MainWindow : ApplicationWindow {
 		panel.next_page();
 	}
 
-	private void close_tab_cb() {
-		if(headerbar.title.contains("*")) {
+	private bool confirm_close(int page) {
+		if((panel.get_tab_label(panel.get_nth_page(page)) as TabLabel).tab_title.contains("*")) {
+			panel.page = page;
+
 			var confirmar = new ConfirmExit();
 			confirmar.set_transient_for(this);
 
 			switch(confirmar.run()) {
 				default:
-				case ResponseType.ACCEPT:
-					break;
 				case ResponseType.CANCEL:
 					confirmar.destroy();
-					return;
+					return false;
+				case ResponseType.ACCEPT:
+					break;
 				case ResponseType.APPLY:
 					save_tab_to_file();
 					break;
@@ -145,8 +146,19 @@ public class MainWindow : ApplicationWindow {
 			confirmar.destroy();
 		}
 
-		filenames.remove(filenames.nth_data(panel.get_current_page()));
-		panel.remove_page(panel.get_current_page());
+		return true;
+	}
+
+	private void close_tab_cb() {
+		int page = panel.get_current_page();
+		if (confirm_close(page)) {
+			filenames.remove(filenames.nth_data(page));
+			panel.remove_page(page);
+			check_pages();
+		}
+	}
+
+	private void check_pages() {
 		panel.set_show_tabs(panel.get_n_pages()!=1);
 		
 		if(panel.get_n_pages() == 0)
@@ -158,22 +170,25 @@ public class MainWindow : ApplicationWindow {
 		text_view.key_release_event.connect(changes_done);
 		text_view.show();
         
-		var scroll = new ScrolledWindow(null,null);
-		scroll.set_policy(PolicyType.AUTOMATIC,PolicyType.AUTOMATIC);
-		scroll.add(text_view);
-		scroll.show();
-		
-		var close = new Button.from_icon_name("gtk-close",IconSize.MENU);
-		close.clicked.connect(close_tab_cb);
+		var tab_widget = new ScrolledWindow(null,null);
+		tab_widget.set_policy(PolicyType.AUTOMATIC,PolicyType.AUTOMATIC);
+		tab_widget.add(text_view);
+		tab_widget.show();
 
-		var box = new Box(Orientation.HORIZONTAL,20);
-		box.pack_start(new Label(untitled),true,true,0);
-		box.pack_start(close,true,true,0);
-		box.show_all();
+		var tab_label = new TabLabel(tab_widget);
+		tab_label.close_clicked.connect((tab_widget) => {
+			int page = panel.page_num(tab_widget);
+			if(confirm_close(page)) {
+				filenames.remove(filenames.nth_data(page));
+				panel.remove_page(page);
+				check_pages();
+			}
+		});
 
-		panel.append_page(scroll,box);
+		panel.append_page(tab_widget,tab_label);
+
 		panel.set_show_tabs(panel.get_n_pages()!=1);
-		panel.set_tab_reorderable(scroll,true);
+		panel.set_tab_reorderable(tab_widget,true);
 		headerbar.set_title(untitled);
 	}
 
@@ -182,13 +197,12 @@ public class MainWindow : ApplicationWindow {
 		var view = page.get_child() as SourceView;
 
 		if(view.buffer.get_modified()) {
-			var box = panel.get_tab_label(page) as Box;
-			var label = box.get_children().first().data as Label;
+			var tab_label = panel.get_tab_label(page) as TabLabel;
 
 			if(!headerbar.title.contains("*"))
 				headerbar.title = "*"+headerbar.title;
-			if(!label.label.contains("*"))
-				label.label = "*"+label.label;
+			if(!tab_label.tab_title.contains("*"))
+				tab_label.tab_title = "*"+tab_label.tab_title;
 			
 			return false;
 		}
@@ -210,15 +224,18 @@ public class MainWindow : ApplicationWindow {
 			var page = panel.get_nth_page(panel.get_current_page()) as ScrolledWindow;
 			var view = page.get_child() as SourceView;
 
-			var close = new Button.from_icon_name("gtk-close",IconSize.MENU);
-			close.clicked.connect(close_tab_cb);
+			var tab_label = new TabLabel.with_title(file_chooser.get_file().get_basename());
+			tab_label.tab_widget = page;
+			tab_label.close_clicked.connect((tab_widget) => {
+				int page_n = panel.page_num(tab_widget);
+				if(confirm_close(page_n)){
+					filenames.remove(filenames.nth_data(page_n));
+					panel.remove_page(page_n);
+					check_pages();
+				}
+			});
 
-			var box = new Box(Orientation.HORIZONTAL,20);
-			box.pack_start(new Label(file_chooser.get_file().get_basename()),true,true,0);
-			box.pack_start(close,true,true,0);
-			box.show_all();
-
-			panel.set_tab_label(page,box);
+			panel.set_tab_label(page,tab_label);
 			headerbar.set_title(file_chooser.get_file().get_basename());
 			open_file(view,file_chooser.get_filename());
 		}
@@ -248,15 +265,18 @@ public class MainWindow : ApplicationWindow {
 			);
 
 	        if(file_chooser.run() == ResponseType.ACCEPT) {
-				var close = new Button.from_icon_name("gtk-close",IconSize.MENU);
-				close.clicked.connect(close_tab_cb);
+				var tab_label = new TabLabel.with_title(file_chooser.get_file().get_basename());
+	            tab_label.tab_widget = page;
+	            tab_label.close_clicked.connect((tab_widget) => {
+	            	int page_n = panel.page_num(tab_widget);
+	            	if(confirm_close(page_n)){
+						filenames.remove(filenames.nth_data(page_n));
+						panel.remove_page(page_n);
+						check_pages();
+					}
+				});
 
-				var box = new Box(Orientation.HORIZONTAL,20);
-				box.pack_start(new Label(file_chooser.get_file().get_basename()),true,true,0);
-				box.pack_start(close,true,true,0);
-				box.show_all();
-
-	            panel.set_tab_label(page,box);
+	            panel.set_tab_label(page,tab_label);
 	            headerbar.set_title(file_chooser.get_file().get_basename());
 	            save_file(view,file_chooser.get_filename());
 

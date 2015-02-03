@@ -21,7 +21,4 @@ Requires: vala, gtk+-3.0, gtksourceview-3.0
 * To be defined...
 
 #### Known bugs
-* The close button on tabs closes the current tab instead of the one it 
-	  should
-* Under yet unknown circumstances, it saves the buffer to a file called 
-	  "Untitled" when its not supposed to
+* None (yet)
