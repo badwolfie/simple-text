@@ -7,6 +7,11 @@ public class MainWindow : ApplicationWindow {
 	private MenuButton menu_b;
 	private Notebook panel;
 
+	private SearchEntry search_entry;
+	private SearchBar search_bar;
+	private Button previous_search;
+	private Button next_search;
+
 	public MainWindow(Gtk.Application app) {
 		Object(application: app);
 		filenames = new List<string>();
@@ -28,10 +33,9 @@ public class MainWindow : ApplicationWindow {
 			error("Error loading menu UI: %s",e.message);
 		}
 
-		var menu_img = new Image.from_icon_name("emblem-system-symbolic",IconSize.BUTTON);
 		menu_b = new MenuButton();
-		menu_b.set_tooltip_text("Opciones");
-		menu_b.add(menu_img);
+		menu_b.set_direction(ArrowType.NONE);
+		menu_b.set_tooltip_text("Menu");
 		
 		menu_b.menu_model = builder.get_object("window-menu") as MenuModel;
 		menu_b.relief = Gtk.ReliefStyle.NONE;
@@ -40,14 +44,17 @@ public class MainWindow : ApplicationWindow {
 
 		var abrir = new Button.with_label("Open");
 		abrir.clicked.connect(add_new_tab_from_file);
+		abrir.set_tooltip_text("Open file");
 		abrir.show();
 
 		var guardar = new Button.with_label("Save");
 		guardar.clicked.connect(save_tab_to_file);
+		guardar.set_tooltip_text("Save file");
 		guardar.show();
 
 		var nuevo = new Button.from_icon_name("tab-new-symbolic",IconSize.MENU);
 		nuevo.clicked.connect(new_tab_cb);
+		nuevo.set_tooltip_text("New tab");
 		nuevo.show();
 
 		headerbar = new HeaderBar();
@@ -72,6 +79,10 @@ public class MainWindow : ApplicationWindow {
 		action_close_tab.activate.connect(close_tab_cb);
 		add_action(action_close_tab);
 
+		var action_search_mode = new SimpleAction("search_mode",null);
+		action_search_mode.activate.connect(search_mode_cb);
+		add_action(action_search_mode);
+
 		var action_lines = new SimpleAction("toggle_lines",null);
 		action_lines.activate.connect(toggle_lines_cb);
 		add_action(action_lines);
@@ -80,6 +91,33 @@ public class MainWindow : ApplicationWindow {
 		action_quit.activate.connect(quit_window_cb);
 		add_action(action_quit);
 
+		search_entry = new SearchEntry();
+		search_entry.placeholder_text = "Enter your search...";
+		search_entry.set_width_chars(55);
+
+		search_entry.search_changed.connect(search_stuff_n);
+		search_entry.activate.connect(search_stuff_n);
+		search_entry.show();
+
+		next_search = new Button.from_icon_name("go-down-symbolic",IconSize.MENU);
+		next_search.clicked.connect(search_stuff_n);
+		next_search.show();
+
+		previous_search = new Button.from_icon_name("go-up-symbolic",IconSize.MENU);
+		previous_search.clicked.connect(search_stuff_p);
+		previous_search.show();
+
+		var hbox = new Box(Orientation.HORIZONTAL,5);
+		hbox.pack_start(search_entry,false,false,0);
+		hbox.pack_start(previous_search,false,false,0);
+		hbox.pack_start(next_search,false,false,0);
+		hbox.show();
+
+		search_bar = new SearchBar();
+		search_bar.connect_entry(search_entry);
+		search_bar.add(hbox);
+		search_bar.show();
+
 		panel = new Notebook();
 		panel.switch_page.connect((page,page_num) => {
 			var box = panel.get_tab_label(page) as Box;
@@ -87,17 +125,22 @@ public class MainWindow : ApplicationWindow {
 			headerbar.title = label.label;
 		});
 
+		var vbox = new Box(Orientation.VERTICAL,0);
+		vbox.pack_start(search_bar,false,true,0);
+		vbox.pack_start(panel,true,true,0);
+		vbox.show();
+
 		var accels = new AccelGroup();
 		this.add_accel_group(accels);
 		abrir.add_accelerator("activate",accels,Gdk.Key.O,Gdk.ModifierType.CONTROL_MASK,AccelFlags.VISIBLE);
 		guardar.add_accelerator("activate",accels,Gdk.Key.S,Gdk.ModifierType.CONTROL_MASK,AccelFlags.VISIBLE);
-		
+
 		panel.scrollable = true;
 		filenames.append(untitled);
 		add_new_tab();
 		
 		panel.show();
-		add(panel);
+		add(vbox);
 	}
 
 	private void about_window_cb() {
@@ -118,10 +161,23 @@ public class MainWindow : ApplicationWindow {
 		);
 	}
 
+	private void search_mode_cb() {
+		search_bar.search_mode_enabled = !search_bar.search_mode_enabled;
+	}
+
 	private void new_tab_cb() {
 		add_new_tab();
 		filenames.append(untitled);
 		panel.next_page();
+	}
+
+	private void search_stuff_n() {
+		stdout.printf("Next\n");
+		// TextIter.forward_search(search_entry.text,TextSearchFlags.TEXT_ONLY,null,null,null);
+	}
+
+	private void search_stuff_p() {
+		stdout.printf("Previous\n");
 	}
 
 	private bool confirm_close(int page) {
@@ -151,7 +207,7 @@ public class MainWindow : ApplicationWindow {
 
 	private void close_tab_cb() {
 		int page = panel.get_current_page();
-		if (confirm_close(page)) {
+		if ((panel.get_n_pages() > 0) && confirm_close(page)) {
 			filenames.remove(filenames.nth_data(page));
 			panel.remove_page(page);
 			check_pages();
@@ -166,16 +222,9 @@ public class MainWindow : ApplicationWindow {
 	}
 
 	private void add_new_tab() {
-		var text_view = new SimpleSourceView();
-		text_view.key_release_event.connect(changes_done);
-		text_view.show();
-        
-		var tab_widget = new ScrolledWindow(null,null);
-		tab_widget.set_policy(PolicyType.AUTOMATIC,PolicyType.AUTOMATIC);
-		tab_widget.add(text_view);
-		tab_widget.show();
+		var tab_label = new TabLabel();
+		var tab_widget = tab_label.tab_widget;
 
-		var tab_label = new TabLabel(tab_widget);
 		tab_label.close_clicked.connect((tab_widget) => {
 			int page = panel.page_num(tab_widget);
 			if(confirm_close(page)) {
@@ -186,6 +235,8 @@ public class MainWindow : ApplicationWindow {
 		});
 
 		panel.append_page(tab_widget,tab_label);
+		var view = (tab_widget as ScrolledWindow).get_child() as SourceView;
+		view.key_release_event.connect(changes_done);
 
 		panel.set_show_tabs(panel.get_n_pages()!=1);
 		panel.set_tab_reorderable(tab_widget,true);
@@ -226,8 +277,8 @@ public class MainWindow : ApplicationWindow {
 
 			var tab_label = new TabLabel.with_title(file_chooser.get_file().get_basename());
 			tab_label.tab_widget = page;
-			tab_label.close_clicked.connect((tab_widget) => {
-				int page_n = panel.page_num(tab_widget);
+			tab_label.close_clicked.connect((page) => {
+				int page_n = panel.page_num(page);
 				if(confirm_close(page_n)){
 					filenames.remove(filenames.nth_data(page_n));
 					panel.remove_page(page_n);
@@ -267,8 +318,8 @@ public class MainWindow : ApplicationWindow {
 	        if(file_chooser.run() == ResponseType.ACCEPT) {
 				var tab_label = new TabLabel.with_title(file_chooser.get_file().get_basename());
 	            tab_label.tab_widget = page;
-	            tab_label.close_clicked.connect((tab_widget) => {
-	            	int page_n = panel.page_num(tab_widget);
+	            tab_label.close_clicked.connect((page) => {
+	            	int page_n = panel.page_num(page);
 	            	if(confirm_close(page_n)){
 						filenames.remove(filenames.nth_data(page_n));
 						panel.remove_page(page_n);

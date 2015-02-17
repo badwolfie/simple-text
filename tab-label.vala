@@ -26,10 +26,9 @@ public class TabLabel : Box {
 		}
 	}
 
-	public TabLabel(Widget tab_widget) {
+	public TabLabel() {
 		Object();
 		this.tab_title = untitled;
-		this.tab_widget = tab_widget;
 		create_widgets();
 	}
 
@@ -49,6 +48,16 @@ public class TabLabel : Box {
 
 		pack_start(title_label,true,true,0);
 		pack_start(close_button,true,true,0);
+
+		var text_view = new SimpleSourceView();
+		text_view.show();
+        
+		var tab_widget = new ScrolledWindow(null,null);
+		tab_widget.set_policy(PolicyType.AUTOMATIC,PolicyType.AUTOMATIC);
+		tab_widget.add(text_view);
+		tab_widget.show();
+
+		this.tab_widget = tab_widget;
 
 		show_all();
 	}

@@ -21,17 +21,17 @@
         <attribute name="action">win.new_tab</attribute>
         <attribute name="accel">&lt;Primary&gt;n</attribute>
       </item>
-      <!--<item>
-        <attribute name="label" translatable="yes">Save as</attribute>
-        <attribute name="action">win.save_as</attribute>
-        <attribute name="accel">&lt;Primary&gt;s</attribute>
-      </item>-->
       </section>
       <section>
       <item>
         <attribute name="label" translatable="yes">Close current tab</attribute>
         <attribute name="action">win.close_tab</attribute>
         <attribute name="accel">&lt;Primary&gt;w</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Toggle search mode</attribute>
+        <attribute name="action">win.search_mode</attribute>
+        <attribute name="accel">&lt;Primary&gt;f</attribute>
       </item>
       <item>
         <attribute name="label" translatable="yes">Toggle line numers</attribute>

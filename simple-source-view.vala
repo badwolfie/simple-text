@@ -4,6 +4,7 @@ public class SimpleSourceView : SourceView {
 	public SimpleSourceView() {
 		Object();
 		set_properties();
+		grab_focus();
 	}
 
 	private void set_properties() {

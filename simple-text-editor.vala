@@ -35,6 +35,9 @@ public class SimpleTextEditor : Gtk.Application {
 		const string[] accels_close = {"<control>W",null};
 		set_accels_for_action("win.close_tab",accels_close);
 
+		const string[] accels_search = {"<control>F",null};
+		set_accels_for_action("win.search_mode",accels_search);
+
 		const string[] accels_lines = {"<control>L",null};
 		set_accels_for_action("win.toggle_lines",accels_lines);
 	}
