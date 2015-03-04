@@ -29,12 +29,12 @@
         <attribute name="accel">&lt;Primary&gt;w</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">Toggle search mode</attribute>
+        <attribute name="label" translatable="yes">Search mode</attribute>
         <attribute name="action">win.search_mode</attribute>
         <attribute name="accel">&lt;Primary&gt;f</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">Toggle line numers</attribute>
+        <attribute name="label" translatable="yes">Toggle line numbers</attribute>
         <attribute name="action">win.toggle_lines</attribute>
         <attribute name="accel">&lt;Primary&gt;l</attribute>
       </item>

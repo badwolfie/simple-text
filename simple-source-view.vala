@@ -8,11 +8,11 @@ public class SimpleSourceView : SourceView {
 	}
 
 	private void set_properties() {
-		override_font(Pango.FontDescription.from_string("monospace 11"));
+		override_font(Pango.FontDescription.from_string("Liberation Mono 11"));
 		smart_home_end = SourceSmartHomeEndType.BEFORE;
 		wrap_mode = WrapMode.NONE;
 		show_line_numbers = true;
 		auto_indent = true;
-		tab_width = 4;	
+		tab_width = 4;
 	}
 }
