@@ -24,12 +24,13 @@ public class MainWindow : ApplicationWindow {
 	}
 
 	private void create_widgets() {
-		Gtk.Settings.get_default().set("gtk-application-prefer-dark-theme",true);
+		Gtk.Settings.get_default().set(
+			"gtk-application-prefer-dark-theme",true);
 
 		var builder = new Builder();
 		try {
 			builder.add_from_file("menu.ui");
-		} catch(Error e) {
+		} catch (Error e) {
 			error("Error loading menu UI: %s",e.message);
 		}
 
@@ -75,6 +76,10 @@ public class MainWindow : ApplicationWindow {
 		action_tab.activate.connect(new_tab_cb);
 		add_action(action_tab);
 
+		var action_save_as = new SimpleAction("save_as",null);
+		action_save_as.activate.connect(save_as_cb);
+		add_action(action_save_as);
+
 		var action_close_tab = new SimpleAction("close_tab",null);
 		action_close_tab.activate.connect(close_tab_cb);
 		add_action(action_close_tab);
@@ -99,11 +104,13 @@ public class MainWindow : ApplicationWindow {
 		search_entry.activate.connect(search_stuff_n);
 		search_entry.show();
 
-		next_search = new Button.from_icon_name("go-down-symbolic",IconSize.MENU);
+		next_search = new Button.from_icon_name(
+			"go-down-symbolic",IconSize.MENU);
 		next_search.clicked.connect(search_stuff_n);
 		next_search.show();
 
-		previous_search = new Button.from_icon_name("go-up-symbolic",IconSize.MENU);
+		previous_search = new Button.from_icon_name(
+			"go-up-symbolic",IconSize.MENU);
 		previous_search.clicked.connect(search_stuff_p);
 		previous_search.show();
 
@@ -132,8 +139,10 @@ public class MainWindow : ApplicationWindow {
 
 		var accels = new AccelGroup();
 		this.add_accel_group(accels);
-		abrir.add_accelerator("activate",accels,Gdk.Key.O,Gdk.ModifierType.CONTROL_MASK,AccelFlags.VISIBLE);
-		guardar.add_accelerator("activate",accels,Gdk.Key.S,Gdk.ModifierType.CONTROL_MASK,AccelFlags.VISIBLE);
+		abrir.add_accelerator("activate",accels,Gdk.Key.O,
+			Gdk.ModifierType.CONTROL_MASK,AccelFlags.VISIBLE);
+		guardar.add_accelerator("activate",accels,Gdk.Key.S,
+			Gdk.ModifierType.CONTROL_MASK,AccelFlags.VISIBLE);
 
 		panel.scrollable = true;
 		filenames.append(untitled);
@@ -152,13 +161,50 @@ public class MainWindow : ApplicationWindow {
 			"program-name", ("Simple Text"),
 			"title","About Simple Text",
 			"copyright", ("\xc2\xa9 2015 Ian Hernández"),
-			"comments",("A very simple text editor."),
+			"comments", ("A very simple text editor."),
 			"license-type", Gtk.License.GPL_2_0,
 			"logo-icon-name", "text-editor",
 			"documenters", documenters,
 			"authors", authors,
 			"version", "0.7"
 		);
+	}
+
+	private void save_as_cb() {
+		var page = panel.get_nth_page(panel.get_current_page()) 
+			as ScrolledWindow;
+		var view = page.get_child() as SourceView;
+
+		var file_chooser = new FileChooserDialog("Save File", this,
+			FileChooserAction.SAVE,
+			"Cancel", ResponseType.CANCEL,
+			"Save", ResponseType.ACCEPT
+		);
+
+        if (file_chooser.run() == ResponseType.ACCEPT) {
+			var tab_label = new TabLabel.with_title(
+				file_chooser.get_file().get_basename());
+            tab_label.tab_widget = page;
+            tab_label.close_clicked.connect((page) => {
+            	int page_n = panel.page_num(page);
+
+            	if (confirm_close(page_n)) {
+					filenames.remove(filenames.nth_data(page_n));
+					panel.remove_page(page_n);
+					check_pages();
+				}
+			});
+
+            panel.set_tab_label(page,tab_label);
+            headerbar.set_title(file_chooser.get_file().get_basename());
+            save_file(view,file_chooser.get_filename());
+
+            filenames.remove(filenames.nth_data(panel.get_current_page()));
+            filenames.insert(file_chooser.get_filename(),
+            	panel.get_current_page());
+        }
+        
+        file_chooser.destroy();
 	}
 
 	private void search_mode_cb() {
@@ -181,13 +227,14 @@ public class MainWindow : ApplicationWindow {
 	}
 
 	private bool confirm_close(int page) {
-		if((panel.get_tab_label(panel.get_nth_page(page)) as TabLabel).tab_title.contains("*")) {
+		if ((panel.get_tab_label(panel.get_nth_page(page)) 
+			as TabLabel).tab_title.contains("*")) {
 			panel.page = page;
 
 			var confirmar = new ConfirmExit();
 			confirmar.set_transient_for(this);
 
-			switch(confirmar.run()) {
+			switch (confirmar.run()) {
 				default:
 				case ResponseType.CANCEL:
 					confirmar.destroy();
@@ -215,9 +262,9 @@ public class MainWindow : ApplicationWindow {
 	}
 
 	private void check_pages() {
-		panel.set_show_tabs(panel.get_n_pages()!=1);
+		panel.set_show_tabs(panel.get_n_pages() != 1);
 		
-		if(panel.get_n_pages() == 0)
+		if (panel.get_n_pages() == 0)
 			headerbar.title = "Simple Text";
 	}
 
@@ -227,7 +274,8 @@ public class MainWindow : ApplicationWindow {
 
 		tab_label.close_clicked.connect((tab_widget) => {
 			int page = panel.page_num(tab_widget);
-			if(confirm_close(page)) {
+
+			if (confirm_close(page)) {
 				filenames.remove(filenames.nth_data(page));
 				panel.remove_page(page);
 				check_pages();
@@ -238,22 +286,23 @@ public class MainWindow : ApplicationWindow {
 		var view = (tab_widget as ScrolledWindow).get_child() as SourceView;
 		view.key_release_event.connect(changes_done);
 
-		panel.set_show_tabs(panel.get_n_pages()!=1);
+		panel.set_show_tabs(panel.get_n_pages() != 1);
 		panel.set_tab_reorderable(tab_widget,true);
 		headerbar.set_title(untitled);
 	}
 
 	private bool changes_done() {
-		var page = panel.get_nth_page(panel.get_current_page()) as ScrolledWindow;
+		var page = panel.get_nth_page(panel.get_current_page()) 
+			as ScrolledWindow;
 		var view = page.get_child() as SourceView;
 
-		if(view.buffer.get_modified()) {
+		if (view.buffer.get_modified()) {
 			var tab_label = panel.get_tab_label(page) as TabLabel;
 
-			if(!headerbar.title.contains("*"))
-				headerbar.title = "*"+headerbar.title;
-			if(!tab_label.tab_title.contains("*"))
-				tab_label.tab_title = "*"+tab_label.tab_title;
+			if (!headerbar.title.contains("*"))
+				headerbar.title = "*" + headerbar.title;
+			if (!tab_label.tab_title.contains("*"))
+				tab_label.tab_title = "*" + tab_label.tab_title;
 			
 			return false;
 		}
@@ -268,18 +317,21 @@ public class MainWindow : ApplicationWindow {
 			"Open", ResponseType.ACCEPT
 		);
 
-        if(file_chooser.run() == ResponseType.ACCEPT) {
+        if (file_chooser.run() == ResponseType.ACCEPT) {
 	        add_new_tab();
 			panel.next_page();
 
-			var page = panel.get_nth_page(panel.get_current_page()) as ScrolledWindow;
+			var page = panel.get_nth_page(panel.get_current_page()) 
+				as ScrolledWindow;
 			var view = page.get_child() as SourceView;
 
-			var tab_label = new TabLabel.with_title(file_chooser.get_file().get_basename());
+			var tab_label = new TabLabel.with_title(
+				file_chooser.get_file().get_basename());
 			tab_label.tab_widget = page;
 			tab_label.close_clicked.connect((page) => {
 				int page_n = panel.page_num(page);
-				if(confirm_close(page_n)){
+
+				if (confirm_close(page_n)) {
 					filenames.remove(filenames.nth_data(page_n));
 					panel.remove_page(page_n);
 					check_pages();
@@ -305,22 +357,26 @@ public class MainWindow : ApplicationWindow {
 	}
 
 	private void save_tab_to_file() {
-		var page = panel.get_nth_page(panel.get_current_page()) as ScrolledWindow;
+		var page = panel.get_nth_page(panel.get_current_page()) 
+			as ScrolledWindow;
 		var view = page.get_child() as SourceView;
 
-		if((filenames.nth_data(panel.get_current_page()) == untitled) && (view.buffer.text != "")) {
+		if ((filenames.nth_data(panel.get_current_page()) == untitled) 
+			&& (view.buffer.text != "")) {
 			var file_chooser = new FileChooserDialog("Save File", this,
 				FileChooserAction.SAVE,
 				"Cancel", ResponseType.CANCEL,
 				"Save", ResponseType.ACCEPT
 			);
 
-	        if(file_chooser.run() == ResponseType.ACCEPT) {
-				var tab_label = new TabLabel.with_title(file_chooser.get_file().get_basename());
+	        if (file_chooser.run() == ResponseType.ACCEPT) {
+				var tab_label = new TabLabel.with_title(
+					file_chooser.get_file().get_basename());
 	            tab_label.tab_widget = page;
 	            tab_label.close_clicked.connect((page) => {
 	            	int page_n = panel.page_num(page);
-	            	if(confirm_close(page_n)){
+
+	            	if (confirm_close(page_n)) {
 						filenames.remove(filenames.nth_data(page_n));
 						panel.remove_page(page_n);
 						check_pages();
@@ -332,14 +388,15 @@ public class MainWindow : ApplicationWindow {
 	            save_file(view,file_chooser.get_filename());
 
 	            filenames.remove(filenames.nth_data(panel.get_current_page()));
-	            filenames.insert(file_chooser.get_filename(),panel.get_current_page());
+	            filenames.insert(file_chooser.get_filename(),
+	            	panel.get_current_page());
 	        }
 	        
 	        file_chooser.destroy();
-	    } else {
-	    	string file_name = filenames.nth_data(panel.get_current_page());
-	    	save_file(view,file_name);
-	    }
+		} else {
+			string file_name = filenames.nth_data(panel.get_current_page());
+			save_file(view,file_name);
+		}
 	}
 
 	private void save_file(SourceView view,string filename) {
@@ -351,7 +408,8 @@ public class MainWindow : ApplicationWindow {
 	}
 
 	private void toggle_lines_cb() {
-		var page = panel.get_nth_page(panel.get_current_page()) as ScrolledWindow;
+		var page = panel.get_nth_page(panel.get_current_page()) 
+			as ScrolledWindow;
 		var view = page.get_child() as SourceView;
 		view.show_line_numbers = !view.show_line_numbers;
 	}

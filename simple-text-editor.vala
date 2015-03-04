@@ -22,7 +22,7 @@ public class SimpleTextEditor : Gtk.Application {
 		var builder = new Gtk.Builder();
 		try {
 			builder.add_from_file("menu.ui");
-		} catch(Error e) {
+		} catch (Error e) {
 			error("Error loading menu UI: %s",e.message);
 		}
 		
@@ -31,6 +31,9 @@ public class SimpleTextEditor : Gtk.Application {
 
 		const string[] accels_new = {"<control>N",null};
 		set_accels_for_action("win.new_tab",accels_new);
+
+		const string[] accels_save_as = {"<control><shift>S",null};
+		set_accels_for_action("win.save_as",accels_save_as);
 
 		const string[] accels_close = {"<control>W",null};
 		set_accels_for_action("win.close_tab",accels_close);

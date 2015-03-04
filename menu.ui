@@ -21,6 +21,11 @@
         <attribute name="action">win.new_tab</attribute>
         <attribute name="accel">&lt;Primary&gt;n</attribute>
       </item>
+      <item>
+        <attribute name="label" translatable="yes">Save as...</attribute>
+        <attribute name="action">win.save_as</attribute>
+        <attribute name="accel">&lt;Primary&gt;&lt;Shift&gt;s</attribute>
+      </item>
       </section>
       <section>
       <item>
