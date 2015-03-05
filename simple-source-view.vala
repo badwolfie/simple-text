@@ -4,7 +4,15 @@ public class SimpleSourceView : SourceView {
 	public SimpleSourceView() {
 		Object();
 		set_properties();
-		grab_focus();
+	}
+
+	public SimpleSourceView.with_text(string display_text) {
+		var buff = new SourceBuffer(null);
+		buff.text = display_text;
+		buff.set_modified(false);
+
+		Object(buffer: buff);
+		set_properties();
 	}
 
 	private void set_properties() {

@@ -29,16 +29,23 @@ public class TabLabel : Box {
 	public TabLabel() {
 		Object();
 		this.tab_title = untitled;
-		create_widgets();
+		create_widgets(null);
 	}
 
-	public TabLabel.with_title(string tab_title) {
+	public TabLabel.from_file(string base_name, string file_path) {
 		Object();
-		this.tab_title = tab_title;
-		create_widgets();
+		this.tab_title = base_name;
+
+		try {
+			string text;
+			FileUtils.get_contents(file_path, out text);
+			create_widgets(text);
+		} catch (Error e) {
+			stderr.printf ("Error: %s\n", e.message);
+		}
 	}
 
-	private void create_widgets() {
+	private void create_widgets(string? display_text) {
 		this.orientation = Orientation.HORIZONTAL;
 		this.spacing = 20;
 
@@ -49,7 +56,11 @@ public class TabLabel : Box {
 		pack_start(title_label,true,true,0);
 		pack_start(close_button,true,true,0);
 
-		var text_view = new SimpleSourceView();
+		SimpleSourceView text_view;
+		if(display_text != null)
+			text_view = new SimpleSourceView.with_text(display_text);
+		else
+			text_view = new SimpleSourceView();
 		text_view.show();
         
 		var tab_widget = new ScrolledWindow(null,null);
