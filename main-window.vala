@@ -17,7 +17,7 @@ public class MainWindow : ApplicationWindow {
 		filenames = new List<string>();
 
 		window_position = WindowPosition.CENTER;
-		set_default_size(850,650);
+		set_default_size(1000,700);
 		border_width = 0;
 
 		create_widgets();
@@ -181,28 +181,32 @@ public class MainWindow : ApplicationWindow {
 			"Save", ResponseType.ACCEPT
 		);
 
-        if (file_chooser.run() == ResponseType.ACCEPT) {
-			var tab_label = new TabLabel.with_title(
+		switch (file_chooser.run()) {
+			case ResponseType.ACCEPT:
+				var tab_label = new TabLabel.with_title(
 				file_chooser.get_file().get_basename());
-            tab_label.tab_widget = page;
-            tab_label.close_clicked.connect((page) => {
-            	int page_n = panel.page_num(page);
+	            tab_label.tab_widget = page;
+	            tab_label.close_clicked.connect((page) => {
+	            	int page_n = panel.page_num(page);
 
-            	if (confirm_close(page_n)) {
-					filenames.remove(filenames.nth_data(page_n));
-					panel.remove_page(page_n);
-					check_pages();
-				}
-			});
+	            	if (confirm_close(page_n)) {
+						filenames.remove(filenames.nth_data(page_n));
+						panel.remove_page(page_n);
+						check_pages();
+					}
+				});
 
-            panel.set_tab_label(page,tab_label);
-            headerbar.set_title(file_chooser.get_file().get_basename());
-            save_file(view,file_chooser.get_filename());
+	            panel.set_tab_label(page,tab_label);
+	            headerbar.set_title(file_chooser.get_file().get_basename());
+	            save_file(view,file_chooser.get_filename());
 
-            filenames.remove(filenames.nth_data(panel.get_current_page()));
-            filenames.insert(file_chooser.get_filename(),
-            	panel.get_current_page());
-        }
+	            filenames.remove(filenames.nth_data(panel.get_current_page()));
+	            filenames.insert(file_chooser.get_filename(),
+	            	panel.get_current_page());
+				break;
+			default:
+				break;
+		}
         
         file_chooser.destroy();
 	}
@@ -369,29 +373,33 @@ public class MainWindow : ApplicationWindow {
 				"Save", ResponseType.ACCEPT
 			);
 
-	        if (file_chooser.run() == ResponseType.ACCEPT) {
-				var tab_label = new TabLabel.with_title(
+			switch (file_chooser.run()) {
+				case ResponseType.ACCEPT:
+					var tab_label = new TabLabel.with_title(
 					file_chooser.get_file().get_basename());
-	            tab_label.tab_widget = page;
-	            tab_label.close_clicked.connect((page) => {
-	            	int page_n = panel.page_num(page);
+		            tab_label.tab_widget = page;
+		            tab_label.close_clicked.connect((page) => {
+		            	int page_n = panel.page_num(page);
 
-	            	if (confirm_close(page_n)) {
-						filenames.remove(filenames.nth_data(page_n));
-						panel.remove_page(page_n);
-						check_pages();
-					}
-				});
+		            	if (confirm_close(page_n)) {
+							filenames.remove(filenames.nth_data(page_n));
+							panel.remove_page(page_n);
+							check_pages();
+						}
+					});
 
-	            panel.set_tab_label(page,tab_label);
-	            headerbar.set_title(file_chooser.get_file().get_basename());
-	            save_file(view,file_chooser.get_filename());
+		            panel.set_tab_label(page,tab_label);
+		            headerbar.set_title(file_chooser.get_file().get_basename());
+		            save_file(view,file_chooser.get_filename());
 
-	            filenames.remove(filenames.nth_data(panel.get_current_page()));
-	            filenames.insert(file_chooser.get_filename(),
-	            	panel.get_current_page());
-	        }
-	        
+		            filenames.remove(filenames.nth_data(panel.get_current_page()));
+		            filenames.insert(file_chooser.get_filename(),
+		            	panel.get_current_page());
+		            break;
+		        default:
+		        	break;
+			}
+
 	        file_chooser.destroy();
 		} else {
 			string file_name = filenames.nth_data(panel.get_current_page());
