@@ -35,6 +35,12 @@ public class SimpleTextEditor : Gtk.Application {
 		const string[] accels_save_as = {"<control><shift>S",null};
 		set_accels_for_action("win.save_as",accels_save_as);
 
+		const string[] accels_next_tab = {"<control>Tab",null};
+		set_accels_for_action("win.next_tab",accels_next_tab);
+
+		const string[] accels_prev_tab = {"<control><shift>Tab",null};
+		set_accels_for_action("win.prev_tab",accels_prev_tab);
+
 		const string[] accels_close = {"<control>W",null};
 		set_accels_for_action("win.close_tab",accels_close);
 
@@ -43,6 +49,9 @@ public class SimpleTextEditor : Gtk.Application {
 
 		const string[] accels_lines = {"<control>L",null};
 		set_accels_for_action("win.toggle_lines",accels_lines);
+
+		const string[] accels_quit = {"<control>Q",null};
+		set_accels_for_action("win.quit_window",accels_quit);
 	}
 
 	protected override void activate() {
@@ -68,7 +77,7 @@ public class SimpleTextEditor : Gtk.Application {
 			"logo-icon-name", "text-editor",
 			"documenters", documenters,
 			"authors", authors,
-			"version", "0.8"
+			"version", "0.9"
 		);
 	}
 

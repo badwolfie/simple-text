@@ -1,45 +1,52 @@
 using Gtk;
 
 public class SimpleSourceView : SourceView {
-	private bool _syntax;
-	public bool syntax {
-		get { return _syntax; }
-	}
 
 	public SimpleSourceView() {
-		Object();
-		_syntax = false;
+		var buff = new SourceBuffer(null);
+		var scheme_manager = SourceStyleSchemeManager.get_default();
+		var source_scheme = scheme_manager.get_scheme("monokai-extended");
+
+		buff.style_scheme = source_scheme;
+		buff.set_modified(false);
+
+		Object(buffer: buff);
 		set_properties();
 	}
 
 	public SimpleSourceView.with_text(string display_text) {
 		var buff = new SourceBuffer(null);
+		var scheme_manager = SourceStyleSchemeManager.get_default();
+		var source_scheme = scheme_manager.get_scheme("monokai-extended");
+
+		buff.style_scheme = source_scheme;
 		buff.text = display_text;
 		buff.set_modified(false);
 
 		Object(buffer: buff);
-		_syntax = false;
 		set_properties();
 	}
 
 	public SimpleSourceView.with_language(
 		string language, string display_text) {
-		var source_manager = SourceLanguageManager.get_default();
-		var source_lang = source_manager.get_language(language);
-
+		var lang_manager = SourceLanguageManager.get_default();
+		var source_lang = lang_manager.get_language(language);
 		var buff = new SourceBuffer.with_language(source_lang);
+		var scheme_manager = SourceStyleSchemeManager.get_default();
+		var source_scheme = scheme_manager.get_scheme("monokai-extended");
+
 		buff.highlight_matching_brackets = true;
+		buff.style_scheme = source_scheme;
 		buff.highlight_syntax = true;
 		buff.text = display_text;
 		buff.set_modified(false);
 
 		Object(buffer: buff);
-		_syntax = true;
 		set_properties();
 	}
 
 	private void set_properties() {
-		override_font(Pango.FontDescription.from_string("Liberation Mono 11"));
+		override_font(Pango.FontDescription.from_string("Liberation Mono 12"));
 		smart_home_end = SourceSmartHomeEndType.BEFORE;
 		wrap_mode = WrapMode.NONE;
 		show_line_numbers = true;

@@ -1,27 +1,18 @@
 using Gtk;
 
-public enum OPERATION {
-	NEW_FILE,
-	OPEN_FILE,
-	EDIT_FILE,
-	SAVE_FILE,
-	CLOSE_FILE
-}
-
 public class MainWindow : ApplicationWindow {
 	private string untitled = "Untitled";
-	private List<string> opened_files;
 	private Array<string> closed_files;
+	private List<string> opened_files;
 
 	private SimpleHeaderBar headerbar;
-	private Statusbar status;
+	private SimpleStatusbar status;
 	private Notebook panel;
 
 	private SearchEntry search_entry;
 	private SearchBar search_bar;
 	private Button previous_search;
 	private Button next_search;
-	private uint context_id;
 
 	public MainWindow(Gtk.Application app) {
 		Object(application: app);
@@ -51,6 +42,14 @@ public class MainWindow : ApplicationWindow {
 		action_save_as.activate.connect(save_as_cb);
 		add_action(action_save_as);
 
+		var action_next_tab = new SimpleAction("next_tab",null);
+		action_next_tab.activate.connect(next_tab_cb);
+		add_action(action_next_tab);
+
+		var action_prev_tab = new SimpleAction("prev_tab",null);
+		action_prev_tab.activate.connect(prev_tab_cb);
+		add_action(action_prev_tab);
+
 		var action_close_tab = new SimpleAction("close_tab",null);
 		action_close_tab.activate.connect(close_tab_cb);
 		add_action(action_close_tab);
@@ -62,6 +61,10 @@ public class MainWindow : ApplicationWindow {
 		var action_lines = new SimpleAction("toggle_lines",null);
 		action_lines.activate.connect(toggle_lines_cb);
 		add_action(action_lines);
+
+		var action_quit = new SimpleAction("quit_window",null);
+		action_quit.activate.connect(quit_cb);
+		add_action(action_quit);		
 
 		search_entry = new SearchEntry();
 		search_entry.placeholder_text = "Enter your search...";
@@ -96,11 +99,15 @@ public class MainWindow : ApplicationWindow {
 		panel.switch_page.connect((page,page_num) => {
 			var box = panel.get_tab_label(page) as Box;
 			var label = box.get_children().first().data as Label;
+
 			headerbar.title = label.label;
+			status.refresh_language(label.label);
+
+			var plangs = new ProgrammingLanguages();
+			headerbar.buildable = plangs.is_buildable(label.label);
 		});
 
-		status = new Statusbar();
-		context_id = status.get_context_id("status");
+		status = new SimpleStatusbar(this);
 		status.show();
 
 		var vbox = new Box(Orientation.VERTICAL,0);
@@ -155,7 +162,9 @@ public class MainWindow : ApplicationWindow {
 			opened_files.insert(file_chooser.get_filename(),
 						panel.get_current_page());
 
-			refresh_statusbar(OPERATION.OPEN_FILE);
+			string f_name = opened_files.nth_data(panel.get_current_page());
+			status.refresh_statusbar(OPERATION.OPEN_FILE,f_name);
+			status.refresh_language(f_name);
 		}
 
 		file_chooser.destroy();
@@ -184,6 +193,10 @@ public class MainWindow : ApplicationWindow {
 						file_chooser.get_file().get_basename();
 					headerbar.set_title(file_chooser.get_file().get_basename());
 					save_file(view,file_chooser.get_filename());
+
+					tab_label = new SimpleTab.from_file(
+						file_chooser.get_file().get_basename(),
+						file_chooser.get_filename());
 
 					opened_files.remove(opened_files.nth_data(
 						panel.get_current_page()));
@@ -219,6 +232,10 @@ public class MainWindow : ApplicationWindow {
 				headerbar.set_title(file_chooser.get_file().get_basename());
 				save_file(view,file_chooser.get_filename());
 
+				tab_label = new SimpleTab.from_file(
+					file_chooser.get_file().get_basename(),
+					file_chooser.get_filename());
+
 				opened_files.remove(opened_files.nth_data(panel.get_current_page()));
 				opened_files.insert(file_chooser.get_filename(),
 					panel.get_current_page());
@@ -234,7 +251,6 @@ public class MainWindow : ApplicationWindow {
 	public void new_tab_cb() {
 		add_new_tab();
 		opened_files.append(untitled);
-		panel.next_page();
 	}
 
 	public void build_code() {
@@ -277,7 +293,9 @@ public class MainWindow : ApplicationWindow {
 		panel.next_page();
 		opened_files.insert(last_file_path,panel.get_current_page());
 
-		refresh_statusbar(OPERATION.OPEN_FILE);
+		string f_name = opened_files.nth_data(panel.get_current_page());
+		status.refresh_statusbar(OPERATION.OPEN_FILE,f_name);
+		status.refresh_language(f_name);
 	}
 
 	private void search_mode_cb() {
@@ -287,13 +305,16 @@ public class MainWindow : ApplicationWindow {
 	private void close_tab_cb() {
 		int page = panel.get_current_page();
 		if ((panel.get_n_pages() > 0) && confirm_close(page)) {
-			refresh_statusbar(OPERATION.CLOSE_FILE);
+			string f_name = opened_files.nth_data(panel.get_current_page());
+			status.refresh_statusbar(OPERATION.CLOSE_FILE,f_name);
 
 			if (opened_files.nth_data(page) != untitled)
 				closed_files.append_val(opened_files.nth_data(page));
 			
 			opened_files.remove(opened_files.nth_data(page));
 			panel.remove_page(page);
+			status.refresh_language(
+				opened_files.nth_data(panel.get_current_page()));
 			check_pages();
 		}
 	}
@@ -321,39 +342,6 @@ public class MainWindow : ApplicationWindow {
 			headerbar.title = "Simple Text";
 	}
 
-	private void refresh_statusbar(OPERATION operation) {
-		status.pop(context_id);
-		string file_name = opened_files.nth_data(panel.get_current_page());
-		
-		switch (operation) {
-			case OPERATION.NEW_FILE:
-				status.push(
-					context_id,
-					"New file");
-				break;
-			case OPERATION.OPEN_FILE:
-				status.push(
-					context_id,
-					"Opened " + file_name);
-				break;
-			case OPERATION.EDIT_FILE:
-				status.push(
-					context_id,
-					"Editing...");
-				break;
-			case OPERATION.SAVE_FILE:
-				status.push(
-					context_id,
-					"Saved " + file_name);
-				break;
-			case OPERATION.CLOSE_FILE:
-				status.push(
-					context_id,
-					"Closed " + file_name);
-				break;
-		}
-	}
-
 	private bool changes_done(Gdk.EventKey event) {
 		var page = panel.get_nth_page(panel.get_current_page()) 
 			as ScrolledWindow;
@@ -367,7 +355,7 @@ public class MainWindow : ApplicationWindow {
 			if (!tab_label.tab_title.contains("*"))
 				tab_label.tab_title = "*" + tab_label.tab_title;
 			
-			refresh_statusbar(OPERATION.EDIT_FILE);
+			status.refresh_statusbar(OPERATION.EDIT_FILE,null);
 
 			return false;
 		}
@@ -400,6 +388,8 @@ public class MainWindow : ApplicationWindow {
 		});
 
 		panel.append_page(tab_widget,tab_label);
+		panel.set_current_page(panel.get_n_pages() - 1);
+
 		var view = (tab_widget as ScrolledWindow).get_child() as SourceView;
 		view.key_release_event.connect(changes_done);
 
@@ -407,18 +397,35 @@ public class MainWindow : ApplicationWindow {
 		panel.set_tab_reorderable(tab_widget,true);
 		headerbar.set_title(untitled);
 
-		refresh_statusbar(OPERATION.NEW_FILE);
+		status.refresh_statusbar(OPERATION.NEW_FILE,null);
+		status.refresh_language(untitled);
 	}
 
 	private void save_file(SourceView view,string filename) {
 		try {
 			FileUtils.set_contents(filename,view.buffer.text);
 			view.buffer.set_modified(false);
-			refresh_statusbar(OPERATION.SAVE_FILE);
+
+			string f_name = opened_files.nth_data(panel.get_current_page());
+			status.refresh_statusbar(OPERATION.SAVE_FILE,f_name);
+			status.refresh_language(f_name);
 		} catch (Error e) {
 			stderr.printf ("Error: %s\n", e.message);
 		}
 	}
+
+	private void next_tab_cb() {
+		if (panel.get_n_pages() <= 1) return;
+		int page = (panel.get_current_page() + 1) % panel.get_n_pages();
+		panel.set_current_page(page);
+	}
+
+	private void prev_tab_cb() {
+		if (panel.get_n_pages() <= 1) return;
+		int page = 
+			(panel.get_current_page() + (panel.get_n_pages() - 1)) % panel.get_n_pages();
+		panel.set_current_page(page);
+	}	
 
 	private bool confirm_close(int page) {
 		if ((panel.get_tab_label(panel.get_nth_page(page)) 
@@ -444,5 +451,11 @@ public class MainWindow : ApplicationWindow {
 		}
 
 		return true;
+	}
+
+	private void quit_cb() {
+		while (panel.get_n_pages() != 0)
+			close_tab_cb();
+		this.destroy();
 	}
 }
