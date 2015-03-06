@@ -9,7 +9,7 @@ public class SimpleTextEditor : Gtk.Application {
     };
 
 	public SimpleTextEditor() {
-		Object(application_id: "wolfie.simple-text.app",
+		Object(application_id: "badwolfie.simple-text.app",
 			flags: ApplicationFlags.NON_UNIQUE);
 	}
 
@@ -29,8 +29,8 @@ public class SimpleTextEditor : Gtk.Application {
 		var menu = builder.get_object("appmenu") as MenuModel;
 		set_app_menu(menu);
 
-		const string[] accels_new = {"<control>N",null};
-		set_accels_for_action("win.new_tab",accels_new);
+		const string[] accels_re_open = {"<control><shift>T",null};
+		set_accels_for_action("win.re_open",accels_re_open);
 
 		const string[] accels_save_as = {"<control><shift>S",null};
 		set_accels_for_action("win.save_as",accels_save_as);
@@ -68,7 +68,7 @@ public class SimpleTextEditor : Gtk.Application {
 			"logo-icon-name", "text-editor",
 			"documenters", documenters,
 			"authors", authors,
-			"version", "0.7"
+			"version", "0.8"
 		);
 	}
 

@@ -1,8 +1,11 @@
 using Gtk;
+using Gee;
 
-public class TabLabel : Box {
+public class SimpleTab : Box {
 	public signal void close_clicked (Widget tab_widget);
 	private string untitled = "Untitled";
+
+	public HashMap<string,string> p_langs;
 
 	private Label title_label;
 	private Button close_button;
@@ -26,26 +29,27 @@ public class TabLabel : Box {
 		}
 	}
 
-	public TabLabel() {
+	public SimpleTab() {
 		Object();
 		this.tab_title = untitled;
-		create_widgets(null);
+		create_widgets(null,null);
 	}
 
-	public TabLabel.from_file(string base_name, string file_path) {
+	public SimpleTab.from_file(string base_name, string file_path) {
 		Object();
 		this.tab_title = base_name;
+		setup_languages();
 
 		try {
 			string text;
 			FileUtils.get_contents(file_path, out text);
-			create_widgets(text);
+			create_widgets(p_langs.get("c"),text);
 		} catch (Error e) {
 			stderr.printf ("Error: %s\n", e.message);
 		}
 	}
 
-	private void create_widgets(string? display_text) {
+	private void create_widgets(string? language, string? display_text) {
 		this.orientation = Orientation.HORIZONTAL;
 		this.spacing = 20;
 
@@ -57,9 +61,13 @@ public class TabLabel : Box {
 		pack_start(close_button,true,true,0);
 
 		SimpleSourceView text_view;
-		if(display_text != null)
-			text_view = new SimpleSourceView.with_text(display_text);
-		else
+		if (display_text != null) {
+			if (language != null) {
+				text_view = 
+					new SimpleSourceView.with_language(language,display_text);
+			} else 
+				text_view = new SimpleSourceView.with_text(display_text);
+		} else
 			text_view = new SimpleSourceView();
 		text_view.show();
         
@@ -71,6 +79,26 @@ public class TabLabel : Box {
 		this.tab_widget = tab_widget;
 
 		show_all();
+	}
+
+	private void setup_languages() {
+		if (p_langs != null) return;
+
+		p_langs = new HashMap<string,string>();
+
+		p_langs.set("c","c");
+		p_langs.set("cs","c#");
+		p_langs.set("h","c++");
+		p_langs.set("cc","c++");
+		p_langs.set("cpp","c++");
+		p_langs.set("sh","bash");
+		p_langs.set("pl","perl");
+		p_langs.set("php","php");
+		p_langs.set("xml","xml");
+		p_langs.set("tex","latex");
+		p_langs.set("py","python");
+		p_langs.set("java","java");
+		p_langs.set("html","html");
 	}
 
 	private void refresh_title() {
