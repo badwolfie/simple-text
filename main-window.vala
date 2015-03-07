@@ -103,8 +103,8 @@ public class MainWindow : ApplicationWindow {
 			headerbar.title = label.label;
 			status.refresh_language(label.label);
 
-			var plangs = new ProgrammingLanguages();
-			headerbar.buildable = plangs.is_buildable(label.label);
+			var p_langs = new ProgrammingLanguages();
+			headerbar.buildable = p_langs.is_buildable(label.label);
 		});
 
 		status = new SimpleStatusbar(this);
@@ -144,8 +144,11 @@ public class MainWindow : ApplicationWindow {
 					if (opened_files.nth_data(page_n) != untitled)
 						closed_files.append_val(opened_files.nth_data(page_n));
 
+					string f_name = opened_files.nth_data(page_n);
 					opened_files.remove(opened_files.nth_data(page_n));
 					panel.remove_page(page_n);
+
+					status.refresh_statusbar(FileOpeartion.CLOSE_FILE,f_name);
 					check_pages();
 				}
 			});
@@ -163,7 +166,7 @@ public class MainWindow : ApplicationWindow {
 						panel.get_current_page());
 
 			string f_name = opened_files.nth_data(panel.get_current_page());
-			status.refresh_statusbar(OPERATION.OPEN_FILE,f_name);
+			status.refresh_statusbar(FileOpeartion.OPEN_FILE,f_name);
 			status.refresh_language(f_name);
 		}
 
@@ -184,6 +187,10 @@ public class MainWindow : ApplicationWindow {
 				"Save", ResponseType.ACCEPT
 			);
 
+			var p_langs = new ProgrammingLanguages();
+			string ext = p_langs.get_lang_ext(status.label.label);
+			file_chooser.set_current_name(untitled + ext);
+
 			switch (file_chooser.run()) {
 				default:
 					break;
@@ -197,17 +204,25 @@ public class MainWindow : ApplicationWindow {
 					tab_label = new SimpleTab.from_file(
 						file_chooser.get_file().get_basename(),
 						file_chooser.get_filename());
+					var tab_widget = tab_label.tab_widget;
 
-					opened_files.remove(opened_files.nth_data(
-						panel.get_current_page()));
+					view = (tab_widget as ScrolledWindow).get_child() 
+						as SourceView;
+					view.key_release_event.connect(changes_done);
+
+					int current_page = panel.get_current_page();
+					panel.remove_page(current_page);
+					panel.insert_page(tab_widget,tab_label,current_page);
+
+					opened_files.remove(opened_files.nth_data(current_page));
 					opened_files.insert(file_chooser.get_filename(),
-						panel.get_current_page());
+						current_page);
 					reset_changes(tab_label);
 					break;
 			}
 
 			file_chooser.destroy();
-		} else {
+		} else if (headerbar.title.contains("*")) {
 			string file_name = opened_files.nth_data(panel.get_current_page());
 			save_file(view,file_name);
 			reset_changes(panel.get_tab_label(page) as SimpleTab);
@@ -215,6 +230,9 @@ public class MainWindow : ApplicationWindow {
 	}
 
 	private void save_as_cb() {
+		string filename = opened_files.nth_data(panel.get_current_page());
+		if ((filename == untitled) || (filename == ("*" + untitled))) return;
+
 		var page = panel.get_nth_page(panel.get_current_page()) 
 			as ScrolledWindow;
 		var view = page.get_child() as SourceView;
@@ -224,6 +242,9 @@ public class MainWindow : ApplicationWindow {
 			"Cancel", ResponseType.CANCEL,
 			"Save", ResponseType.ACCEPT
 		);
+
+		int index = filename.last_index_of("/");
+		file_chooser.set_current_name(filename.substring(index + 1));
 
 		switch (file_chooser.run()) {
 			case ResponseType.ACCEPT:
@@ -236,7 +257,8 @@ public class MainWindow : ApplicationWindow {
 					file_chooser.get_file().get_basename(),
 					file_chooser.get_filename());
 
-				opened_files.remove(opened_files.nth_data(panel.get_current_page()));
+				opened_files.remove(
+					opened_files.nth_data(panel.get_current_page()));
 				opened_files.insert(file_chooser.get_filename(),
 					panel.get_current_page());
 				reset_changes(tab_label);
@@ -254,14 +276,43 @@ public class MainWindow : ApplicationWindow {
 	}
 
 	public void build_code() {
-		Posix.system("ls");
+		save_tab_to_file();
+		status.refresh_statusbar(FileOpeartion.BUILD_FILE,null);
+		string file_name = opened_files.nth_data(panel.get_current_page());
+		int index = file_name.last_index_of("/");
+		string directory = file_name.substring(0,index);
+
+		FileOpeartion build_status;
+		Dialog build_dialog;
+		Label build_message;
+		int exe = Posix.system("cd " + directory + " && make");
+
+		if (exe == 0) {
+			build_message = new Label("Make: Build successful!");
+			build_status = FileOpeartion.BUILD_DONE;
+		} else {
+			build_message = new Label("Make: An error has occurred!");
+			build_status = FileOpeartion.BUILD_FAIL;
+		}
+
+		build_message.show();		
+		build_dialog = new Dialog.with_buttons("Build system",this,
+			DialogFlags.MODAL,"OK",ResponseType.ACCEPT,null);
+		var content = build_dialog.get_content_area() as Box;
+		content.pack_start(build_message,true,true,10);
+		build_dialog.border_width = 10;
+
+		build_dialog.run();
+		build_dialog.destroy();
+		status.refresh_statusbar(build_status,null);
 	}
 
 	private void re_open_cb() {
 		if (closed_files.length == 0) return;
 
 		string last_file_path = closed_files.data[closed_files.length - 1];
-		string last_file_basename = File.new_for_path(last_file_path).get_basename();
+		string last_file_basename = 
+			File.new_for_path(last_file_path).get_basename();
 		closed_files.remove_index(closed_files.length - 1);
 
 		var tab_label = new SimpleTab.from_file(
@@ -276,8 +327,11 @@ public class MainWindow : ApplicationWindow {
 				if (opened_files.nth_data(page_n) != untitled)
 					closed_files.append_val(opened_files.nth_data(page_n));
 
+				string f_name = opened_files.nth_data(page_n);
 				opened_files.remove(opened_files.nth_data(page_n));
 				panel.remove_page(page_n);
+
+				status.refresh_statusbar(FileOpeartion.CLOSE_FILE,f_name);
 				check_pages();
 			}
 		});
@@ -294,7 +348,7 @@ public class MainWindow : ApplicationWindow {
 		opened_files.insert(last_file_path,panel.get_current_page());
 
 		string f_name = opened_files.nth_data(panel.get_current_page());
-		status.refresh_statusbar(OPERATION.OPEN_FILE,f_name);
+		status.refresh_statusbar(FileOpeartion.OPEN_FILE,f_name);
 		status.refresh_language(f_name);
 	}
 
@@ -306,7 +360,7 @@ public class MainWindow : ApplicationWindow {
 		int page = panel.get_current_page();
 		if ((panel.get_n_pages() > 0) && confirm_close(page)) {
 			string f_name = opened_files.nth_data(panel.get_current_page());
-			status.refresh_statusbar(OPERATION.CLOSE_FILE,f_name);
+			status.refresh_statusbar(FileOpeartion.CLOSE_FILE,f_name);
 
 			if (opened_files.nth_data(page) != untitled)
 				closed_files.append_val(opened_files.nth_data(page));
@@ -355,7 +409,7 @@ public class MainWindow : ApplicationWindow {
 			if (!tab_label.tab_title.contains("*"))
 				tab_label.tab_title = "*" + tab_label.tab_title;
 			
-			status.refresh_statusbar(OPERATION.EDIT_FILE,null);
+			status.refresh_statusbar(FileOpeartion.EDIT_FILE,null);
 
 			return false;
 		}
@@ -381,8 +435,11 @@ public class MainWindow : ApplicationWindow {
 				if(opened_files.nth_data(page) != untitled)
 					closed_files.append_val(opened_files.nth_data(page));
 
+				string f_name = opened_files.nth_data(page);
 				opened_files.remove(opened_files.nth_data(page));
 				panel.remove_page(page);
+
+				status.refresh_statusbar(FileOpeartion.CLOSE_FILE,f_name);
 				check_pages();
 			}
 		});
@@ -397,7 +454,7 @@ public class MainWindow : ApplicationWindow {
 		panel.set_tab_reorderable(tab_widget,true);
 		headerbar.set_title(untitled);
 
-		status.refresh_statusbar(OPERATION.NEW_FILE,null);
+		status.refresh_statusbar(FileOpeartion.NEW_FILE,null);
 		status.refresh_language(untitled);
 	}
 
@@ -406,9 +463,8 @@ public class MainWindow : ApplicationWindow {
 			FileUtils.set_contents(filename,view.buffer.text);
 			view.buffer.set_modified(false);
 
-			string f_name = opened_files.nth_data(panel.get_current_page());
-			status.refresh_statusbar(OPERATION.SAVE_FILE,f_name);
-			status.refresh_language(f_name);
+			status.refresh_statusbar(FileOpeartion.SAVE_FILE,filename);
+			status.refresh_language(filename);
 		} catch (Error e) {
 			stderr.printf ("Error: %s\n", e.message);
 		}
@@ -422,8 +478,8 @@ public class MainWindow : ApplicationWindow {
 
 	private void prev_tab_cb() {
 		if (panel.get_n_pages() <= 1) return;
-		int page = 
-			(panel.get_current_page() + (panel.get_n_pages() - 1)) % panel.get_n_pages();
+		int page = (panel.get_current_page() + (panel.get_n_pages() - 1)) 
+			% panel.get_n_pages();
 		panel.set_current_page(page);
 	}	
 
