@@ -14,11 +14,11 @@ public class SimpleTab : Box {
 		get { return _text_view; }
 	}
 
-	private Label title_label;
-	private Button close_button;
+	// private Label title_label;
+	// private Button close_button;
 
-	private Widget _tab_widget;
-	public Widget tab_widget {
+	private ScrolledWindow _tab_widget;
+	public ScrolledWindow tab_widget {
 		get { return _tab_widget; }
 		set { _tab_widget = value; }
 	}
@@ -31,7 +31,7 @@ public class SimpleTab : Box {
 				return;
 			_tab_title = value;
 
-			refresh_title();
+			// refresh_title();
 		}
 	}
 
@@ -57,14 +57,14 @@ public class SimpleTab : Box {
 
 	private void create_widgets(string? language, string? display_text) {
 		this.orientation = Orientation.HORIZONTAL;
-		this.spacing = 100;
+		this.spacing = 0;
 
-		title_label = new Label(tab_title);
-		close_button = new Button.from_icon_name("gtk-close",IconSize.MENU);
-		close_button.clicked.connect(button_clicked);
+		// title_label = new Label(tab_title);
+		// close_button = new Button.from_icon_name("gtk-close",IconSize.MENU);
+		// close_button.clicked.connect(button_clicked);
 
-		pack_start(title_label,true,true,0);
-		pack_start(close_button,true,true,0);
+		// pack_start(title_label,true,true,0);
+		// pack_start(close_button,true,true,0);
 
 		if (display_text != null) {
 			if (language != null) {
@@ -81,22 +81,21 @@ public class SimpleTab : Box {
 		completion.show_headers = true;
 		completion.show_icons = true;
         
-		var tab_widget = new ScrolledWindow(null,null);
+		_tab_widget = new ScrolledWindow(null,null);
 		tab_widget.set_policy(PolicyType.AUTOMATIC,PolicyType.AUTOMATIC);
 		tab_widget.add(text_view);
 		tab_widget.show();
 
-		this.tab_widget = tab_widget;
-
+		pack_start(tab_widget,true,true,0);
 		show_all();
 	}
 
-	private void refresh_title() {
-		if(title_label != null)
-			title_label.label = tab_title;
-	}
+	// private void refresh_title() {
+	// 	if(title_label != null)
+	// 		title_label.label = tab_title;
+	// }
 
-	private void button_clicked() {
-		this.close_clicked(this.tab_widget);
-	}
+	// private void button_clicked() {
+	// 	this.close_clicked(this.tab_widget);
+	// }
 }

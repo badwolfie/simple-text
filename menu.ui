@@ -16,11 +16,6 @@
   <menu id="window-menu">
     <section>
       <item>
-        <attribute name="label" translatable="yes">Reopen last file</attribute>
-        <attribute name="action">win.re_open</attribute>
-        <attribute name="accel">&lt;Primary&gt;&lt;Shift&gt;t</attribute>
-      </item>
-      <item>
         <attribute name="label" translatable="yes">Save as...</attribute>
         <attribute name="action">win.save_as</attribute>
         <attribute name="accel">&lt;Primary&gt;&lt;Shift&gt;s</attribute>
@@ -56,6 +51,13 @@
         <attribute name="action">win.close_tab</attribute>
         <attribute name="accel">&lt;Primary&gt;w</attribute>
       </item>
+      <item>
+        <attribute name="label" translatable="yes">Reopen last tab</attribute>
+        <attribute name="action">win.re_open</attribute>
+        <attribute name="accel">&lt;Primary&gt;&lt;Shift&gt;t</attribute>
+      </item>
+      </section>
+      <section>
       <item>
         <attribute name="label" translatable="yes">Quit</attribute>
         <attribute name="action">win.quit_window</attribute>
