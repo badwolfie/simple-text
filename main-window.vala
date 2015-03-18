@@ -156,6 +156,7 @@ public class MainWindow : ApplicationWindow {
 			panel.append_page(tab_widget,tab_label);
 			var view = (tab_widget as ScrolledWindow).get_child() as SourceView;
 			view.key_release_event.connect(changes_done);
+			view.buffer.set_modified(false);
 
 			panel.set_show_tabs(panel.get_n_pages() != 1);
 			panel.set_tab_reorderable(tab_widget,true);
@@ -401,6 +402,25 @@ public class MainWindow : ApplicationWindow {
 			as ScrolledWindow;
 		var view = page.get_child() as SourceView;
 
+		// stdout.printf("%s\n",event.str);
+		
+		// if (event.str == "{")
+		// 	view.buffer.insert_at_cursor("}",1);
+		// else if (event.str == "(")
+		// 	view.buffer.insert_at_cursor(")",1);
+		// else if (event.str == "[")
+		// 	view.buffer.insert_at_cursor("]",1);
+		// else if (event.str == "<")
+		// 	view.buffer.insert_at_cursor(">",1);
+		// else if (event.str == "¿")
+		// 	view.buffer.insert_at_cursor("?",1);
+		// else if (event.str == "¡")
+		// 	view.buffer.insert_at_cursor("!",1);
+		// else if (event.str == "'")
+		// 	view.buffer.insert_at_cursor("'",1);
+		// else if (event.str == "\"")
+		// 	view.buffer.insert_at_cursor("\"",1);
+
 		if (view.buffer.get_modified()) {
 			var tab_label = panel.get_tab_label(page) as SimpleTab;
 
@@ -432,7 +452,7 @@ public class MainWindow : ApplicationWindow {
 			int page = panel.page_num(tab_widget);
 
 			if (confirm_close(page)) {
-				if(opened_files.nth_data(page) != untitled)
+				if (opened_files.nth_data(page) != untitled)
 					closed_files.append_val(opened_files.nth_data(page));
 
 				string f_name = opened_files.nth_data(page);

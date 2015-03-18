@@ -4,6 +4,16 @@ public class SimpleTab : Box {
 	public signal void close_clicked (Widget tab_widget);
 	private string untitled = "Untitled";
 
+	private SourceCompletion _completion;
+	public SourceCompletion completion {
+		get { return _completion; }
+	}
+
+	private SimpleSourceView _text_view;
+	public SimpleSourceView text_view {
+		get { return _text_view; }
+	}
+
 	private Label title_label;
 	private Button close_button;
 
@@ -56,16 +66,20 @@ public class SimpleTab : Box {
 		pack_start(title_label,true,true,0);
 		pack_start(close_button,true,true,0);
 
-		SimpleSourceView text_view;
 		if (display_text != null) {
 			if (language != null) {
-				text_view = 
+				_text_view = 
 					new SimpleSourceView.with_language(language,display_text);
 			} else 
-				text_view = new SimpleSourceView.with_text(display_text);
+				_text_view = new SimpleSourceView.with_text(display_text);
 		} else
-			text_view = new SimpleSourceView();
+			_text_view = new SimpleSourceView();
 		text_view.show();
+
+		_completion = text_view.get_completion();
+		completion.select_on_show = true;
+		completion.show_headers = true;
+		completion.show_icons = true;
         
 		var tab_widget = new ScrolledWindow(null,null);
 		tab_widget.set_policy(PolicyType.AUTOMATIC,PolicyType.AUTOMATIC);
