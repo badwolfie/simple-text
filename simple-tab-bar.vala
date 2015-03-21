@@ -1,6 +1,8 @@
 using Gtk;
 
 public class SimpleTabBar : Box {
+	private Stack stack;
+
 	private List<SimpleTab> _tabs;
 	public List<SimpleTab> tabs {
 		get { return _tabs; }
@@ -14,12 +16,21 @@ public class SimpleTabBar : Box {
 		show_all();
 	}
 
+	public void set_stack(Stack stack) {
+		this.stack = stack;
+	}
+
 	public void add_tab(SimpleTab tab) {
-		pack_end(tab,true,true,0);
+		pack_start(tab,true,true,5);
 		tabs.append(tab);
+		tab.tab_clicked.connect(switch_page);
 	}
 
 	public void remove_tab(SimpleTab tab) {
 		tabs.remove(tab);
+	}
+
+	private void switch_page(SimpleTab tab) {
+		stack.set_visible_child(tab.tab_widget);
 	}
 }

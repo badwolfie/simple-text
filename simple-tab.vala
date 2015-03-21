@@ -2,6 +2,7 @@ using Gtk;
 
 public class SimpleTab : Box {
 	public signal void close_clicked (Widget tab_widget);
+	public signal void tab_clicked (SimpleTab tab);
 	private string untitled = "Untitled";
 
 	private SourceCompletion _completion;
@@ -14,8 +15,10 @@ public class SimpleTab : Box {
 		get { return _text_view; }
 	}
 
-	// private Label title_label;
-	// private Button close_button;
+	private EventBox evt_box;
+	private Label title_label;
+	private Button close_button;
+	private Separator separator;
 
 	private ScrolledWindow _tab_widget;
 	public ScrolledWindow tab_widget {
@@ -31,7 +34,7 @@ public class SimpleTab : Box {
 				return;
 			_tab_title = value;
 
-			// refresh_title();
+			refresh_title();
 		}
 	}
 
@@ -59,12 +62,21 @@ public class SimpleTab : Box {
 		this.orientation = Orientation.HORIZONTAL;
 		this.spacing = 0;
 
-		// title_label = new Label(tab_title);
-		// close_button = new Button.from_icon_name("gtk-close",IconSize.MENU);
-		// close_button.clicked.connect(button_clicked);
+		title_label = new Label(tab_title);
+		title_label.use_markup = true;
 
-		// pack_start(title_label,true,true,0);
-		// pack_start(close_button,true,true,0);
+		separator = new Separator(Orientation.VERTICAL);
+		close_button = new Button.from_icon_name("gtk-close",IconSize.MENU);
+		close_button.clicked.connect(button_clicked);
+		
+		evt_box = new EventBox();
+		evt_box.child = title_label;
+		evt_box.set_above_child(true);
+		evt_box.button_press_event.connect(tab_clicked_action);
+
+		pack_start(evt_box,true,true,0);
+		pack_start(close_button,false,true,5);
+		pack_start(separator,false,true,0);
 
 		if (display_text != null) {
 			if (language != null) {
@@ -86,16 +98,25 @@ public class SimpleTab : Box {
 		tab_widget.add(text_view);
 		tab_widget.show();
 
-		pack_start(tab_widget,true,true,0);
+		// pack_start(tab_widget,true,true,0);
 		show_all();
 	}
 
-	// private void refresh_title() {
-	// 	if(title_label != null)
-	// 		title_label.label = tab_title;
-	// }
+	private void refresh_title() {
+		if(title_label != null)
+			title_label.label = tab_title;
+	}
 
-	// private void button_clicked() {
-	// 	this.close_clicked(this.tab_widget);
-	// }
+	private void button_clicked() {
+		this.close_clicked(this.tab_widget);
+	}
+
+	private bool tab_clicked_action(Gdk.EventButton evt) {
+		this.tab_clicked(this);
+		return true;
+	}
+
+	public void mark_title() {
+		title_label.label = "<b>" + tab_title + "</b>";
+	}
 }

@@ -4,11 +4,11 @@ public class MainWindow : ApplicationWindow {
 	private string untitled = "Untitled";
 	private Array<string> closed_files;
 	private List<string> opened_files;
-	// private int counter = 0;
+	private int counter = 0;
 
 	private SimpleHeaderBar headerbar;
 	private SimpleStatusbar status;
-	// private Notebook panel;
+	private SimpleTabBar tab_bar;
 	
 	private StackSwitcher switcher;
 	private Stack documents;
@@ -104,10 +104,10 @@ public class MainWindow : ApplicationWindow {
 		documents.set_transition_duration(300);
 		documents.show();
 
-		switcher = new StackSwitcher();
-		switcher.set_stack(documents);
-		switcher.set_halign(Align.CENTER);
-		switcher.show();
+		// switcher = new StackSwitcher();
+		// switcher.set_stack(documents);
+		// switcher.set_halign(Align.CENTER);
+		// switcher.show();
 
 		// panel = new Notebook();
 		// panel.scrollable = true;
@@ -124,12 +124,16 @@ public class MainWindow : ApplicationWindow {
 		// 	headerbar.buildable = p_langs.is_buildable(label.label);
 		// });
 
+		tab_bar = new SimpleTabBar();
+		tab_bar.set_stack(documents);
+		tab_bar.show();
+
 		status = new SimpleStatusbar(this);
 		status.show();
 
 		var vbox = new Box(Orientation.VERTICAL,0);
 		vbox.pack_start(search_bar,false,true,0);
-		vbox.pack_start(switcher,false,true,5);
+		vbox.pack_start(tab_bar,false,true,5);
 		vbox.pack_start(documents,true,true,0);
 		vbox.pack_start(status,false,true,0);
 		vbox.show();
@@ -462,10 +466,11 @@ public class MainWindow : ApplicationWindow {
 
 	private void add_new_tab() {
 		var tab_label = new SimpleTab();
-		documents.add_titled(tab_label,"prueba",tab_label.tab_title);
-
-		var tab_label2 = new SimpleTab();
-		documents.add_titled(tab_label2,"prueba2",tab_label2.tab_title);
+		var tab_title = "tab-%d".printf(counter++);
+		documents.add_titled(
+			tab_label.tab_widget,tab_title,tab_label.tab_title);
+		tab_bar.add_tab(tab_label);
+		tab_label.mark_title();
 
 		// tab_label.close_clicked.connect((tab_widget) => {
 		// 	int page = panel.page_num(tab_widget);
