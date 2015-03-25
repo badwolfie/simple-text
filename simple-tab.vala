@@ -1,8 +1,9 @@
 using Gtk;
 
 public class SimpleTab : Box {
-	public signal void close_clicked (Widget tab_widget);
+	public signal void close_clicked (SimpleTab tab);
 	public signal void tab_clicked (SimpleTab tab);
+	public signal void tab_focused (SimpleTab tab);
 	private string untitled = "Untitled";
 
 	private SourceCompletion _completion;
@@ -63,8 +64,6 @@ public class SimpleTab : Box {
 		this.spacing = 0;
 
 		title_label = new Label(tab_title);
-		title_label.use_markup = true;
-
 		separator = new Separator(Orientation.VERTICAL);
 		close_button = new Button.from_icon_name("gtk-close",IconSize.MENU);
 		close_button.clicked.connect(button_clicked);
@@ -98,25 +97,28 @@ public class SimpleTab : Box {
 		tab_widget.add(text_view);
 		tab_widget.show();
 
-		// pack_start(tab_widget,true,true,0);
 		show_all();
 	}
 
-	private void refresh_title() {
-		if(title_label != null)
+	public void refresh_title() {
+		if(title_label != null) {
+			title_label.use_markup = false;
 			title_label.label = tab_title;
+		}
 	}
 
 	private void button_clicked() {
-		this.close_clicked(this.tab_widget);
+		this.close_clicked(this);
 	}
 
 	private bool tab_clicked_action(Gdk.EventButton evt) {
 		this.tab_clicked(this);
+		mark_title();
 		return true;
 	}
 
 	public void mark_title() {
+		title_label.use_markup = true;
 		title_label.label = "<b>" + tab_title + "</b>";
 	}
 }
