@@ -12,7 +12,10 @@ public enum FileOpeartion {
 }
 
 public class SimpleStatusbar : Box {
+	public signal void change_syntax_request();
+
 	private MainWindow parent_window;
+	private EventBox evt_box;
 	private Label _label;
 	public Label label {
 		get { return _label; }
@@ -38,8 +41,14 @@ public class SimpleStatusbar : Box {
 		_label = new Label("");
 		_label.show();
 
+		evt_box = new EventBox();
+		evt_box.child = _label;
+		evt_box.set_above_child(true);
+		evt_box.button_press_event.connect(on_label_pressed);
+		evt_box.show();
+
 		this.pack_start(status,false,true,0);
-		this.pack_end(_label,false,true,15);
+		this.pack_end(evt_box,false,true,15);
 	}
 
 	public void refresh_statusbar(FileOpeartion operation, string? file_name) {
@@ -97,5 +106,10 @@ public class SimpleStatusbar : Box {
 			string p_name = plangs.get_lang_name(file_name);
 			_label.label = p_name == null? "Plain text":	p_name;
 		}
+	}
+
+	private bool on_label_pressed(Gdk.EventButton evt) {
+		change_syntax_request();
+		return true;
 	}
 }

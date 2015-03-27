@@ -25,7 +25,7 @@ public class MainWindow : ApplicationWindow {
 		window_position = WindowPosition.CENTER;
 		set_default_size(1000,700);
 		border_width = 0;
-		maximize();
+		// maximize();
 
 		create_widgets();
 	}
@@ -104,26 +104,6 @@ public class MainWindow : ApplicationWindow {
 		documents.set_transition_duration(300);
 		documents.show();
 
-		// switcher = new StackSwitcher();
-		// switcher.set_stack(documents);
-		// switcher.set_halign(Align.CENTER);
-		// switcher.show();
-
-		// panel = new Notebook();
-		// panel.scrollable = true;
-		// panel.switch_page.connect((page,page_num) => {
-		// 	var box = panel.get_tab_label(page) as Box;
-		// 	var label = box.get_children().first().data as Label;
-		// panel.show();
-
-		headerbar.title = "Simple Text";
-		// 	headerbar.title = label.label;
-		// 	status.refresh_language(label.label);
-
-		// 	var p_langs = new ProgrammingLanguages();
-		// 	headerbar.buildable = p_langs.is_buildable(label.label);
-		// });
-
 		tab_bar = new SimpleTabBar();
 		tab_bar.set_stack(documents);
 		tab_bar.page_closed.connect(on_page_close);
@@ -155,90 +135,69 @@ public class MainWindow : ApplicationWindow {
 				file_chooser.get_file().get_basename(),
 				file_chooser.get_filename());
 			add_new_tab(tab_label);
-			
-			// tab_label.close_clicked.connect((page) => {
-			// 	int page_n = panel.page_num(page);
 
-			// 	if (confirm_close(page_n)) {
-			// 		if (opened_files.nth_data(page_n) != untitled)
-			// 			closed_files.append_val(opened_files.nth_data(page_n));
+			var current_page = tab_bar.get_current_page(
+				documents.visible_child);
+			int page_num = tab_bar.get_page_num(current_page);
 
-			// 		string f_name = opened_files.nth_data(page_n);
-			// 		opened_files.remove(opened_files.nth_data(page_n));
-			// 		panel.remove_page(page_n);
+			headerbar.set_title(file_chooser.get_filename());
+			opened_files.insert(file_chooser.get_filename(),page_num);
 
-			// 		status.refresh_statusbar(FileOpeartion.CLOSE_FILE,f_name);
-			// 		check_pages();
-			// 	}
-			// });
-
-			headerbar.set_title(file_chooser.get_file().get_basename());
-			// panel.next_page();
-			// opened_files.insert(file_chooser.get_filename(),
-			// 			panel.get_current_page());
-
-			// string f_name = opened_files.nth_data(panel.get_current_page());
-			// status.refresh_statusbar(FileOpeartion.OPEN_FILE,f_name);
-			// status.refresh_language(f_name);
+			string f_name = opened_files.nth_data(page_num);
+			status.refresh_statusbar(FileOpeartion.OPEN_FILE,f_name);
+			status.refresh_language(f_name);
 		}
 
 		file_chooser.destroy();
 	}
 
 	public void save_tab_to_file() {
-		// var page = panel.get_nth_page(panel.get_current_page()) 
-		// 	as ScrolledWindow;
-		// var view = page.get_child() as SourceView;
+		stdout.printf("Guardando!\n");
+		var current_doc = documents.visible_child as ScrolledWindow;
+		var view = current_doc.get_child() as SourceView;
 
-		// if (opened_files.nth_data(panel.get_current_page()) == untitled) {
-		// 	if (view.buffer.text == "") return;
+		var tab_label = tab_bar.get_current_page(current_doc);
+		int page_num = tab_bar.get_page_num(tab_label);
 
-		// 	var file_chooser = new FileChooserDialog("Save File", this,
-		// 		FileChooserAction.SAVE,
-		// 		"Cancel", ResponseType.CANCEL,
-		// 		"Save", ResponseType.ACCEPT
-		// 	);
+		if (headerbar.title == untitled) {
+			stdout.printf(untitled + "\n");
+			if (view.buffer.text == "") return;
+			stdout.printf("No vacio\n");
+			var file_chooser = new FileChooserDialog("Save File", this,
+				FileChooserAction.SAVE,
+				"Cancel", ResponseType.CANCEL,
+				"Save", ResponseType.ACCEPT
+			);
 
-		// 	var p_langs = new ProgrammingLanguages();
-		// 	string ext = p_langs.get_lang_ext(status.label.label);
-		// 	file_chooser.set_current_name(untitled + ext);
+			var p_langs = new ProgrammingLanguages();
+			string ext = p_langs.get_lang_ext(status.label.label);
+			file_chooser.set_current_name(untitled + ext);
 
-		// 	switch (file_chooser.run()) {
-		// 		default:
-		// 			break;
-		// 		case ResponseType.ACCEPT:
-		// 			var tab_label = panel.get_tab_label(page) as SimpleTab;
-		// 			tab_label.tab_title = 
-		// 				file_chooser.get_file().get_basename();
-		// 			headerbar.set_title(file_chooser.get_file().get_basename());
-		// 			save_file(view,file_chooser.get_filename());
+			switch (file_chooser.run()) {
+				default:
+					break;
+				case ResponseType.ACCEPT:
+					tab_label.tab_title = 
+						file_chooser.get_file().get_basename();
+					headerbar.set_title(file_chooser.get_filename());
+					save_file(view,file_chooser.get_filename());
+					tab_label.mark_title();
+					
+					opened_files.remove(opened_files.nth_data(page_num));
+					opened_files.insert(file_chooser.get_filename(),page_num);
 
-		// 			tab_label = new SimpleTab.from_file(
-		// 				file_chooser.get_file().get_basename(),
-		// 				file_chooser.get_filename());
-		// 			var tab_widget = tab_label.tab_widget;
+					status.refresh_language(
+						file_chooser.get_file().get_basename());
+					reset_changes(tab_label);
+					break;
+			}
 
-		// 			view = (tab_widget as ScrolledWindow).get_child() 
-		// 				as SourceView;
-		// 			view.key_release_event.connect(changes_done);
-
-		// 			int current_page = panel.get_current_page();
-		// 			panel.remove_page(current_page);
-		// 			panel.insert_page(tab_widget,tab_label,current_page);
-
-		// 			opened_files.remove(opened_files.nth_data(current_page));
-		// 			opened_files.insert(file_chooser.get_filename(),
-		// 				current_page);
-		// 			reset_changes(tab_label);
-		// 			break;
-		// 	}
-
-		// 	file_chooser.destroy();
-		// } else if (headerbar.title.contains("*")) {
-		// 	string file_name = opened_files.nth_data(panel.get_current_page());
-		// 	save_file(view,file_name);
-		// 	reset_changes(panel.get_tab_label(page) as SimpleTab);
-		// }
+			file_chooser.destroy();
+		} else if (headerbar.title.contains("*")) {
+			string file_name = opened_files.nth_data(page_num);
+			save_file(view,file_name);
+			reset_changes(tab_label);
+		}
 	}
 
 	private void save_as_cb() {
@@ -324,7 +283,7 @@ public class MainWindow : ApplicationWindow {
 	}
 
 	private void re_open_cb() {
-		// if (closed_files.length == 0) return;
+		if (closed_files.length == 0) return;
 
 		// string last_file_path = closed_files.data[closed_files.length - 1];
 		// string last_file_basename = 
@@ -335,22 +294,6 @@ public class MainWindow : ApplicationWindow {
 		// 	last_file_basename,
 		// 	last_file_path);
 		// var tab_widget = tab_label.tab_widget;
-		
-		// tab_label.close_clicked.connect((page) => {
-		// 	int page_n = panel.page_num(page);
-
-		// 	if (confirm_close(page_n)) {
-		// 		if (opened_files.nth_data(page_n) != untitled)
-		// 			closed_files.append_val(opened_files.nth_data(page_n));
-
-		// 		string f_name = opened_files.nth_data(page_n);
-		// 		opened_files.remove(opened_files.nth_data(page_n));
-		// 		panel.remove_page(page_n);
-
-		// 		status.refresh_statusbar(FileOpeartion.CLOSE_FILE,f_name);
-		// 		check_pages();
-		// 	}
-		// });
 		
 		// panel.append_page(tab_widget,tab_label);
 		// var view = (tab_widget as ScrolledWindow).get_child() as SourceView;
@@ -373,26 +316,24 @@ public class MainWindow : ApplicationWindow {
 	}
 
 	private void close_tab_cb() {
-		stdout.printf("Cerrando\n");
-		var current_page = tab_bar.get_current_page(documents.visible_child);
-		int page_num = tab_bar.get_page_num(current_page);
-		on_page_close(current_page,page_num);
+		SimpleTab current_page =
+			tab_bar.get_current_page(documents.visible_child);
+		if (confirm_close(current_page))
+			tab_bar.close_page(current_page);
 	}
 
-	private void on_page_close(SimpleTab tab, int page_num) {
-		if ((tab_bar.tab_num == 0) && confirm_close(page_num)) {
-			string f_name = opened_files.nth_data(page_num);
-			status.refresh_statusbar(FileOpeartion.CLOSE_FILE,f_name);
+	private void on_page_close(SimpleTab? tab, int page_num) {
+		string f_name = opened_files.nth_data(page_num);
+		status.refresh_statusbar(FileOpeartion.CLOSE_FILE,f_name);
 
-			if (opened_files.nth_data(page_num) != untitled)
-				closed_files.append_val(opened_files.nth_data(page_num));
-			
-			opened_files.remove(opened_files.nth_data(page_num));
-			tab_bar.close_page(tab);
-			// status.refresh_language(
-			// 	opened_files.nth_data(panel.get_current_page()));
-			check_pages();
-		}
+		if (f_name != untitled)
+			closed_files.append_val(f_name);
+		opened_files.remove(opened_files.nth_data(page_num));
+		status.refresh_language(opened_files.nth_data(page_num));
+		
+		tab.tab_widget.destroy();
+		tab.destroy();
+		check_pages();
 	}
 
 	private void toggle_lines_cb() {
@@ -410,55 +351,34 @@ public class MainWindow : ApplicationWindow {
 	}
 
 	private void check_pages() {
-		if (tab_bar.tab_num == 0)
+		if (opened_files.length() == 0)
 			headerbar.title = "Simple Text";
 	}
 
 	private bool changes_done(Gdk.EventKey event) {
-		// var page = panel.get_nth_page(panel.get_current_page()) 
-		// 	as ScrolledWindow;
-		// var view = page.get_child() as SourceView;
+		var page = documents.visible_child as ScrolledWindow;
+		var view = page.get_child() as SourceView;
 
-		// stdout.printf("%s\n",event.str);
-		
-		// if (event.str == "{")
-		// 	view.buffer.insert_at_cursor("}",1);
-		// else if (event.str == "(")
-		// 	view.buffer.insert_at_cursor(")",1);
-		// else if (event.str == "[")
-		// 	view.buffer.insert_at_cursor("]",1);
-		// else if (event.str == "<")
-		// 	view.buffer.insert_at_cursor(">",1);
-		// else if (event.str == "¿")
-		// 	view.buffer.insert_at_cursor("?",1);
-		// else if (event.str == "¡")
-		// 	view.buffer.insert_at_cursor("!",1);
-		// else if (event.str == "'")
-		// 	view.buffer.insert_at_cursor("'",1);
-		// else if (event.str == "\"")
-		// 	view.buffer.insert_at_cursor("\"",1);
+		if (view.buffer.get_modified()) {
+			var tab_label = tab_bar.get_current_page(page);
 
-		// if (view.buffer.get_modified()) {
-		// 	var tab_label = panel.get_tab_label(page) as SimpleTab;
+			if (!tab_label.tab_title.contains("*")){
+				tab_label.tab_title = "*" + tab_label.tab_title;
+				tab_label.mark_title();
+			}
 
-		// 	if (!headerbar.title.contains("*"))
-		// 		headerbar.title = "*" + headerbar.title;
-		// 	if (!tab_label.tab_title.contains("*"))
-		// 		tab_label.tab_title = "*" + tab_label.tab_title;
-			
-		// 	status.refresh_statusbar(FileOpeartion.EDIT_FILE,null);
-
-		// 	return false;
-		// }
+			status.refresh_statusbar(FileOpeartion.EDIT_FILE,null);
+			return false;
+		}
 		
 		return true;
 	}
 
 	private void reset_changes(SimpleTab tab_label) {
-		if (headerbar.title.contains("*"))
-			headerbar.title = headerbar.title.replace("*","");
-		if (tab_label.tab_title.contains("*"))
+		if (tab_label.tab_title.contains("*")) {
 			tab_label.tab_title = tab_label.tab_title.replace("*","");
+			tab_label.mark_title();
+		}
 	}
 
 	private void add_new_tab(SimpleTab tab_label) {
@@ -467,43 +387,22 @@ public class MainWindow : ApplicationWindow {
 			tab_label.tab_widget,tab_title,tab_label.tab_title);
 		tab_bar.add_page(tab_label,true);
 
-		tab_label.close_clicked.connect((tab_widget) => {
-			// int page = panel.page_num(tab_widget);
-
-			// if (confirm_close(page)) {
-			// 	if (opened_files.nth_data(page) != untitled)
-			// 		closed_files.append_val(opened_files.nth_data(page));
-
-			// 	string f_name = opened_files.nth_data(page);
-			// 	opened_files.remove(opened_files.nth_data(page));
-			// 	panel.remove_page(page);
-
-				// status.refresh_statusbar(FileOpeartion.CLOSE_FILE,f_name);
-				// check_pages();
-			// }
-		});
-	
-		// panel.append_page(tab_widget,tab_label);
-		// panel.set_current_page(panel.get_n_pages() - 1);
-
-		// var view = (tab_widget as ScrolledWindow).get_child() as SourceView;
-		// view.key_release_event.connect(changes_done);
-
-		// panel.set_show_tabs(panel.get_n_pages() != 1);
-		// panel.set_tab_reorderable(tab_widget,true);
-		// headerbar.set_title(untitled);
+		var view = 
+			(tab_label.tab_widget as ScrolledWindow).get_child() as SourceView;
+		view.key_release_event.connect(changes_done);
+		headerbar.set_title(untitled);
 	}
 
 	private void save_file(SourceView view,string filename) {
-		// try {
-		// 	FileUtils.set_contents(filename,view.buffer.text);
-		// 	view.buffer.set_modified(false);
+		try {
+			FileUtils.set_contents(filename,view.buffer.text);
+			view.buffer.set_modified(false);
 
-		// 	status.refresh_statusbar(FileOpeartion.SAVE_FILE,filename);
-		// 	status.refresh_language(filename);
-		// } catch (Error e) {
-		// 	stderr.printf ("Error: %s\n", e.message);
-		// }
+			status.refresh_statusbar(FileOpeartion.SAVE_FILE,filename);
+			status.refresh_language(filename);
+		} catch (Error e) {
+			stderr.printf ("Error: %s\n", e.message);
+		}
 	}
 
 	private void next_tab_cb() {
@@ -516,35 +415,35 @@ public class MainWindow : ApplicationWindow {
 		tab_bar.switch_page_prev(current_page);
 	}	
 
-	private bool confirm_close(int page) {
-		// if ((panel.get_tab_label(panel.get_nth_page(page)) 
-		// 	as SimpleTab).tab_title.contains("*")) {
-		// 	panel.page = page;
+	private bool confirm_close(SimpleTab? tab) {
+		if (tab == null) return false;
+		if (tab.tab_title.contains("*")) {
+			tab_bar.switch_page(tab);
 
-		// 	var confirmar = new ConfirmExit();
-		// 	confirmar.set_transient_for(this);
+			var confirmar = new ConfirmExit();
+			confirmar.set_transient_for(this);
 
-		// 	switch (confirmar.run()) {
-		// 		default:
-		// 		case ResponseType.CANCEL:
-		// 			confirmar.destroy();
-		// 			return false;
-		// 		case ResponseType.ACCEPT:
-		// 			break;
-		// 		case ResponseType.APPLY:
-		// 			save_tab_to_file();
-		// 			break;
-		// 	}
+			switch (confirmar.run()) {
+				default:
+				case ResponseType.CANCEL:
+					confirmar.destroy();
+					return false;
+				case ResponseType.ACCEPT:
+					break;
+				case ResponseType.APPLY:
+					save_tab_to_file();
+					break;
+			}
 
-		// 	confirmar.destroy();
-		// }
+			confirmar.destroy();
+		}
 
 		return true;
 	}
 
 	private void quit_cb() {
-		// while (panel.get_n_pages() != 0)
-		// 	close_tab_cb();
+		while (opened_files.length() != 0)
+			close_tab_cb();
 		this.destroy();
 	}
 }

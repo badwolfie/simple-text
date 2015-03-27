@@ -42,8 +42,9 @@ public class SimpleTabBar : Box {
 				extra_popup.show_all();
 		});
 
-		extra_popup = new Popover(extra_menu);
+		extra_popup = new Popover(extra_menu);		
 		pack_end(extra_menu,false,true,3);
+		extra_popup.width_request = 320;
 		extra_popup.add(extra_box);
 		
 		show_all();
@@ -62,7 +63,7 @@ public class SimpleTabBar : Box {
 			tab_num++;
 		} else {
 			extra_menu.show();
-			extra_box.pack_start(tab,true,true,5);
+			extra_box.pack_start(tab,false,true,5);
 			_extra_tabs.append(tab);
 			tab_extra_num++;
 		}
@@ -77,23 +78,30 @@ public class SimpleTabBar : Box {
 		}
 	}
 
-	private void switch_page(SimpleTab tab) {
+	public void switch_page(SimpleTab tab) {
+		if (_extra_tabs.index(tab) != -1)
+			extra_popup.show_all();
+		else
+			extra_popup.hide();
+
 		stack.set_visible_child(tab.tab_widget);
 		refresh_marked();
 		tab.mark_title();
 	}
 
-	public SimpleTab get_current_page(Widget current_doc) {
+	public SimpleTab? get_current_page(Widget? current_doc) {
 		SimpleTab? current_tab = null;
-		for (int i = 0; i < _tabs.length(); i++) {
-			if (_tabs.nth_data(i).tab_widget == current_doc)
-				current_tab = _tabs.nth_data(i);
-		}
+		if (current_doc != null) {
+			for (int i = 0; i < _tabs.length(); i++) {
+				if (_tabs.nth_data(i).tab_widget == current_doc)
+					current_tab = _tabs.nth_data(i);
+			}
 
-		if (current_tab == null) {
-			for (int i = 0; i < _extra_tabs.length(); i++) {
-				if (_extra_tabs.nth_data(i).tab_widget == current_doc)
-					current_tab = _extra_tabs.nth_data(i);
+			if (current_tab == null) {
+				for (int i = 0; i < _extra_tabs.length(); i++) {
+					if (_extra_tabs.nth_data(i).tab_widget == current_doc)
+						current_tab = _extra_tabs.nth_data(i);
+				}
 			}
 		}
 
@@ -144,30 +152,31 @@ public class SimpleTabBar : Box {
 		}
 	}
 
-	public void close_page(SimpleTab tab) {
-		if (_tabs.index(tab) != -1) {
-			_tabs.remove(tab);
-			tab_num--;
+	public void close_page(SimpleTab? tab) {
+		int page_num = -1;
+		if (tab != null) {
+			page_num = get_page_num(tab);
+			if (_tabs.index(tab) != -1) {
+				_tabs.remove(tab);
+				tab_num--;
 
-			if (tab_extra_num > 0) {
-				var aux_tab = _extra_tabs.first().data;
-				extra_box.remove(aux_tab);
-				add_page(aux_tab,false);
+				if (tab_extra_num > 0) {
+					var aux_tab = _extra_tabs.first().data;
+					extra_box.remove(aux_tab);
+					add_page(aux_tab,false);
 
-				_extra_tabs.remove(aux_tab);
-				tab_extra_num--;	
+					_extra_tabs.remove(aux_tab);
+					tab_extra_num--;	
+				}
+			} else if (_extra_tabs.index(tab) != -1) {
+				_extra_tabs.remove(tab);
+				tab_extra_num--;
 			}
-		} else if (_extra_tabs.index(tab) != -1) {
-			_extra_tabs.remove(tab);
-			tab_extra_num--;
 		}
 
 		if ((tab_extra_num == 0) && (tab_num <= 5))
 			extra_menu.hide();
-		
-		// page_closed(tab,get_page_num(tab));
-		tab.tab_widget.destroy();
-		tab.destroy();
+		page_closed(tab,page_num);
 	}
 
 	private void refresh_marked() {
