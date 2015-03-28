@@ -2,6 +2,7 @@ using Gtk;
 
 public class SimpleTabBar : Box {
 	public signal void page_closed(SimpleTab tab, int page_num);
+	public signal void page_switched(SimpleTab tab);
 
 	private int tab_extra_num = 0;
 	public int tab_num = 0;
@@ -87,6 +88,8 @@ public class SimpleTabBar : Box {
 		stack.set_visible_child(tab.tab_widget);
 		refresh_marked();
 		tab.mark_title();
+
+		page_switched(tab);
 	}
 
 	public SimpleTab? get_current_page(Widget? current_doc) {

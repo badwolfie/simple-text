@@ -1,6 +1,7 @@
 using Gtk;
 
 public enum FileOpeartion {
+	NULL_OPERATION,
 	NEW_FILE,
 	OPEN_FILE,
 	EDIT_FILE,
@@ -55,45 +56,32 @@ public class SimpleStatusbar : Box {
 		status.pop(context_id);
 
 		switch (operation) {
+			case FileOpeartion.NULL_OPERATION:
+				status.push(context_id,"");
+				break;
 			case FileOpeartion.NEW_FILE:
-				status.push(
-					context_id,
-					"New file");
+				status.push(context_id,"New file");
 				break;
 			case FileOpeartion.OPEN_FILE:
-				status.push(
-					context_id,
-					"Opened " + file_name);
+				status.push(context_id,"Opened " + file_name);
 				break;
 			case FileOpeartion.EDIT_FILE:
-				status.push(
-					context_id,
-					"Editing...");
+				status.push(context_id,"Editing...");
 				break;
 			case FileOpeartion.SAVE_FILE:
-				status.push(
-					context_id,
-					"Saved " + file_name);
+				status.push(context_id,"Saved " + file_name);
 				break;
 			case FileOpeartion.CLOSE_FILE:
-				status.push(
-					context_id,
-					"Closed " + file_name);
+				status.push(context_id,"Closed " + file_name);
 				break;
 			case FileOpeartion.BUILD_FILE:
-				status.push(
-					context_id,
-					"Building...");
+				status.push(context_id,"Building...");
 				break;
 			case FileOpeartion.BUILD_DONE:
-				status.push(
-					context_id,
-					"Building... Done");
+				status.push(context_id,"Building... Done");
 				break;
 			case FileOpeartion.BUILD_FAIL:
-				status.push(
-					context_id,
-					"Building... Failed");
+				status.push(context_id,"Building... Failed");
 				break;
 		}
 	}

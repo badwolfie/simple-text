@@ -72,7 +72,7 @@ public class SimpleTextEditor : Gtk.Application {
 			"program-name", ("Simple Text"),
 			"title","About Simple Text",
 			"copyright", ("\xc2\xa9 2015 Ian Hernández"),
-			"comments",("A very simple text editor."),
+			"comments",("A very simple text editor written in Vala."),
 			"license-type", Gtk.License.GPL_2_0,
 			"logo-icon-name", "text-editor",
 			"documenters", documenters,

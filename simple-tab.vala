@@ -121,4 +121,8 @@ public class SimpleTab : Box {
 		title_label.use_markup = true;
 		title_label.label = "<b>" + tab_title + "</b>";
 	}
+
+	public void change_language(string language) {
+		_text_view.change_language(language);
+	}
 }

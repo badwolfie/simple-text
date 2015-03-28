@@ -101,15 +101,17 @@ public class MainWindow : ApplicationWindow {
 
 		documents = new Stack();
 		documents.set_transition_type(StackTransitionType.OVER_LEFT_RIGHT);
-		documents.set_transition_duration(300);
+		documents.set_transition_duration(250);
 		documents.show();
 
 		tab_bar = new SimpleTabBar();
 		tab_bar.set_stack(documents);
+		tab_bar.page_switched.connect(on_page_switched);
 		tab_bar.page_closed.connect(on_page_close);
 		tab_bar.show();
 
 		status = new SimpleStatusbar(this);
+		status.change_syntax_request.connect(change_syntax_cb);
 		status.show();
 
 		var vbox = new Box(Orientation.VERTICAL,0);
@@ -121,6 +123,18 @@ public class MainWindow : ApplicationWindow {
 
 		new_tab_cb();
 		add(vbox);
+	}
+
+	private void on_page_switched(SimpleTab tab) {
+		int page_num = tab_bar.get_page_num(tab);
+		headerbar.title = opened_files.nth_data(page_num);
+		
+		status.refresh_statusbar(FileOpeartion.NULL_OPERATION,null);
+		status.refresh_language(headerbar.title);
+	}
+
+	private void change_syntax_cb() {
+		; /*****************************************/
 	}
 
 	public void add_new_tab_from_file() {
@@ -186,8 +200,7 @@ public class MainWindow : ApplicationWindow {
 					opened_files.remove(opened_files.nth_data(page_num));
 					opened_files.insert(file_chooser.get_filename(),page_num);
 
-					status.refresh_language(
-						file_chooser.get_file().get_basename());
+					status.refresh_language(file_chooser.get_filename());
 					reset_changes(tab_label);
 					break;
 			}
