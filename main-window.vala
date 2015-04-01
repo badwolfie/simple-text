@@ -344,6 +344,9 @@ public class MainWindow : ApplicationWindow {
 		opened_files.remove(opened_files.nth_data(page_num));
 		status.refresh_language(opened_files.nth_data(page_num));
 		
+		tab_bar.switch_page_next(tab);
+		// tab_bar.get_current_page(documents.visible_child).mark_title;
+
 		tab.tab_widget.destroy();
 		tab.destroy();
 		check_pages();
