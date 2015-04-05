@@ -3,14 +3,22 @@ using Gee;
 public class ProgrammingLanguages {
 	private HashMap<string,string> lang_ids;
 	private HashMap<string,string> lang_names;
+	private HashMap<string,string> lang_id_names;
 	private HashMap<string,string> lang_ext;
 	private Array<string> buildables;
+
+	private GLib.List<string> _languages;
+	public GLib.List<string> languages {
+		get { return _languages; }
+	}
 
 	public ProgrammingLanguages() {
 		lang_ids = new HashMap<string,string>();
 		lang_names = new HashMap<string,string>();
+		lang_id_names = new HashMap<string,string>();
 		lang_ext = new HashMap<string,string>();
 		buildables = new Array<string>();
+		_languages = new GLib.List<string>();
 		setup_languages();
 	}
 
@@ -64,7 +72,7 @@ public class ProgrammingLanguages {
 		lang_names.set("cs","C#");
 		lang_names.set("bib","Bibtex");
 		lang_names.set("css","CSS");
-		lang_names.set("desktop","Desktop");
+		lang_names.set("desktop","Desktop launcher");
 		lang_names.set("js","Javascript");
 		lang_names.set("json","JSon");
 		lang_names.set("lex","Lex");
@@ -83,9 +91,41 @@ public class ProgrammingLanguages {
 		lang_names.set("ui","Glade UI");
 
 
+		lang_id_names.set("C","c");
+		lang_id_names.set("C/C++ header file","cpp");
+		lang_id_names.set("C++","cpp");
+		lang_id_names.set("Shell script","sh");
+		lang_id_names.set("Perl","perl");
+		lang_id_names.set("PHP","php");
+		lang_id_names.set("XML","xml");
+		lang_id_names.set("Glade UI","xml");
+		lang_id_names.set("LaTeX","latex");
+		lang_id_names.set("Python","python");
+		lang_id_names.set("Java","java");
+		lang_id_names.set("HTML","html");
+		lang_id_names.set("C#","c-sharp");
+		lang_id_names.set("Bibtex","bibtex");
+		lang_id_names.set("CSS","css");
+		lang_id_names.set("Desktop launcher","desktop");
+		lang_id_names.set("Javascript","js");
+		lang_id_names.set("JSon","json");
+		lang_id_names.set("Lex","lex");
+		lang_id_names.set("Flex","lex");
+		lang_id_names.set("Makefile","makefile");
+		lang_id_names.set("Markdown","markdown");
+		lang_id_names.set("MatLab","matlab");
+		lang_id_names.set("Ruby","ruby");
+		lang_id_names.set("SQL","sql");
+		lang_id_names.set("Vala","vala");
+		lang_id_names.set("Vapi","vala");
+		lang_id_names.set("VHDL","vhdl");
+		lang_id_names.set("XSLT","xslt");
+		lang_id_names.set("Bison","yacc");
+		lang_id_names.set("YAAC","yacc");
+
+
 		lang_ext.set("C",".c");
 		lang_ext.set("C/C++ header file",".h");
-		lang_ext.set("C++",".cc");
 		lang_ext.set("C++",".cpp");
 		lang_ext.set("Shell script",".sh");
 		lang_ext.set("Perl",".pl");
@@ -98,7 +138,7 @@ public class ProgrammingLanguages {
 		lang_ext.set("C#",".cs");
 		lang_ext.set("Bibtex",".bib");
 		lang_ext.set("CSS",".css");
-		lang_ext.set("Desktop",".desktop");
+		lang_ext.set("Desktop launcher",".desktop");
 		lang_ext.set("Javascript",".js");
 		lang_ext.set("JSon",".json");
 		lang_ext.set("Lex",".lex");
@@ -129,6 +169,39 @@ public class ProgrammingLanguages {
 		buildables.append_val("VHDL");
 		buildables.append_val("Bison");
 		buildables.append_val("YAAC");
+
+
+		_languages.append("Bibtex");
+		_languages.append("Bison");
+		_languages.append("C");
+		_languages.append("C++");
+		_languages.append("C#");
+		_languages.append("C/C++ header file");
+		_languages.append("CSS");
+		_languages.append("Desktop launcher");
+		_languages.append("Flex");
+		_languages.append("Glade UI");
+		_languages.append("HTML");
+		_languages.append("Java");
+		_languages.append("Javascript");
+		_languages.append("JSon");
+		_languages.append("LaTeX");
+		_languages.append("Lex");
+		_languages.append("Makefile");
+		_languages.append("Markdown");
+		_languages.append("MatLab");
+		_languages.append("Perl");
+		_languages.append("PHP");
+		_languages.append("Python");
+		_languages.append("Shell script");
+		_languages.append("Ruby");
+		_languages.append("SQL");
+		_languages.append("Vala");
+		_languages.append("Vapi");
+		_languages.append("VHDL");
+		_languages.append("XML");
+		_languages.append("XSLT");
+		_languages.append("YAAC");
 	}
 
 	private string get_file_extension(string filename) {
@@ -142,6 +215,10 @@ public class ProgrammingLanguages {
 	public string get_lang_id(string filename) {
 		return lang_ids[get_file_extension(filename)];
 	}
+
+	public string get_lang_id_from_name(string language) {
+		return lang_id_names[language];
+	}	
 
 	public string get_lang_name(string filename) {
 		return lang_names[get_file_extension(filename)];

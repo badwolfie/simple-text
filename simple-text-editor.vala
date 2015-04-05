@@ -35,6 +35,9 @@ public class SimpleTextEditor : Gtk.Application {
 		const string[] accels_save_as = {"<control><shift>S",null};
 		set_accels_for_action("win.save_as",accels_save_as);
 
+		const string[] accels_set_syntax = {"<control><shift>P",null};
+		set_accels_for_action("win.set_syntax",accels_set_syntax);
+
 		const string[] accels_next_tab = {"<control>Tab",null};
 		set_accels_for_action("win.next_tab",accels_next_tab);
 

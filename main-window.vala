@@ -25,7 +25,7 @@ public class MainWindow : ApplicationWindow {
 		window_position = WindowPosition.CENTER;
 		set_default_size(1000,700);
 		border_width = 0;
-		// maximize();
+		maximize();
 
 		create_widgets();
 	}
@@ -57,6 +57,10 @@ public class MainWindow : ApplicationWindow {
 		var action_close_tab = new SimpleAction("close_tab",null);
 		action_close_tab.activate.connect(close_tab_cb);
 		add_action(action_close_tab);
+
+		var action_set_syntax = new SimpleAction("set_syntax",null);
+		action_set_syntax.activate.connect(set_syntax_cb);
+		add_action(action_set_syntax);
 
 		var action_search_mode = new SimpleAction("search_mode",null);
 		action_search_mode.activate.connect(search_mode_cb);
@@ -133,8 +137,16 @@ public class MainWindow : ApplicationWindow {
 		status.refresh_language(headerbar.title);
 	}
 
-	private void change_syntax_cb() {
-		; /*****************************************/
+	private void change_syntax_cb(string language) {
+		var current_page = tab_bar.get_current_page(documents.visible_child);
+		var p_langs = new ProgrammingLanguages();
+
+		string lang_id = p_langs.get_lang_id_from_name(language);
+		current_page.text_view.change_language(lang_id);
+	}
+
+	private void set_syntax_cb() {
+		status.toggle_picker();
 	}
 
 	public void add_new_tab_from_file() {
@@ -166,7 +178,6 @@ public class MainWindow : ApplicationWindow {
 	}
 
 	public void save_tab_to_file() {
-		stdout.printf("Guardando!\n");
 		var current_doc = documents.visible_child as ScrolledWindow;
 		var view = current_doc.get_child() as SourceView;
 
@@ -174,9 +185,7 @@ public class MainWindow : ApplicationWindow {
 		int page_num = tab_bar.get_page_num(tab_label);
 
 		if (headerbar.title == untitled) {
-			stdout.printf(untitled + "\n");
 			if (view.buffer.text == "") return;
-			stdout.printf("No vacio\n");
 			var file_chooser = new FileChooserDialog("Save File", this,
 				FileChooserAction.SAVE,
 				"Cancel", ResponseType.CANCEL,
@@ -214,44 +223,41 @@ public class MainWindow : ApplicationWindow {
 	}
 
 	private void save_as_cb() {
-		// string filename = opened_files.nth_data(panel.get_current_page());
-		// if ((filename == untitled) || (filename == ("*" + untitled))) return;
+		var current_page = tab_bar.get_current_page(documents.visible_child);
+		string filename =
+			opened_files.nth_data(tab_bar.get_page_num(current_page));
+		int page_num = tab_bar.get_page_num(current_page);
+		var view = current_page.text_view as SourceView;
 
-		// var page = panel.get_nth_page(panel.get_current_page()) 
-		// 	as ScrolledWindow;
-		// var view = page.get_child() as SourceView;
+		if ((filename == untitled) && (view.buffer.text == "")) return;
 
-		// var file_chooser = new FileChooserDialog("Save File", this,
-		// 	FileChooserAction.SAVE,
-		// 	"Cancel", ResponseType.CANCEL,
-		// 	"Save", ResponseType.ACCEPT
-		// );
+		var file_chooser = new FileChooserDialog("Save File", this,
+			FileChooserAction.SAVE,
+			"Cancel", ResponseType.CANCEL,
+			"Save", ResponseType.ACCEPT
+		);
 
-		// int index = filename.last_index_of("/");
-		// file_chooser.set_current_name(filename.substring(index + 1));
+		int index = filename.last_index_of("/");
+		file_chooser.set_current_name(filename.substring(index + 1));
 
-		// switch (file_chooser.run()) {
-		// 	case ResponseType.ACCEPT:
-		// 		var tab_label = panel.get_tab_label(page) as SimpleTab;
-		// 		tab_label.tab_title = file_chooser.get_file().get_basename();
-		// 		headerbar.set_title(file_chooser.get_file().get_basename());
-		// 		save_file(view,file_chooser.get_filename());
+		switch (file_chooser.run()) {
+			case ResponseType.ACCEPT:
+				current_page.tab_title = file_chooser.get_file().get_basename();
+				headerbar.set_title(file_chooser.get_filename());
+				save_file(view,file_chooser.get_filename());
+				current_page.mark_title();
 
-		// 		tab_label = new SimpleTab.from_file(
-		// 			file_chooser.get_file().get_basename(),
-		// 			file_chooser.get_filename());
+				opened_files.remove(opened_files.nth_data(page_num));
+				opened_files.insert(file_chooser.get_filename(),page_num);
 
-		// 		opened_files.remove(
-		// 			opened_files.nth_data(panel.get_current_page()));
-		// 		opened_files.insert(file_chooser.get_filename(),
-		// 			panel.get_current_page());
-		// 		reset_changes(tab_label);
-		// 		break;
-		// 	default:
-		// 		break;
-		// }
+				status.refresh_language(file_chooser.get_filename());
+				reset_changes(current_page);
+				break;
+			default:
+				break;
+		}
 
-		// file_chooser.destroy();
+		file_chooser.destroy();
 	}
 
 	public void new_tab_cb() {
@@ -298,10 +304,10 @@ public class MainWindow : ApplicationWindow {
 	private void re_open_cb() {
 		if (closed_files.length == 0) return;
 
-		// string last_file_path = closed_files.data[closed_files.length - 1];
-		// string last_file_basename = 
-		// 	File.new_for_path(last_file_path).get_basename();
-		// closed_files.remove_index(closed_files.length - 1);
+		string last_file_path = closed_files.data[closed_files.length - 1];
+		string last_file_basename = 
+			File.new_for_path(last_file_path).get_basename();
+		closed_files.remove_index(closed_files.length - 1);
 
 		// var tab_label = new SimpleTab.from_file(
 		// 	last_file_basename,
@@ -345,11 +351,11 @@ public class MainWindow : ApplicationWindow {
 		status.refresh_language(opened_files.nth_data(page_num));
 		
 		tab_bar.switch_page_next(tab);
-		// tab_bar.get_current_page(documents.visible_child).mark_title;
-
 		tab.tab_widget.destroy();
 		tab.destroy();
 		check_pages();
+
+		tab_bar.get_current_page(documents.visible_child).mark_title();
 	}
 
 	private void toggle_lines_cb() {

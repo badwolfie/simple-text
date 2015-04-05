@@ -2,7 +2,7 @@ using Gtk;
 
 public class ConfirmExit : Dialog {
 	public ConfirmExit() {
-		title = "Confirmar operación";
+		title = "Confirm operation";
 		border_width = 10;
 		create_widgets();
 	}

@@ -40,6 +40,11 @@
         <attribute name="accel">&lt;Primary&gt;l</attribute>
       </item>
       <item>
+        <attribute name="label" translatable="yes">Set syntax...</attribute>
+        <attribute name="action">win.set_syntax</attribute>
+        <attribute name="accel">&lt;Primary&gt;&lt;Shift&gt;p</attribute>
+      </item>
+      <item>
         <attribute name="label" translatable="yes">Search...</attribute>
         <attribute name="action">win.search_mode</attribute>
         <attribute name="accel">&lt;Primary&gt;f</attribute>

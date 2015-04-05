@@ -13,8 +13,9 @@ public enum FileOpeartion {
 }
 
 public class SimpleStatusbar : Box {
-	public signal void change_syntax_request();
+	public signal void change_syntax_request(string language);
 
+	private SimpleLanguagePicker lang_picker;
 	private MainWindow parent_window;
 	private EventBox evt_box;
 	private Label _label;
@@ -47,6 +48,9 @@ public class SimpleStatusbar : Box {
 		evt_box.set_above_child(true);
 		evt_box.button_press_event.connect(on_label_pressed);
 		evt_box.show();
+
+		lang_picker = new SimpleLanguagePicker(_label);
+		lang_picker.language_selected.connect(change_syntax);
 
 		this.pack_start(status,false,true,0);
 		this.pack_end(evt_box,false,true,15);
@@ -96,8 +100,20 @@ public class SimpleStatusbar : Box {
 		}
 	}
 
+	public void toggle_picker() {
+		if (lang_picker.get_visible())
+			lang_picker.hide();
+		else 
+			lang_picker.show_all();
+	}
+
 	private bool on_label_pressed(Gdk.EventButton evt) {
-		change_syntax_request();
+		toggle_picker();
 		return true;
+	}
+
+	private void change_syntax(string language) {
+		_label.label = language;
+		change_syntax_request(language);
 	}
 }

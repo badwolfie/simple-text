@@ -66,9 +66,18 @@ public class SimpleSourceView : SourceView {
 		var source_lang = lang_manager.get_language(language);
 		var buff = new SourceBuffer.with_language(source_lang);
 
+		var scheme_manager = SourceStyleSchemeManager.get_default();
+		scheme_manager.append_search_path("./style_schemes");
+		var source_scheme = scheme_manager.get_scheme("monokai-extended");
+
+		buff.highlight_matching_brackets = true;
+		buff.style_scheme = source_scheme;
+		buff.highlight_syntax = true;
+
 		buff.text = this.buffer.text;
 		this.buffer = buff;
 
+		set_properties();
 		this.buffer.set_modified(false);
 	}
 }
