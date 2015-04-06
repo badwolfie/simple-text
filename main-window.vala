@@ -309,25 +309,21 @@ public class MainWindow : ApplicationWindow {
 			File.new_for_path(last_file_path).get_basename();
 		closed_files.remove_index(closed_files.length - 1);
 
-		// var tab_label = new SimpleTab.from_file(
-		// 	last_file_basename,
-		// 	last_file_path);
-		// var tab_widget = tab_label.tab_widget;
+		var tab_label = new SimpleTab.from_file(
+			last_file_basename,
+			last_file_path);
+		add_new_tab(tab_label);
 		
-		// panel.append_page(tab_widget,tab_label);
-		// var view = (tab_widget as ScrolledWindow).get_child() as SourceView;
-		// view.key_release_event.connect(changes_done);
+		var current_page = tab_bar.get_current_page(
+			documents.visible_child);
+		int page_num = tab_bar.get_page_num(current_page);
 
-		// panel.set_show_tabs(panel.get_n_pages() != 1);
-		// panel.set_tab_reorderable(tab_widget,true);
-		// headerbar.set_title(last_file_basename);
-		
-		// panel.next_page();
-		// opened_files.insert(last_file_path,panel.get_current_page());
+		headerbar.set_title(last_file_basename);
+		opened_files.insert(last_file_basename,page_num);
 
-		// string f_name = opened_files.nth_data(panel.get_current_page());
-		// status.refresh_statusbar(FileOpeartion.OPEN_FILE,f_name);
-		// status.refresh_language(f_name);
+		string f_name = opened_files.nth_data(page_num);
+		status.refresh_statusbar(FileOpeartion.OPEN_FILE,f_name);
+		status.refresh_language(f_name);
 	}
 
 	private void search_mode_cb() {

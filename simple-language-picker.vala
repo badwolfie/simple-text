@@ -9,10 +9,8 @@ public class SimpleLanguagePicker : Popover {
 
 	private SearchEntry search_entry;
 	private EntryCompletion completion;
-	// private SearchBar search_bar;
 	
 	private ListStore list_store;
-	// private CellRendererText cell;
 	private TreeIter iter;
 
 	public SimpleLanguagePicker(Widget parent) {
@@ -26,15 +24,11 @@ public class SimpleLanguagePicker : Popover {
 
 	private void create_widgets() {
 		plangs = new ProgrammingLanguages();
-		// search_bar = 
 
 		search_entry = new SearchEntry();
 		search_entry.placeholder_text = "Choose your language";
 		search_entry.set_width_chars(35);
 		search_entry.show();
-
-		// search_bar = new SearchBar();
-		// search_bar.se
 		
 		completion = new EntryCompletion();
 		search_entry.set_completion(completion);
@@ -74,6 +68,12 @@ public class SimpleLanguagePicker : Popover {
 
 			vbox.pack_start(separator,true,true,0);
 			vbox.pack_start(evt_box,true,true,7);
+		});
+
+		search_entry.activate.connect(() => {
+			language_selected(search_entry.text);
+			search_entry.text = "";
+			this.hide();
 		});
 	}
 }
