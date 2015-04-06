@@ -270,8 +270,8 @@ public class MainWindow : ApplicationWindow {
 	}
 
 	public void build_code() {
-		// save_tab_to_file();
-		// status.refresh_statusbar(FileOpeartion.BUILD_FILE,null);
+		save_tab_to_file();
+		status.refresh_statusbar(FileOpeartion.BUILD_FILE,null);
 		// string file_name = opened_files.nth_data(panel.get_current_page());
 		// int index = file_name.last_index_of("/");
 		// string directory = file_name.substring(0,index);
