@@ -56,6 +56,13 @@ public class SimpleStatusbar : Box {
 		this.pack_end(evt_box,false,true,15);
 	}
 
+	public void toggle_picker() {
+		if (lang_picker.get_visible())
+			lang_picker.hide();
+		else 
+			lang_picker.show_all();
+	}
+
 	public void refresh_statusbar(FileOpeartion operation, string? file_name) {
 		status.pop(context_id);
 
@@ -100,15 +107,11 @@ public class SimpleStatusbar : Box {
 		}
 	}
 
-	public void toggle_picker() {
+	private bool on_label_pressed(Gdk.EventButton evt) {
 		if (lang_picker.get_visible())
 			lang_picker.hide();
 		else 
 			lang_picker.show_all();
-	}
-
-	private bool on_label_pressed(Gdk.EventButton evt) {
-		toggle_picker();
 		return true;
 	}
 

@@ -1,17 +1,33 @@
 OUTPUT = simple-text
-SOURCES = *.vala
+SOURCES = src/*.vala
 OPTIONS = --pkg gtk+-3.0 --pkg gtksourceview-3.0 --pkg gee-0.8 --pkg posix
 
-all: $(OUTPUT) run
+INSTALL_FOLDER=/opt/Simple-text
+LAUNCHER_FOLDER=/usr/share/applications
+EXEC_FOLDER=/usr/bin
+
+all: $(OUTPUT)
 
 $(OUTPUT): $(SOURCES)
 	valac -o $(OUTPUT) $(OPTIONS) $(SOURCES)
 
-ccode: $(SOURCES)
-	valac -C $(OPTIONS) $(SOURCES)
+install:
+	-mkdir $(INSTALL_FOLDER)
+	cp -r style_schemes $(INSTALL_FOLDER)
+	cp -r resources $(INSTALL_FOLDER)
+	cp $(OUTPUT) $(INSTALL_FOLDER)
+	cp LICENSE $(INSTALL_FOLDER)
 
-clean:
-	rm $(OUTPUT)
+	cp $(OUTPUT).desktop $(LAUNCHER_FOLDER)
+	chmod +x $(LAUNCHER_FOLDER)/$(OUTPUT).desktop
+	
+	ln -s $(INSTALL_FOLDER)/$(OUTPUT) $(EXEC_FOLDER)/$(OUTPUT)
+
+uninstall:
+	rm -rf $(INSTALL_FOLDER) $(LAUNCHER_FOLDER)/$(OUTPUT).desktop $(EXEC_FOLDER)/$(OUTPUT)
 
 run:
 	./$(OUTPUT)
+
+clean:
+	$(RM) $(OUTPUT)

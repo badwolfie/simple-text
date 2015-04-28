@@ -31,7 +31,7 @@ public class SimpleHeaderBar : HeaderBar {
 	private void create_widgets() {
 		var builder = new Builder();
 		try {
-			builder.add_from_file("menu.ui");
+			builder.add_from_file("resources/menu.ui");
 		} catch (Error e) {
 			error("Error loading menu UI: %s",e.message);
 		}
@@ -41,7 +41,7 @@ public class SimpleHeaderBar : HeaderBar {
 		
 		menu_b.menu_model = builder.get_object("window-menu") as MenuModel;
 		menu_b.relief = Gtk.ReliefStyle.NONE;
-		menu_b.use_popover = false;
+		menu_b.use_popover = true;
 		menu_b.show_all();
 
 		abrir = new Button.with_label("Open");

@@ -53,10 +53,13 @@ public class SimpleSourceView : SourceView {
 	}
 
 	private void set_properties() {
-		override_font(Pango.FontDescription.from_string("Liberation Mono 12"));
+		override_font(Pango.FontDescription.from_string("Monospace 12"));
+		// set_background_pattern(SourceBackgroundPatternType.GRID);
 		smart_home_end = SourceSmartHomeEndType.BEFORE;
 		wrap_mode = WrapMode.NONE;
 		show_line_numbers = true;
+		right_margin_position = 80;
+		show_right_margin = true;
 		auto_indent = true;
 		tab_width = 4;
 	}

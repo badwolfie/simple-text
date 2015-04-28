@@ -7,12 +7,14 @@
         <attribute name="action">app.about</attribute>
         <attribute name="accel">F1</attribute>
       </item>
+
       <item>
         <attribute name="label" translatable="yes">Quit</attribute>
         <attribute name="action">app.quit</attribute>
       </item>
     </section>
   </menu>
+
   <menu id="window-menu">
     <section>
       <item>
@@ -21,47 +23,56 @@
         <attribute name="accel">&lt;Primary&gt;&lt;Shift&gt;s</attribute>
       </item>
       </section>
-      <section>
-        <item>
-          <attribute name="label" translatable="yes">Next tab</attribute>
-          <attribute name="action">win.next_tab</attribute>
-          <attribute name="accel">&lt;Primary&gt;Tab</attribute>
-        </item>
-        <item>
-          <attribute name="label" translatable="yes">Previous tab</attribute>
-          <attribute name="action">win.prev_tab</attribute>
-          <attribute name="accel">&lt;Primary&gt;&lt;Shift&gt;Tab</attribute>
-        </item>
-      </section>
+
       <section>
       <item>
         <attribute name="label" translatable="yes">Toggle line numbers</attribute>
         <attribute name="action">win.toggle_lines</attribute>
         <attribute name="accel">&lt;Primary&gt;l</attribute>
       </item>
+
       <item>
         <attribute name="label" translatable="yes">Set syntax...</attribute>
         <attribute name="action">win.set_syntax</attribute>
         <attribute name="accel">&lt;Primary&gt;&lt;Shift&gt;p</attribute>
       </item>
+
       <item>
         <attribute name="label" translatable="yes">Search...</attribute>
         <attribute name="action">win.search_mode</attribute>
         <attribute name="accel">&lt;Primary&gt;f</attribute>
       </item>
       </section>
+
       <section>
+      <item>
+        <attribute name="label" translatable="yes">Next tab</attribute>
+
+        <attribute name="action">win.next_tab</attribute>
+
+        <attribute name="accel">&lt;Primary&gt;Tab</attribute>
+      </item>
+
+      <item>
+        <attribute name="label" translatable="yes">Previous tab</attribute>
+
+        <attribute name="action">win.prev_tab</attribute>
+
+        <attribute name="accel">&lt;Primary&gt;&lt;Shift&gt;Tab</attribute>
+      </item>
       <item>
         <attribute name="label" translatable="yes">Close current tab</attribute>
         <attribute name="action">win.close_tab</attribute>
         <attribute name="accel">&lt;Primary&gt;w</attribute>
       </item>
+
       <item>
         <attribute name="label" translatable="yes">Reopen last tab</attribute>
         <attribute name="action">win.re_open</attribute>
         <attribute name="accel">&lt;Primary&gt;&lt;Shift&gt;t</attribute>
       </item>
       </section>
+
       <section>
       <item>
         <attribute name="label" translatable="yes">Quit</attribute>

@@ -21,7 +21,7 @@ public class SimpleTextEditor : Gtk.Application {
 
 		var builder = new Gtk.Builder();
 		try {
-			builder.add_from_file("menu.ui");
+			builder.add_from_file("resources/menu.ui");
 		} catch (Error e) {
 			error("Error loading menu UI: %s",e.message);
 		}
@@ -71,16 +71,25 @@ public class SimpleTextEditor : Gtk.Application {
 
         string[] documenters = { "Ian Hernández" };
 
+        string license = null;
+        try {
+        	FileUtils.get_contents("resources/LICENSE_HEADER", out license);
+        } catch (Error e) {
+        	stderr.printf("Error: %s\n", e.message);
+        }
+
         Gtk.show_about_dialog(ventana,
 			"program-name", ("Simple Text"),
-			"title","About Simple Text",
-			"copyright", ("\xc2\xa9 2015 Ian Hernández"),
-			"comments",("A very simple text editor written in Vala."),
-			"license-type", Gtk.License.GPL_2_0,
-			"logo-icon-name", "text-editor",
+			"title", ("About Simple Text"),
+			"copyright", ("Copyright \xc2\xa9 2015 Ian Hernández"),
+			"comments", ("A very simple text editor written in Vala."),
+			"website",("https://github.com/BadWolfie/simple-text"),
+			"website_label",("Web page"),
+			"license", (license),
+			"logo-icon-name", ("text-editor"),
 			"documenters", documenters,
 			"authors", authors,
-			"version", "0.9"
+			"version", ("0.9")
 		);
 	}
 

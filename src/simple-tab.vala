@@ -65,7 +65,8 @@ public class SimpleTab : Box {
 
 		title_label = new Label(tab_title);
 		separator = new Separator(Orientation.VERTICAL);
-		close_button = new Button.from_icon_name("gtk-close",IconSize.MENU);
+		close_button = new Button.from_icon_name("window-close-symbolic",
+												 IconSize.MENU);
 		close_button.clicked.connect(button_clicked);
 		
 		evt_box = new EventBox();

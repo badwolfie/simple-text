@@ -22,7 +22,7 @@ public class MainWindow : ApplicationWindow {
 		opened_files = new List<string>();
 		closed_files = new Array<string>();
 
-		window_position = WindowPosition.CENTER;
+		window_position = WindowPosition.CENTER_ALWAYS;
 		set_default_size(1000,700);
 		border_width = 0;
 		maximize();
@@ -175,6 +175,7 @@ public class MainWindow : ApplicationWindow {
 		}
 
 		file_chooser.destroy();
+		check_pages();
 	}
 
 	public void save_tab_to_file() {
@@ -272,33 +273,37 @@ public class MainWindow : ApplicationWindow {
 	public void build_code() {
 		save_tab_to_file();
 		status.refresh_statusbar(FileOpeartion.BUILD_FILE,null);
-		// string file_name = opened_files.nth_data(panel.get_current_page());
-		// int index = file_name.last_index_of("/");
-		// string directory = file_name.substring(0,index);
 
-		// FileOpeartion build_status;
-		// Dialog build_dialog;
-		// Label build_message;
-		// int exe = Posix.system("cd " + directory + " && make");
+		var current_page = tab_bar.get_current_page(documents.visible_child);
+		int page_num = tab_bar.get_page_num(current_page);
 
-		// if (exe == 0) {
-		// 	build_message = new Label("Make: Build successful!");
-		// 	build_status = FileOpeartion.BUILD_DONE;
-		// } else {
-		// 	build_message = new Label("Make: An error has occurred!");
-		// 	build_status = FileOpeartion.BUILD_FAIL;
-		// }
+		string file_name = opened_files.nth_data(page_num);
+		int index = file_name.last_index_of("/");
+		string directory = file_name.substring(0,index);
 
-		// build_message.show();		
-		// build_dialog = new Dialog.with_buttons("Build system",this,
-		// 	DialogFlags.MODAL,"OK",ResponseType.ACCEPT,null);
-		// var content = build_dialog.get_content_area() as Box;
-		// content.pack_start(build_message,true,true,10);
-		// build_dialog.border_width = 10;
+		FileOpeartion build_status;
+		Dialog build_dialog;
+		Label build_message;
+		int exe = Posix.system("cd " + directory + " && make");
 
-		// build_dialog.run();
-		// build_dialog.destroy();
-		// status.refresh_statusbar(build_status,null);
+		if (exe == 0) {
+			build_message = new Label("Make: Build successful!");
+			build_status = FileOpeartion.BUILD_DONE;
+		} else {
+			build_message = new Label("Make: An error has occurred!");
+			build_status = FileOpeartion.BUILD_FAIL;
+		}
+
+		build_message.show();		
+		build_dialog = new Dialog.with_buttons("Build system",this,
+			DialogFlags.MODAL,"OK",ResponseType.ACCEPT,null);
+		var content = build_dialog.get_content_area() as Box;
+		content.pack_start(build_message,true,true,10);
+		build_dialog.border_width = 10;
+
+		build_dialog.run();
+		build_dialog.destroy();
+		status.refresh_statusbar(build_status,null);
 	}
 
 	private void re_open_cb() {
@@ -324,6 +329,10 @@ public class MainWindow : ApplicationWindow {
 		string f_name = opened_files.nth_data(page_num);
 		status.refresh_statusbar(FileOpeartion.OPEN_FILE,f_name);
 		status.refresh_language(f_name);
+
+		current_page = tab_bar.get_current_page(documents.visible_child);
+		var p_langs = new ProgrammingLanguages();
+		headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
 	}
 
 	private void search_mode_cb() {
@@ -335,6 +344,10 @@ public class MainWindow : ApplicationWindow {
 			tab_bar.get_current_page(documents.visible_child);
 		if (confirm_close(current_page))
 			tab_bar.close_page(current_page);
+
+		current_page = tab_bar.get_current_page(documents.visible_child);
+		var p_langs = new ProgrammingLanguages();
+		headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
 	}
 
 	private void on_page_close(SimpleTab? tab, int page_num) {
@@ -369,8 +382,15 @@ public class MainWindow : ApplicationWindow {
 	}
 
 	private void check_pages() {
-		if (opened_files.length() == 0)
-			headerbar.title = "Simple Text";
+		if (opened_files.length() < 2) {
+			tab_bar.hide();
+			
+			if (opened_files.length() == 0) {
+				headerbar.title = "Simple Text";
+			}
+		} else {
+			tab_bar.show();
+		}
 	}
 
 	private bool changes_done(Gdk.EventKey event) {
@@ -409,6 +429,12 @@ public class MainWindow : ApplicationWindow {
 			(tab_label.tab_widget as ScrolledWindow).get_child() as SourceView;
 		view.key_release_event.connect(changes_done);
 		headerbar.set_title(untitled);
+
+		var current_page = tab_bar.get_current_page(documents.visible_child);
+		var p_langs = new ProgrammingLanguages();
+		headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
+		
+		check_pages();
 	}
 
 	private void save_file(SourceView view,string filename) {
@@ -426,11 +452,19 @@ public class MainWindow : ApplicationWindow {
 	private void next_tab_cb() {
 		var current_page = tab_bar.get_current_page(documents.visible_child);
 		tab_bar.switch_page_next(current_page);
+
+		current_page = tab_bar.get_current_page(documents.visible_child);
+		var p_langs = new ProgrammingLanguages();
+		headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
 	}
 
 	private void prev_tab_cb() {
 		var current_page = tab_bar.get_current_page(documents.visible_child);
 		tab_bar.switch_page_prev(current_page);
+
+		current_page = tab_bar.get_current_page(documents.visible_child);
+		var p_langs = new ProgrammingLanguages();
+		headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
 	}	
 
 	private bool confirm_close(SimpleTab? tab) {
