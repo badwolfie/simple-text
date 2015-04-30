@@ -41,7 +41,7 @@ public class SimpleHeaderBar : HeaderBar {
 		
 		menu_b.menu_model = builder.get_object("window-menu") as MenuModel;
 		menu_b.relief = Gtk.ReliefStyle.NONE;
-		menu_b.use_popover = true;
+		menu_b.use_popover = false;
 		menu_b.show_all();
 
 		abrir = new Button.with_label("Open");

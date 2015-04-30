@@ -1,13 +1,16 @@
 using Gtk;
+using Vte;
 
 public class MainWindow : ApplicationWindow {
-	private string untitled = "Untitled";
+	private string untitled = "Untitled file";
 	private Array<string> closed_files;
 	private List<string> opened_files;
 	private int counter = 0;
 
 	private SimpleHeaderBar headerbar;
 	private SimpleStatusbar status;
+	private Terminal terminal;
+	private Frame frame;
 	
 	private SimpleTabBar tab_bar;
 	private Stack documents;
@@ -61,6 +64,10 @@ public class MainWindow : ApplicationWindow {
 		var action_set_syntax = new SimpleAction("set_syntax",null);
 		action_set_syntax.activate.connect(set_syntax_cb);
 		add_action(action_set_syntax);
+		
+		var action_show_terminal = new SimpleAction("toggle_terminal",null);
+		action_show_terminal.activate.connect(on_show_terminal);
+		add_action(action_show_terminal);
 
 		var action_search_mode = new SimpleAction("search_mode",null);
 		action_search_mode.activate.connect(search_mode_cb);
@@ -117,12 +124,17 @@ public class MainWindow : ApplicationWindow {
 		status = new SimpleStatusbar(this);
 		status.change_syntax_request.connect(change_syntax_cb);
 		status.show();
+		
+		terminal = new Terminal();
+		frame = new Frame(null);
+		frame.add(terminal);
 
 		var vbox = new Box(Orientation.VERTICAL,0);
 		vbox.pack_start(search_bar,false,true,0);
 		vbox.pack_start(tab_bar,false,true,5);
 		vbox.pack_start(documents,true,true,0);
 		vbox.pack_start(status,false,true,0);
+		vbox.pack_start(frame,false,true,0);
 		vbox.show();
 
 		new_tab_cb();
@@ -144,6 +156,60 @@ public class MainWindow : ApplicationWindow {
 		string lang_id = p_langs.get_lang_id_from_name(language);
 		current_page.text_view.change_language(lang_id);
 	}
+	
+	private void on_show_terminal() {
+		if (terminal.get_visible()) {
+			terminal.reset(true,true);
+			terminal.hide();
+			frame.hide();
+			
+			var visible_doc = documents.visible_child as ScrolledWindow;
+			visible_doc.get_child().grab_focus();
+		} else {
+			var current_page = 
+				tab_bar.get_current_page(documents.visible_child);
+			
+			int page_num = tab_bar.get_page_num(current_page);
+			string file_name = opened_files.nth_data(page_num);
+			
+			string working_dir;
+			if (file_name.contains(untitled))
+				working_dir = Environment.get_home_dir();
+			else {
+				int index = file_name.last_index_of("/");
+				working_dir = file_name.substring(0,index);
+			}
+			
+			terminal.cursor_blink_mode = CursorBlinkMode.ON;
+			terminal.cursor_shape = CursorShape.BLOCK;
+			terminal.input_enabled = true;
+			terminal.allow_bold = true;
+
+			Gdk.RGBA background = Gdk.RGBA();
+			background.parse("#2d2d2d");
+		
+			Gdk.RGBA foreground = Gdk.RGBA();
+			foreground.parse("#ffffff");
+			terminal.set_colors(foreground,background,null);
+		
+			try {
+				terminal.spawn_sync(
+					PtyFlags.DEFAULT, 
+					working_dir, 
+					{ "/bin/bash" }, 
+					null,
+					SpawnFlags.DO_NOT_REAP_CHILD,
+					null,
+					null,
+					null);
+			} catch (Error e) {
+				stderr.printf("Error: %s\n", e.message);
+			}
+			
+			frame.show_all();
+			terminal.grab_focus();
+		}
+	}
 
 	private void set_syntax_cb() {
 		status.toggle_picker();
@@ -157,6 +223,12 @@ public class MainWindow : ApplicationWindow {
 		);
 
 		if (file_chooser.run() == ResponseType.ACCEPT) {
+			if (file_is_opened(file_chooser.get_filename())) {
+				file_chooser.destroy();
+				check_pages();
+				return;
+			}
+			
 			var tab_label = new SimpleTab.from_file(
 				file_chooser.get_file().get_basename(),
 				file_chooser.get_filename());
@@ -177,6 +249,14 @@ public class MainWindow : ApplicationWindow {
 		file_chooser.destroy();
 		check_pages();
 	}
+	
+	private bool file_is_opened(string needle) {
+		for (int i = 0; i < opened_files.length(); i++) {
+			if (needle == opened_files.nth_data(i)) return true;
+		}
+		
+		return false;
+	}
 
 	public void save_tab_to_file() {
 		var current_doc = documents.visible_child as ScrolledWindow;
@@ -185,7 +265,7 @@ public class MainWindow : ApplicationWindow {
 		var tab_label = tab_bar.get_current_page(current_doc);
 		int page_num = tab_bar.get_page_num(tab_label);
 
-		if (headerbar.title == untitled) {
+		if (headerbar.title.contains(untitled)) {
 			if (view.buffer.text == "") return;
 			var file_chooser = new FileChooserDialog("Save File", this,
 				FileChooserAction.SAVE,
@@ -195,7 +275,15 @@ public class MainWindow : ApplicationWindow {
 
 			var p_langs = new ProgrammingLanguages();
 			string ext = p_langs.get_lang_ext(status.label.label);
-			file_chooser.set_current_name(untitled + ext);
+			
+			var current_page = 
+				tab_bar.get_current_page(documents.visible_child);
+				
+			string filename =
+				opened_files.nth_data(tab_bar.get_page_num(current_page));
+				
+			int index = filename.last_index_of("/");
+			file_chooser.set_current_name(filename.substring(index + 1) + ext);
 
 			switch (file_chooser.run()) {
 				default:
@@ -214,7 +302,6 @@ public class MainWindow : ApplicationWindow {
 					reset_changes(tab_label);
 					break;
 			}
-
 			file_chooser.destroy();
 		} else if (headerbar.title.contains("*")) {
 			string file_name = opened_files.nth_data(page_num);
@@ -230,7 +317,7 @@ public class MainWindow : ApplicationWindow {
 		int page_num = tab_bar.get_page_num(current_page);
 		var view = current_page.text_view as SourceView;
 
-		if ((filename == untitled) && (view.buffer.text == "")) return;
+		if ((filename.contains(untitled)) && (view.buffer.text == "")) return;
 
 		var file_chooser = new FileChooserDialog("Save File", this,
 			FileChooserAction.SAVE,
@@ -262,7 +349,7 @@ public class MainWindow : ApplicationWindow {
 	}
 
 	public void new_tab_cb() {
-		opened_files.append(untitled);
+		opened_files.append("%s %d".printf(untitled,counter + 1));
 		var tab = new SimpleTab();
 		add_new_tab(tab);
 
@@ -333,6 +420,7 @@ public class MainWindow : ApplicationWindow {
 		current_page = tab_bar.get_current_page(documents.visible_child);
 		var p_langs = new ProgrammingLanguages();
 		headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
+		check_pages();
 	}
 
 	private void search_mode_cb() {
@@ -354,7 +442,7 @@ public class MainWindow : ApplicationWindow {
 		string f_name = opened_files.nth_data(page_num);
 		status.refresh_statusbar(FileOpeartion.CLOSE_FILE,f_name);
 
-		if (f_name != untitled)
+		if (!f_name.contains(untitled))
 			closed_files.append_val(f_name);
 		opened_files.remove(opened_files.nth_data(page_num));
 		status.refresh_language(opened_files.nth_data(page_num));
@@ -420,7 +508,7 @@ public class MainWindow : ApplicationWindow {
 	}
 
 	private void add_new_tab(SimpleTab tab_label) {
-		var tab_title = "tab-%d".printf(counter++);
+		var tab_title = "tab - %d".printf(counter++);
 		documents.add_titled(
 			tab_label.tab_widget,tab_title,tab_label.tab_title);
 		tab_bar.add_page(tab_label,true);
@@ -428,9 +516,12 @@ public class MainWindow : ApplicationWindow {
 		var view = 
 			(tab_label.tab_widget as ScrolledWindow).get_child() as SourceView;
 		view.key_release_event.connect(changes_done);
-		headerbar.set_title(untitled);
-
+		
 		var current_page = tab_bar.get_current_page(documents.visible_child);
+		int page_num = tab_bar.get_page_num(current_page);
+		string file_name = opened_files.nth_data(page_num);
+		headerbar.set_title(file_name);
+
 		var p_langs = new ProgrammingLanguages();
 		headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
 		

@@ -1,6 +1,6 @@
 OUTPUT = simple-text
 SOURCES = src/*.vala
-OPTIONS = --pkg gtk+-3.0 --pkg gtksourceview-3.0 --pkg gee-0.8 --pkg posix
+OPTIONS = --pkg gtk+-3.0 --pkg gtksourceview-3.0 --pkg gee-0.8 --pkg vte-2.91 --pkg posix
 
 INSTALL_FOLDER=/opt/Simple-text
 LAUNCHER_FOLDER=/usr/share/applications

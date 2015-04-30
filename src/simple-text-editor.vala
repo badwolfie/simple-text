@@ -37,6 +37,9 @@ public class SimpleTextEditor : Gtk.Application {
 
 		const string[] accels_set_syntax = {"<control><shift>P",null};
 		set_accels_for_action("win.set_syntax",accels_set_syntax);
+		
+		const string[] accels_show_terminal = {"<control><shift>C",null};
+		set_accels_for_action("win.toggle_terminal",accels_show_terminal);
 
 		const string[] accels_next_tab = {"<control>Tab",null};
 		set_accels_for_action("win.next_tab",accels_next_tab);
@@ -89,7 +92,7 @@ public class SimpleTextEditor : Gtk.Application {
 			"logo-icon-name", ("text-editor"),
 			"documenters", documenters,
 			"authors", authors,
-			"version", ("0.9")
+			"version", ("0.9.3")
 		);
 	}
 
