@@ -196,7 +196,7 @@ public class MainWindow : ApplicationWindow {
 				terminal.spawn_sync(
 					PtyFlags.DEFAULT, 
 					working_dir, 
-					{ "/bin/bash" }, 
+					{ Vte.get_user_shell() }, 
 					null,
 					SpawnFlags.DO_NOT_REAP_CHILD,
 					null,
@@ -265,6 +265,7 @@ public class MainWindow : ApplicationWindow {
 		var tab_label = tab_bar.get_current_page(current_doc);
 		int page_num = tab_bar.get_page_num(tab_label);
 
+
 		if (headerbar.title.contains(untitled)) {
 			if (view.buffer.text == "") return;
 			var file_chooser = new FileChooserDialog("Save File", this,
@@ -303,7 +304,7 @@ public class MainWindow : ApplicationWindow {
 					break;
 			}
 			file_chooser.destroy();
-		} else if (headerbar.title.contains("*")) {
+		} else if (tab_label.tab_title.contains("*")) {
 			string file_name = opened_files.nth_data(page_num);
 			save_file(view,file_name);
 			reset_changes(tab_label);
