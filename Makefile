@@ -1,4 +1,4 @@
-OUTPUT = Simple-text
+OUTPUT = simple-text
 SOURCES = src/*.vala
 OPTIONS = --pkg gtk+-3.0 --pkg gtksourceview-3.0 --pkg gee-0.8 --pkg vte-2.91 --pkg posix
 
@@ -32,5 +32,5 @@ run:
 clean:
 	$(RM) $(OUTPUT)
 
-version:
-	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)" > .pkgver
+# version:
+# 	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
