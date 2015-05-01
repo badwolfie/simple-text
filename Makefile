@@ -1,33 +1,36 @@
-OUTPUT = simple-text
+OUTPUT = Simple-text
 SOURCES = src/*.vala
 OPTIONS = --pkg gtk+-3.0 --pkg gtksourceview-3.0 --pkg gee-0.8 --pkg vte-2.91 --pkg posix
 
-INSTALL_FOLDER=/opt/Simple-text
-LAUNCHER_FOLDER=/usr/share/applications
-EXEC_FOLDER=/usr/bin
+INSTALL_FOLDER = ../$(OUTPUT)
+LAUNCHER_FOLDER = ~/.local/share/applications
+EXEC_FOLDER = /usr/bin
 
 all: $(OUTPUT)
 
 $(OUTPUT): $(SOURCES)
 	valac -o $(OUTPUT) $(OPTIONS) $(SOURCES)
 
-install:
-	-mkdir $(INSTALL_FOLDER)
-	cp -r style_schemes $(INSTALL_FOLDER)
-	cp -r resources $(INSTALL_FOLDER)
-	cp $(OUTPUT) $(INSTALL_FOLDER)
+pre_install:
+	mkdir $(INSTALL_FOLDER)
 	cp LICENSE $(INSTALL_FOLDER)
+	cp -r resources $(INSTALL_FOLDER)
+	cp -r style_schemes $(INSTALL_FOLDER)
+	install -m755 $(OUTPUT) $(INSTALL_FOLDER)
 
-	cp $(OUTPUT).desktop $(LAUNCHER_FOLDER)
-	chmod +x $(LAUNCHER_FOLDER)/$(OUTPUT).desktop
-	
-	ln -s $(INSTALL_FOLDER)/$(OUTPUT) $(EXEC_FOLDER)/$(OUTPUT)
+install: pre_install
+	mv $(INSTALL_FOLDER) /opt
+	install -m755 $(OUTPUT).desktop $(LAUNCHER_FOLDER)
+	install -m755 simple-text $(EXEC_FOLDER)
 
 uninstall:
-	rm -rf $(INSTALL_FOLDER) $(LAUNCHER_FOLDER)/$(OUTPUT).desktop $(EXEC_FOLDER)/$(OUTPUT)
+	rm -rf /opt/$(OUTPUT) $(LAUNCHER_FOLDER)/$(OUTPUT).desktop $(EXEC_FOLDER)/simple-text
 
 run:
 	./$(OUTPUT)
 
 clean:
 	$(RM) $(OUTPUT)
+
+version:
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)" > .pkgver
