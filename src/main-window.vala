@@ -2,6 +2,9 @@ using Gtk;
 using Vte;
 
 public class MainWindow : ApplicationWindow {
+	private TextEditor _editor;
+	public TextEditor editor { get { return _editor; } }
+
 	private string untitled = "Untitled file";
 	private Array<string> closed_files;
 	private List<string> opened_files;
@@ -20,8 +23,9 @@ public class MainWindow : ApplicationWindow {
 	private Button previous_search;
 	private Button next_search;
 
-	public MainWindow(Gtk.Application app) {
+	public MainWindow(Gtk.Application app, TextEditor editor) {
 		Object(application: app);
+		_editor = editor;
 		opened_files = new List<string>();
 		closed_files = new Array<string>();
 
@@ -72,10 +76,6 @@ public class MainWindow : ApplicationWindow {
 		var action_search_mode = new SimpleAction("search_mode",null);
 		action_search_mode.activate.connect(search_mode_cb);
 		add_action(action_search_mode);
-
-		var action_lines = new SimpleAction("toggle_lines",null);
-		action_lines.activate.connect(toggle_lines_cb);
-		add_action(action_lines);
 
 		var action_quit = new SimpleAction("quit_window",null);
 		action_quit.activate.connect(quit_cb);
@@ -176,8 +176,7 @@ public class MainWindow : ApplicationWindow {
 			if (file_name.contains(untitled))
 				working_dir = Environment.get_home_dir();
 			else {
-				int index = file_name.last_index_of("/");
-				working_dir = file_name.substring(0,index);
+				working_dir = Path.get_dirname(file_name);
 			}
 			
 			terminal.cursor_blink_mode = CursorBlinkMode.ON;
@@ -185,12 +184,12 @@ public class MainWindow : ApplicationWindow {
 			terminal.input_enabled = true;
 			terminal.allow_bold = true;
 
-			Gdk.RGBA background = Gdk.RGBA();
+			/* Gdk.RGBA background = Gdk.RGBA();
 			background.parse("#2d2d2d");
 		
 			Gdk.RGBA foreground = Gdk.RGBA();
 			foreground.parse("#ffffff");
-			terminal.set_colors(foreground,background,null);
+			terminal.set_colors(foreground,background,null); */
 		
 			try {
 				terminal.spawn_sync(
@@ -229,7 +228,7 @@ public class MainWindow : ApplicationWindow {
 				return;
 			}
 			
-			var tab_label = new SimpleTab.from_file(
+			var tab_label = new SimpleTab.from_file(editor,
 				file_chooser.get_file().get_basename(),
 				file_chooser.get_filename());
 			add_new_tab(tab_label);
@@ -283,8 +282,7 @@ public class MainWindow : ApplicationWindow {
 			string filename =
 				opened_files.nth_data(tab_bar.get_page_num(current_page));
 				
-			int index = filename.last_index_of("/");
-			file_chooser.set_current_name(filename.substring(index + 1) + ext);
+			file_chooser.set_current_name(Path.get_basename(filename) + ext);
 
 			switch (file_chooser.run()) {
 				default:
@@ -326,8 +324,7 @@ public class MainWindow : ApplicationWindow {
 			"Save", ResponseType.ACCEPT
 		);
 
-		int index = filename.last_index_of("/");
-		file_chooser.set_current_name(filename.substring(index + 1));
+		file_chooser.set_current_name(Path.get_basename(filename));
 
 		switch (file_chooser.run()) {
 			case ResponseType.ACCEPT:
@@ -351,7 +348,7 @@ public class MainWindow : ApplicationWindow {
 
 	public void new_tab_cb() {
 		opened_files.append("%s %d".printf(untitled,counter + 1));
-		var tab = new SimpleTab();
+		var tab = new SimpleTab(editor);
 		add_new_tab(tab);
 
 		status.refresh_statusbar(FileOpeartion.NEW_FILE,null);
@@ -366,13 +363,12 @@ public class MainWindow : ApplicationWindow {
 		int page_num = tab_bar.get_page_num(current_page);
 
 		string file_name = opened_files.nth_data(page_num);
-		int index = file_name.last_index_of("/");
-		string directory = file_name.substring(0,index);
+		string directory = Path.get_dirname(file_name);
 
 		FileOpeartion build_status;
 		Dialog build_dialog;
 		Label build_message;
-		int exe = Posix.system("cd " + directory + " && make");
+		int exe = Posix.system("cd \"" + directory + "\" && make");
 
 		if (exe == 0) {
 			build_message = new Label("Make: Build successful!");
@@ -402,7 +398,7 @@ public class MainWindow : ApplicationWindow {
 			File.new_for_path(last_file_path).get_basename();
 		closed_files.remove_index(closed_files.length - 1);
 
-		var tab_label = new SimpleTab.from_file(
+		var tab_label = new SimpleTab.from_file(editor,
 			last_file_basename,
 			last_file_path);
 		add_new_tab(tab_label);
@@ -454,12 +450,6 @@ public class MainWindow : ApplicationWindow {
 		check_pages();
 
 		tab_bar.get_current_page(documents.visible_child).mark_title();
-	}
-
-	private void toggle_lines_cb() {
-		var page = documents.visible_child as ScrolledWindow;
-		var view = page.get_child() as SourceView;
-		view.show_line_numbers = !view.show_line_numbers;
 	}
 
 	private void search_stuff_next() {

@@ -3,6 +3,13 @@
   <menu id="appmenu">
     <section>
       <item>
+        <attribute name="label" translatable="yes">Preferences</attribute>
+        <attribute name="action">app.prefs</attribute>
+        <attribute name="accel">&lt;Primary&gt;F1</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
         <attribute name="label" translatable="yes">About</attribute>
         <attribute name="action">app.about</attribute>
         <attribute name="accel">F1</attribute>
@@ -29,12 +36,6 @@
         <attribute name="label" translatable="yes">Show terminal</attribute>
         <attribute name="action">win.toggle_terminal</attribute>
         <attribute name="accel">&lt;Primary&gt;&lt;Shift&gt;c</attribute>
-      </item>
-
-      <item>
-        <attribute name="label" translatable="yes">Toggle line numbers</attribute>
-        <attribute name="action">win.toggle_lines</attribute>
-        <attribute name="accel">&lt;Primary&gt;l</attribute>
       </item>
 
       <item>

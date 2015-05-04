@@ -184,11 +184,11 @@ public class SimpleTabBar : Box {
 
 	private void refresh_marked() {
 		_tabs.foreach((entry) => {
-			entry.refresh_title();
+			(entry as SimpleTab).refresh_title();
 		});
 
 		_extra_tabs.foreach((entry) => {
-			entry.refresh_title();
+			(entry as SimpleTab).refresh_title();
 		});
 	}
 

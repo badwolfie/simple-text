@@ -1,6 +1,8 @@
 using Gtk;
 
 public class SimpleTab : Box {
+	private TextEditor editor;
+
 	public signal void close_clicked (SimpleTab tab);
 	public signal void tab_clicked (SimpleTab tab);
 	public signal void tab_focused (SimpleTab tab);
@@ -39,14 +41,16 @@ public class SimpleTab : Box {
 		}
 	}
 
-	public SimpleTab() {
+	public SimpleTab(TextEditor editor) {
 		Object();
+		this.editor = editor;
 		this.tab_title = untitled;
 		create_widgets(null,null);
 	}
 
-	public SimpleTab.from_file(string base_name, string file_path) {
+	public SimpleTab.from_file(TextEditor editor, string base_name, string file_path) {
 		Object();
+		this.editor = editor;
 		this.tab_title = base_name;
 
 		try {
@@ -80,12 +84,14 @@ public class SimpleTab : Box {
 
 		if (display_text != null) {
 			if (language != null) {
+				_text_view = new SimpleSourceView.with_language(
+					editor,language,display_text);
+			} else {
 				_text_view = 
-					new SimpleSourceView.with_language(language,display_text);
-			} else 
-				_text_view = new SimpleSourceView.with_text(display_text);
+					new SimpleSourceView.with_text(editor,display_text);
+			}
 		} else
-			_text_view = new SimpleSourceView();
+			_text_view = new SimpleSourceView(editor);
 		text_view.show();
 
 		_completion = text_view.get_completion();

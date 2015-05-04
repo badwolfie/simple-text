@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema path="/com/github/badwolfie/simple-text/" id="com.github.badwolfie.simple-text" gettext-domain="text-editor">
+    <key type="b" name="show-line-numbers">
+      <default>false</default>
+      <summary>Show line numbers</summary>
+      <description>Whether or not should the editor show line numbers</description>
+    </key>
+
+    <key type="b" name="show-right-margin">
+      <default>false</default>
+      <summary>Show right margin</summary>
+      <description>Whether or not should the editor show a right margin</description>
+    </key>
+
+    <key type="i" name="right-margin-at">
+      <default>80</default>
+      <range min="80" max="120"/>
+      <summary>Right margin location</summary>
+      <description>The number of characters where the right margin is displayed</description>
+    </key>
+
+    <key type="b" name="use-text-wrap">
+      <default>false</default>
+      <summary>Use text wrap</summary>
+      <description>Whether or not should the editor use text wrap</description>
+    </key>
+
+    <key type="b" name="highlight-current-line">
+      <default>false</default>
+      <summary>Highlight current line</summary>
+      <description>Whether or not should the editor highlight current line</description>
+    </key>
+
+    <key type="b" name="highlight-brackets">
+      <default>false</default>
+      <summary>Highlight matching brackets</summary>
+      <description>Whether or not should the editor highlight matching brackets</description>
+    </key>
+
+    <key type="i" name="tab-width">
+      <default>4</default>
+      <range min="2" max="8"/>
+      <summary>Tab width</summary>
+      <description>Tab width used by the editor</description>
+    </key>
+
+    <key type="b" name="insert-spaces">
+      <default>false</default>
+      <summary>Insert spaces instead of tabs</summary>
+      <description>Whether or not should the editor insert spaces instead of tabs</description>
+    </key>
+
+    <key type="b" name="auto-indent">
+      <default>false</default>
+      <summary>Activate automatic indentation</summary>
+      <description>Whether or not should the editor activate automatic indentation</description>
+    </key>
+
+    <key type="b" name="use-default-typo">
+      <default>true</default>
+      <summary>Use default typography</summary>
+      <description>Whether or not should the editor use the default typography</description>
+    </key>
+
+    <key type="s" name="editor-font">
+      <default>'Monospace 10'</default>
+      <summary>Editor's font</summary>
+      <description>Font to be used by the editor to display text</description>
+    </key>
+
+    <key type="s" name="color-scheme">
+      <default>'monokai-extended'</default>
+      <summary>Color Scheme</summary>
+      <description>Color Scheme to be used by the editor for syntax highlighting</description>
+    </key>
+  </schema>
+</schemalist>
