@@ -19,9 +19,23 @@ public class SimpleText : Gtk.Application {
 	protected override void startup() {
 		base.startup();
 
-		settings = new GLib.Settings("com.github.badwolfie.simple-text");
-		var editor = new TextEditor();
+		try {
+			var settings_schema_source = 
+				new GLib.SettingsSchemaSource.from_directory(
+					"/opt/simple-text/data",null,false);
+			var settings_schema = settings_schema_source.lookup(
+				"com.github.badwolfie.simple-text",false);
+			if (settings_schema_source.lookup == null) {
+				stdout.printf("ID not found.");
+				Posix.exit(1);
+			}
+
+			settings = new GLib.Settings.full(settings_schema,null,null);
+		} catch (Error e) {
+			error("Error loading menu UI: %s",e.message);
+		}
 		
+		var editor = new TextEditor();
 		editor.show_line_numbers = settings.get_boolean("show-line-numbers");
 		editor.show_right_margin = settings.get_boolean("show-right-margin");
 		editor.right_margin_at = settings.get_int("right-margin-at");
@@ -41,7 +55,7 @@ public class SimpleText : Gtk.Application {
 
 		var builder = new Gtk.Builder();
 		try {
-			builder.add_from_file("data/menu.ui");
+			builder.add_from_file("/opt/simple-text/data/menu.ui");
 		} catch (Error e) {
 			error("Error loading menu UI: %s",e.message);
 		}
@@ -81,14 +95,14 @@ public class SimpleText : Gtk.Application {
 
 	protected override void activate() {
 		base.activate();
-		stdout.printf("sin archivos\n");
+		
 		window.arg_files = null;		
 		window.present();
 	}
 	
 	protected override void open(File[] files, string hint) {
 		base.open(files, hint);
-		stdout.printf("con archivos\n");
+		
 		window.arg_files = files;
 		window.present();
 	}
@@ -159,6 +173,7 @@ public class SimpleText : Gtk.Application {
         Intl.bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
         Intl.textdomain(GETTEXT_PACKAGE);
         
+        stdout.printf(args[0] + "\n");
 		Gtk.Window.set_default_icon_name ("text-editor");
 		var app = new SimpleText();
 
