@@ -19,22 +19,9 @@ public class SimpleText : Gtk.Application {
 	protected override void startup() {
 		base.startup();
 
-		try {
-			var settings_schema_source = 
-				new GLib.SettingsSchemaSource.from_directory("data",null,false);
-			var settings_schema = settings_schema_source.lookup(
-				"com.github.badwolfie.simple-text",false);
-			if (settings_schema_source.lookup == null) {
-				stdout.printf("ID not found.");
-				Posix.exit(1);
-			}
-
-			settings = new GLib.Settings.full(settings_schema,null,null);
-		} catch (Error e) {
-			error("Error loading menu UI: %s",e.message);
-		}
-		
+		settings = new GLib.Settings("com.github.badwolfie.simple-text");
 		var editor = new TextEditor();
+		
 		editor.show_line_numbers = settings.get_boolean("show-line-numbers");
 		editor.show_right_margin = settings.get_boolean("show-right-margin");
 		editor.right_margin_at = settings.get_int("right-margin-at");
