@@ -14,7 +14,7 @@ $(OUTPUT): $(SOURCES)
 pre_install:
 	mkdir $(INSTALL_FOLDER)
 	cp LICENSE $(INSTALL_FOLDER)
-	cp -r resources $(INSTALL_FOLDER)
+	cp -r data $(INSTALL_FOLDER)
 	cp -r style_schemes $(INSTALL_FOLDER)
 	install -m755 $(OUTPUT) $(INSTALL_FOLDER)
 
@@ -22,6 +22,9 @@ install: pre_install
 	mv $(INSTALL_FOLDER) /opt
 	install -m755 $(OUTPUT).desktop $(LAUNCHER_FOLDER)
 	install -m755 simple-text $(EXEC_FOLDER)
+
+post_install:
+	glib-compile-schemas /opt/simple-text/data
 
 uninstall:
 	rm -rf /opt/$(OUTPUT) $(LAUNCHER_FOLDER)/$(OUTPUT).desktop $(EXEC_FOLDER)/simple-text
