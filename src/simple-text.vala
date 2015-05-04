@@ -94,14 +94,14 @@ public class SimpleText : Gtk.Application {
 
 	protected override void activate() {
 		base.activate();
-		
+		stdout.printf("sin archivos\n");
 		window.arg_files = null;		
 		window.present();
 	}
 	
 	protected override void open(File[] files, string hint) {
 		base.open(files, hint);
-		
+		stdout.printf("con archivos\n");
 		window.arg_files = files;
 		window.present();
 	}

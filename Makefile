@@ -44,7 +44,7 @@ run:
 	./$(OUTPUT)
 
 clean:
-	$(RM) $(OUTPUT)
+	$(RM) $(OUTPUT) data/gschemas.compiled
 
 # version:
 # 	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
