@@ -140,12 +140,12 @@ public class SimpleText : Gtk.Application {
 
         Gtk.show_about_dialog(window,
 			"program-name", ("Simple Text"),
-			"title", ("About Simple Text"),
+			"title", _("About Simple Text"),
 			"copyright", ("Copyright \xc2\xa9 2015 Ian Hernández"),
-			"comments", ("A very simple text editor written in Vala."),
-			"website",("https://github.com/BadWolfie/simple-text"),
-			"website_label",("Web page"),
-			"license", (license),
+			"comments", _("A very simple text editor written in Vala."),
+			"website", ("https://github.com/BadWolfie/simple-text"),
+			"website_label", _("Web page"),
+			"license", _(license),
 			"logo-icon-name", ("text-editor"),
 			"documenters", documenters,
 			"authors", authors,
@@ -158,6 +158,11 @@ public class SimpleText : Gtk.Application {
 	}
 
 	public static int main(string[] args) {
+		Intl.setlocale(LocaleCategory.ALL, "");
+        Intl.bindtextdomain(GETTEXT_PACKAGE, LOCALE_DIR);
+        Intl.bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+        Intl.textdomain(GETTEXT_PACKAGE);
+        
 		Gtk.Window.set_default_icon_name ("text-editor");
 		var app = new SimpleText();
 		return app.run(args);

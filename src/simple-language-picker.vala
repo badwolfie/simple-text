@@ -29,7 +29,7 @@ public class SimpleLanguagePicker : Popover {
 		list_view.set_filter_func(row_filter);
 
 		search_entry = new SearchEntry();
-		search_entry.placeholder_text = "Search highlight mode...";
+		search_entry.placeholder_text = _("Search highlight mode...");
 		search_entry.set_width_chars(30);
 		search_entry.key_release_event.connect((event) => {
 			list_view.invalidate_filter();

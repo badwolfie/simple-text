@@ -44,21 +44,21 @@ public class SimpleHeaderBar : HeaderBar {
 		menu_b.use_popover = false;
 		menu_b.show_all();
 
-		abrir = new Button.with_label("Open");
-		abrir.set_tooltip_text("Open file (Ctrl+O)");
+		abrir = new Button.with_label(_("Open"));
+		abrir.set_tooltip_text(_("Open file") + " (Ctrl+O)");
 		abrir.show();
 
-		guardar = new Button.with_label("Save");
-		guardar.set_tooltip_text("Save file (Ctrl+S)");
+		guardar = new Button.with_label(_("Save"));
+		guardar.set_tooltip_text(_("Save file") + " (Ctrl+S)");
 		guardar.show();
 
 		nuevo = new Button.from_icon_name("tab-new-symbolic",IconSize.MENU);
-		nuevo.set_tooltip_text("New file (Ctrl+N)");
+		nuevo.set_tooltip_text(_("New file") + " (Ctrl+N)");
 		nuevo.show();
 
 		build = new Button.from_icon_name("media-playback-start-symbolic",
 			IconSize.MENU);
-		build.set_tooltip_text("Build using make (Ctrl+B)");
+		build.set_tooltip_text(_("Build using make") + " (Ctrl+B)");
 		buildable = false;
 		build.show();
 

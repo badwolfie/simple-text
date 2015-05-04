@@ -5,7 +5,7 @@ public class MainWindow : ApplicationWindow {
 	private TextEditor _editor;
 	public TextEditor editor { get { return _editor; } }
 
-	private string untitled = "Untitled file";
+	private string untitled = _("Untitled file");
 	private Array<string> closed_files;
 	private List<string> opened_files;
 	private int counter = 0;
@@ -82,7 +82,7 @@ public class MainWindow : ApplicationWindow {
 		add_action(action_quit);		
 
 		search_entry = new SearchEntry();
-		search_entry.placeholder_text = "Enter your search...";
+		search_entry.placeholder_text = _("Enter your search...");
 		search_entry.set_width_chars(60);
 
 		search_entry.search_changed.connect(search_stuff_next);
@@ -215,10 +215,10 @@ public class MainWindow : ApplicationWindow {
 	}
 
 	public void add_new_tab_from_file() {
-		var file_chooser = new FileChooserDialog("Open File", this,
+		var file_chooser = new FileChooserDialog(_("Open File"), this,
 			FileChooserAction.OPEN,
-			"Cancel", ResponseType.CANCEL,
-			"Open", ResponseType.ACCEPT
+			_("Cancel"), ResponseType.CANCEL,
+			_("Open"), ResponseType.ACCEPT
 		);
 
 		if (file_chooser.run() == ResponseType.ACCEPT) {
@@ -267,10 +267,10 @@ public class MainWindow : ApplicationWindow {
 
 		if (headerbar.title.contains(untitled)) {
 			if (view.buffer.text == "") return;
-			var file_chooser = new FileChooserDialog("Save File", this,
+			var file_chooser = new FileChooserDialog(_("Save File"), this,
 				FileChooserAction.SAVE,
-				"Cancel", ResponseType.CANCEL,
-				"Save", ResponseType.ACCEPT
+				_("Cancel"), ResponseType.CANCEL,
+				_("Save"), ResponseType.ACCEPT
 			);
 
 			var p_langs = new ProgrammingLanguages();
@@ -318,10 +318,10 @@ public class MainWindow : ApplicationWindow {
 
 		if ((filename.contains(untitled)) && (view.buffer.text == "")) return;
 
-		var file_chooser = new FileChooserDialog("Save File", this,
+		var file_chooser = new FileChooserDialog(_("Save File"), this,
 			FileChooserAction.SAVE,
-			"Cancel", ResponseType.CANCEL,
-			"Save", ResponseType.ACCEPT
+			_("Cancel"), ResponseType.CANCEL,
+			_("Save"), ResponseType.ACCEPT
 		);
 
 		file_chooser.set_current_name(Path.get_basename(filename));
@@ -371,16 +371,16 @@ public class MainWindow : ApplicationWindow {
 		int exe = Posix.system("cd \"" + directory + "\" && make");
 
 		if (exe == 0) {
-			build_message = new Label("Make: Build successful!");
+			build_message = new Label("Make: " + _("Build successful!"));
 			build_status = FileOpeartion.BUILD_DONE;
 		} else {
-			build_message = new Label("Make: An error has occurred!");
+			build_message = new Label("Make: " + _("An error has occurred!"));
 			build_status = FileOpeartion.BUILD_FAIL;
 		}
 
 		build_message.show();		
-		build_dialog = new Dialog.with_buttons("Build system",this,
-			DialogFlags.MODAL,"OK",ResponseType.ACCEPT,null);
+		build_dialog = new Dialog.with_buttons(_("Build system"),this,
+			DialogFlags.MODAL,_("OK"),ResponseType.ACCEPT,null);
 		var content = build_dialog.get_content_area() as Box;
 		content.pack_start(build_message,true,true,10);
 		build_dialog.border_width = 10;

@@ -6,7 +6,7 @@ public class SimpleTab : Box {
 	public signal void close_clicked (SimpleTab tab);
 	public signal void tab_clicked (SimpleTab tab);
 	public signal void tab_focused (SimpleTab tab);
-	private string untitled = "Untitled file";
+	private string untitled = _("Untitled file");
 
 	private SourceCompletion _completion;
 	public SourceCompletion completion {
