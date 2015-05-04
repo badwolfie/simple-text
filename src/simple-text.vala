@@ -2,18 +2,18 @@ using Gtk;
 
 public class SimpleText : Gtk.Application {
 	private GLib.Settings settings;
-	private MainWindow window;
 	private PreferencesDialog preferences_dialog;
+	private MainWindow window;
 
 	private const GLib.ActionEntry[] app_entries = {
-		{ "prefs", show_prefs_cb, null, null, null},
+		{ "prefs", show_prefs_cb, null, null, null },
         { "about", about_cb, null, null, null },
         { "quit", quit_cb, null, null, null },
     };
 
 	public SimpleText() {
 		Object(application_id: "badwolfie.simple-text.app",
-			flags: ApplicationFlags.NON_UNIQUE);
+			flags: ApplicationFlags.HANDLES_OPEN);
 	}
 
 	protected override void startup() {
@@ -50,7 +50,7 @@ public class SimpleText : Gtk.Application {
 		editor.color_scheme = settings.get_string("color-scheme");
 		
 		add_action_entries(app_entries,this);
-		window = new MainWindow(this,editor);
+		window = new MainWindow(this,editor);		
 
 		var builder = new Gtk.Builder();
 		try {
@@ -94,6 +94,15 @@ public class SimpleText : Gtk.Application {
 
 	protected override void activate() {
 		base.activate();
+		
+		window.arg_files = null;		
+		window.present();
+	}
+	
+	protected override void open(File[] files, string hint) {
+		base.open(files, hint);
+		
+		window.arg_files = files;
 		window.present();
 	}
 
@@ -165,6 +174,7 @@ public class SimpleText : Gtk.Application {
         
 		Gtk.Window.set_default_icon_name ("text-editor");
 		var app = new SimpleText();
+
 		return app.run(args);
 	}
 }

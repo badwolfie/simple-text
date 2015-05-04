@@ -22,6 +22,19 @@ public class MainWindow : ApplicationWindow {
 	private SearchBar search_bar;
 	private Button previous_search;
 	private Button next_search;
+	
+	private File[] _arg_files = null;
+	public File[] arg_files {
+		set {
+			_arg_files = value;
+			
+			if (_arg_files != null) {
+				foreach (var file in _arg_files) 
+					add_new_tab_from_file(file.get_path());
+			} else 
+				new_tab_cb(); 
+		}
+	}
 
 	public MainWindow(Gtk.Application app, TextEditor editor) {
 		Object(application: app);
@@ -33,7 +46,7 @@ public class MainWindow : ApplicationWindow {
 		set_default_size(1000,700);
 		border_width = 0;
 		maximize();
-
+		
 		create_widgets();
 	}
 
@@ -137,7 +150,6 @@ public class MainWindow : ApplicationWindow {
 		vbox.pack_start(frame,false,true,0);
 		vbox.show();
 
-		new_tab_cb();
 		add(vbox);
 	}
 
@@ -213,39 +225,46 @@ public class MainWindow : ApplicationWindow {
 	private void set_syntax_cb() {
 		status.toggle_picker();
 	}
-
-	public void add_new_tab_from_file() {
+	
+	public void open_file_cb() {
 		var file_chooser = new FileChooserDialog(_("Open File"), this,
 			FileChooserAction.OPEN,
 			_("Cancel"), ResponseType.CANCEL,
 			_("Open"), ResponseType.ACCEPT
 		);
-
+		
+		file_chooser.select_multiple = true;
 		if (file_chooser.run() == ResponseType.ACCEPT) {
-			if (file_is_opened(file_chooser.get_filename())) {
-				file_chooser.destroy();
-				check_pages();
-				return;
-			}
+			var file_names = file_chooser.get_filenames();
+			file_names.foreach((entry) => {
+				add_new_tab_from_file((string) entry);
+			});
 			
-			var tab_label = new SimpleTab.from_file(editor,
-				file_chooser.get_file().get_basename(),
-				file_chooser.get_filename());
-			add_new_tab(tab_label);
-
-			var current_page = tab_bar.get_current_page(
-				documents.visible_child);
-			int page_num = tab_bar.get_page_num(current_page);
-
-			headerbar.set_title(file_chooser.get_filename());
-			opened_files.insert(file_chooser.get_filename(),page_num);
-
-			string f_name = opened_files.nth_data(page_num);
-			status.refresh_statusbar(FileOpeartion.OPEN_FILE,f_name);
-			status.refresh_language(f_name);
+			file_chooser.destroy();
 		}
+	}
 
-		file_chooser.destroy();
+	private void add_new_tab_from_file(string file_name) {		
+		if (file_is_opened(file_name)) {
+			check_pages();
+			return;
+		}
+		
+		var tab_label = new SimpleTab.from_file(editor,
+			Path.get_basename(file_name),
+			file_name);
+		add_new_tab(tab_label);
+		
+		var current_page = tab_bar.get_current_page(
+			documents.visible_child);
+		int page_num = tab_bar.get_page_num(current_page);
+
+		headerbar.set_title(file_name);
+		opened_files.insert(file_name,page_num);
+		
+		status.refresh_statusbar(FileOpeartion.OPEN_FILE,file_name);
+		status.refresh_language(file_name);
+
 		check_pages();
 	}
 	

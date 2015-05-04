@@ -70,7 +70,7 @@ public class SimpleHeaderBar : HeaderBar {
 	}
 
 	private void connect_signals() {
-		abrir.clicked.connect(parent_window.add_new_tab_from_file);
+		abrir.clicked.connect(parent_window.open_file_cb);
 		guardar.clicked.connect(parent_window.save_tab_to_file);
 		nuevo.clicked.connect(parent_window.new_tab_cb);
 		build.clicked.connect(parent_window.build_code);
