@@ -141,32 +141,43 @@ public class SimpleText : Gtk.Application {
 	}
 
 	private void about_cb() {
-		string[] authors = { "Ian Hernández <ianyo27@gmail.com>" };
+		string[] authors = { "Ian Hernández <ihernandezs@openmailbox.org>" };
 
-        string[] documenters = { "Ian Hernández" };
+		string[] documenters = { "Ian Hernández" };
 
-        string license = null;
-        try {
-        	FileUtils.get_contents(
-        		"/opt/simple-text/data/LICENSE_HEADER", out license);
-        } catch (Error e) {
-        	stderr.printf("Error: %s\n", e.message);
-        }
+		// string translators = _("Ian Hernández");
 
-        Gtk.show_about_dialog(window,
-			"program-name", ("Simple Text"),
-			"title", _("About Simple Text"),
-			"copyright", ("Copyright \xc2\xa9 2015 Ian Hernández"),
-			"comments", 
-			_("A not so simple text and code editor written in Vala."),
-			"website", ("https://github.com/BadWolfie/simple-text"),
-			"website_label", _("Web page"),
-			"license", _(license),
-			"logo-icon-name", ("text-editor"),
-			"documenters", documenters,
-			"authors", authors,
-			"version", ("0.9.6")
-		);
+		string[] contributors = { "Carlitos Phelps" };
+
+		string license = null;
+		try {
+			FileUtils.get_contents(
+				"/opt/simple-text/data/LICENSE_HEADER", out license);
+		} catch (Error e) {
+			stderr.printf("Error: %s\n", e.message);
+		}
+
+		var about_dialog = new AboutDialog();
+		about_dialog.set_transient_for(window);
+
+        about_dialog.program_name = ("Simple Text");
+		about_dialog.title = _("About Simple Text");
+		about_dialog.copyright = ("Copyright \xc2\xa9 2015 Ian Hernández");
+		about_dialog.comments = 
+			_("A not so simple text and code editor written in Vala.");
+		about_dialog.website = ("https://github.com/BadWolfie/simple-text");
+		about_dialog.website_label = _("Web page");
+		about_dialog.license = _(license);
+		about_dialog.logo_icon_name = ("text-editor");
+		about_dialog.documenters = documenters;
+		about_dialog.authors = authors;
+		// about_dialog.translator_credits = translators;
+		about_dialog.version = ("0.9.6");
+
+		about_dialog.add_credit_section(_("Contributors"),contributors);
+
+		about_dialog.run();
+		about_dialog.destroy();
 	}
 
 	private void quit_cb() {
