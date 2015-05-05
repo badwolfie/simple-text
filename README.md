@@ -1,5 +1,5 @@
 # Simple Text (beta)
-A very simple text and code editor written in Vala.
+A *not so simple* text and code editor written in Vala.
 
 Requires: Vala, GTK+ 3, GTKSourceView 3, Gee 0.8, VTE 2.91, dconf
 

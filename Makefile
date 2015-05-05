@@ -36,6 +36,7 @@ install: pre_install
 	mv $(INSTALL_FOLDER) /opt
 	install -m755 $(OUTPUT).desktop $(LAUNCHER_FOLDER)
 	ln -s /opt/$(OUTPUT)/$(OUTPUT) $(EXEC_FOLDER)/$(OUTPUT)
+	update-desktop-database -q
 
 uninstall:
 	rm -rf /opt/$(OUTPUT) $(LAUNCHER_FOLDER)/$(OUTPUT).desktop $(EXEC_FOLDER)/simple-text
@@ -44,7 +45,7 @@ run:
 	./$(OUTPUT)
 
 clean:
-	$(RM) $(OUTPUT) data/gschemas.compiled
+	$(RM) $(OUTPUT)
 
 # version:
 # 	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"

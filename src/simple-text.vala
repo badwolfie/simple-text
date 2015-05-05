@@ -152,14 +152,15 @@ public class SimpleText : Gtk.Application {
 			"program-name", ("Simple Text"),
 			"title", _("About Simple Text"),
 			"copyright", ("Copyright \xc2\xa9 2015 Ian Hernández"),
-			"comments", _("A very simple text editor written in Vala."),
+			"comments", 
+			_("A not so simple text and code editor written in Vala."),
 			"website", ("https://github.com/BadWolfie/simple-text"),
 			"website_label", _("Web page"),
 			"license", _(license),
 			"logo-icon-name", ("text-editor"),
 			"documenters", documenters,
 			"authors", authors,
-			"version", ("0.9.5")
+			"version", ("0.9.6")
 		);
 	}
 
