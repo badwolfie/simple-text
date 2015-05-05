@@ -57,6 +57,12 @@
       <description>Whether or not should the editor activate automatic indentation</description>
     </key>
 
+    <key type="b" name="show-grid-pattern">
+      <default>false</default>
+      <summary>Show editor background grid pattern</summary>
+      <description>Whether or not should the editor show a background grid pattern</description>
+    </key>
+
     <key type="b" name="use-default-typo">
       <default>true</default>
       <summary>Use default typography</summary>
@@ -70,9 +76,15 @@
     </key>
 
     <key type="s" name="color-scheme">
-      <default>'monokai-extended'</default>
+      <default>'classic'</default>
       <summary>Color Scheme</summary>
       <description>Color Scheme to be used by the editor for syntax highlighting</description>
+    </key>
+
+    <key type="b" name="prefer-dark">
+      <default>true</default>
+      <summary>Prefer dark variant</summary>
+      <description>Prefer dark variant for GTK+ theme</description>
     </key>
   </schema>
 </schemalist>

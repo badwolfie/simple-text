@@ -43,12 +43,14 @@ public class SimpleText : Gtk.Application {
 		editor.highlight_current_line = 
 			settings.get_boolean("highlight-current-line");
 		editor.highlight_brackets = settings.get_boolean("highlight-brackets");
+		editor.show_grid_pattern = settings.get_boolean("show-grid-pattern");
 		editor.tab_width = settings.get_int("tab-width");
 		editor.insert_spaces = settings.get_boolean("insert-spaces");
 		editor.auto_indent = settings.get_boolean("auto-indent");
 		editor.use_default_typo = settings.get_boolean("use-default-typo");
 		editor.editor_font = settings.get_string("editor-font");
 		editor.color_scheme = settings.get_string("color-scheme");
+		editor.prefer_dark = settings.get_boolean("prefer-dark");
 		
 		add_action_entries(app_entries,this);
 		window = new MainWindow(this,editor);		
@@ -119,6 +121,7 @@ public class SimpleText : Gtk.Application {
 		settings.set_boolean("highlight-current-line", 
 							 editor.highlight_current_line);
 		settings.set_boolean("highlight-brackets", editor.highlight_brackets);
+		settings.set_boolean("show-grid-pattern", editor.show_grid_pattern);
 		settings.set_int("tab-width", editor.tab_width);
 		settings.set_boolean("insert-spaces", editor.insert_spaces);
 		settings.set_boolean("auto-indent", editor.auto_indent);
@@ -128,6 +131,7 @@ public class SimpleText : Gtk.Application {
 		else
 			settings.set_string("editor-font", editor.editor_font);
 		settings.set_string("color-scheme", editor.color_scheme);
+		settings.set_boolean("prefer-dark", editor.prefer_dark);
 	}
 	
 	private void show_prefs_cb() {

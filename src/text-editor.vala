@@ -81,6 +81,14 @@ public class TextEditor : Object {
 		}
 	}
 
+	private bool _show_grid_pattern;
+	public bool show_grid_pattern {
+		get { return _show_grid_pattern; }
+		set {
+			if (_show_grid_pattern != value)
+				_show_grid_pattern = value;
+		}
+	}
 	
 	private bool _use_default_typo;
 	public bool use_default_typo {
@@ -109,4 +117,12 @@ public class TextEditor : Object {
 		}
 	}
 
+	private bool _prefer_dark;
+	public bool prefer_dark {
+		get { return _prefer_dark; }
+		set {
+			if (_prefer_dark != value)
+				_prefer_dark = value;
+		}
+	}
 }

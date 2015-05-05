@@ -15,7 +15,7 @@ public class SimpleSourceView : SourceView {
 		var scheme_manager = SourceStyleSchemeManager.get_default();
 		scheme_manager.append_search_path("/opt/simple-text/style_schemes");
 		var source_scheme = scheme_manager.get_scheme(editor.color_scheme);
-		
+
 		buff.style_scheme = source_scheme;
 		Object(buffer: buff);
 		this.editor = editor;
@@ -79,7 +79,11 @@ public class SimpleSourceView : SourceView {
 		
 		override_font(Pango.FontDescription.from_string(editor.editor_font));
 		
-		// set_background_pattern(SourceBackgroundPatternType.GRID);
+		if (editor.show_grid_pattern)
+			set_background_pattern(SourceBackgroundPatternType.GRID);
+		else
+			set_background_pattern(SourceBackgroundPatternType.NONE);
+
 		smart_home_end = SourceSmartHomeEndType.BEFORE;
 		wrap_mode = WrapMode.NONE;
 
@@ -92,7 +96,6 @@ public class SimpleSourceView : SourceView {
 		);
 
 		drag_data_received.connect(on_drag_data_received);
-		// drag_drop.connect(on_drag_drop);
 	}
 
 	public void change_language(string language) {
@@ -147,6 +150,13 @@ public class SimpleSourceView : SourceView {
 		editor.notify["auto-indent"].connect((pspec) => {
 			auto_indent = editor.auto_indent;
 		});
+
+		editor.notify["show-grid-pattern"].connect((pspec) => {
+			if (editor.show_grid_pattern)
+				set_background_pattern(SourceBackgroundPatternType.GRID);
+			else
+				set_background_pattern(SourceBackgroundPatternType.NONE);
+		});
 		
 		editor.notify["use-default-typo"].connect((pspec) => {
 			if (editor.use_default_typo) {
@@ -162,16 +172,15 @@ public class SimpleSourceView : SourceView {
 			override_font(
 				Pango.FontDescription.from_string(editor.editor_font));
 		});
+
+		editor.notify["color-scheme"].connect((pspec) => {
+			var scheme_manager = SourceStyleSchemeManager.get_default();
+			scheme_manager.append_search_path("/opt/simple-text/style_schemes");
+
+			var source_scheme = scheme_manager.get_scheme(editor.color_scheme);
+			(this.buffer as SourceBuffer).style_scheme = source_scheme;
+		});
 	}
-
-	// private bool on_drag_drop(Widget widget, Gdk.DragContext context, 
-	// 						  int x, int y, uint time) {
-	// 	var target_type = 
-	// 		(Gdk.Atom) context.list_targets().nth_data(0);
-	// 	drag_get_data(widget, context, target_type, time);
-
-	// 	return true;
-	// }
 
 	private void on_drag_data_received(Widget widget, Gdk.DragContext context, 
 									   int x, int y, 

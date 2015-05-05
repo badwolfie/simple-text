@@ -39,6 +39,11 @@ public class MainWindow : ApplicationWindow {
 	public MainWindow(Gtk.Application app, TextEditor editor) {
 		Object(application: app);
 		_editor = editor;
+		_editor.notify["prefer-dark"].connect((pspec) => {
+			Gtk.Settings.get_default().set(
+				"gtk-application-prefer-dark-theme",_editor.prefer_dark);
+		});
+
 		opened_files = new List<string>();
 		closed_files = new Array<string>();
 
@@ -52,7 +57,7 @@ public class MainWindow : ApplicationWindow {
 
 	private void create_widgets() {
 		Gtk.Settings.get_default().set(
-			"gtk-application-prefer-dark-theme",true);
+			"gtk-application-prefer-dark-theme",_editor.prefer_dark);
 
 		headerbar = new SimpleHeaderBar(this);
 		set_titlebar(headerbar);

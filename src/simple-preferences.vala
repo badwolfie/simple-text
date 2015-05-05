@@ -9,17 +9,19 @@ public class PreferencesDialog : Dialog {
 	private CheckButton line_numbers_check;
 	private CheckButton right_margin_check;
 	private SpinButton right_margin_spin;
-	// private CheckButton text_wrap_check;
+	
 	private CheckButton current_line_check;
 	private CheckButton brackets_check;
 	
 	private ComboBox tab_width_combo;
 	private CheckButton insert_spaces_check;
 	private CheckButton auto_indent_check;
+	private CheckButton grid_pattern_check;
 	
 	private CheckButton default_typo_check;
 	private FontButton font_button;
-	// private  scheme_chooser;
+	private ListBox scheme_chooser;
+	private CheckButton prefer_dark_check;
 
 	public PreferencesDialog(MainWindow parent, TextEditor ed) {
 		Object(use_header_bar: (int) true, editor: ed);
@@ -80,20 +82,6 @@ public class PreferencesDialog : Dialog {
 		var aux_label_1 = new Label("");
 		aux_label_1.halign = Align.START;
 		
-		/* var text_label = new Label("<b>Text adjustment</b>");
-		text_label.use_markup = true;
-		text_label.halign = Align.START;
-		
-		text_wrap_check = new CheckButton.with_mnemonic(
-			" Activate text _wrapping");
-		text_wrap_check.active = editor.use_text_wrap;
-		text_wrap_check.toggled.connect(() => {
-			editor.use_text_wrap = text_wrap_check..active;
-		});
-		
-		var aux_label_2 = new Label("");
-		aux_label_2.halign = Align.START; */
-		
 		var highlight_label = new Label("<b>Highlighting</b>");
 		highlight_label.use_markup = true;
 		highlight_label.halign = Align.START;
@@ -109,15 +97,18 @@ public class PreferencesDialog : Dialog {
 		brackets_check.toggled.connect(() => {
 			editor.highlight_brackets = brackets_check.active;
 		});
+
+		grid_pattern_check = new CheckButton.with_mnemonic(
+			"Show _grid pattern");
+		grid_pattern_check.toggled.connect(() => {
+			editor.show_grid_pattern = grid_pattern_check.active;
+		});
 		
 		box_view.add(line_numbers_check);
 		box_view.add(hbox_margin);
+		box_view.add(grid_pattern_check);
 		
 		box_view.add(aux_label_1);
-		/* box_view.add(text_label);
-		box_view.add(text_wrap_check);
-		
-		box_view.add(aux_label_2); */
 		box_view.add(highlight_label);
 		box_view.add(current_line_check);
 		box_view.add(brackets_check);
@@ -170,14 +161,14 @@ public class PreferencesDialog : Dialog {
 		box_editor.add(hbox_tab_width);
 		box_editor.add(insert_spaces_check);
 		box_editor.add(auto_indent_check);
-		
+
 		
 		var typo_label = new Label("<b>Typography</b>");
 		typo_label.use_markup = true;
 		typo_label.halign = Align.START;
 		
 		default_typo_check = new CheckButton.with_mnemonic(
-			"Use default typography (Monospace 10)");
+			"Use default _typography (Monospace 10)");
 		
 		default_typo_check.toggled.connect(() => {
 			font_button.sensitive = !default_typo_check.active;
@@ -199,16 +190,40 @@ public class PreferencesDialog : Dialog {
 		color_scheme_label.use_markup = true;
 		color_scheme_label.halign = Align.START;
 		
-		var ns_label = new Label("<i>Not supported yet.</i>");
-		ns_label.use_markup = true;
-		ns_label.halign = Align.START;
+		var scheme_manager = SourceStyleSchemeManager.get_default();
+		scheme_manager.append_search_path("/opt/simple-text/style_schemes");
+
+		scheme_chooser = new ListBox();
+		scheme_chooser.selection_mode = SelectionMode.SINGLE;
+		scheme_chooser.activate_on_single_click = true;
+		scheme_chooser.row_activated.connect(on_scheme_selected);
+
+		foreach (string scheme in scheme_manager.scheme_ids) {
+			var label = new Label(scheme);
+			scheme_chooser.add(label);
+		}
+
+		var scroll = new ScrolledWindow(null,null);
+		scroll.set_policy(PolicyType.NEVER,PolicyType.AUTOMATIC);
+		scroll.height_request = 100;
+		scroll.add(scheme_chooser);
+
+		var frame = new Frame(null);
+		frame.add(scroll);
+
+		prefer_dark_check = new CheckButton.with_mnemonic(
+			"Use _dark theme variant");
+		prefer_dark_check.toggled.connect(() => {
+			editor.prefer_dark = prefer_dark_check.active;
+		});
 			
 		box_typo.add(typo_label);
 		box_typo.add(default_typo_check);
 		box_typo.add(font_button);
 		box_typo.add(aux_label_3);
 		box_typo.add(color_scheme_label);
-		box_typo.add(ns_label);
+		box_typo.add(frame);
+		box_typo.add(prefer_dark_check);
 		
 		show_all();
 		
@@ -251,6 +266,11 @@ public class PreferencesDialog : Dialog {
 		editor.notify["auto-indent"].connect((pspec) => {
 			auto_indent_check.active = editor.auto_indent;
 		});
+
+		grid_pattern_check.active = editor.show_grid_pattern;
+		editor.notify["show-grid-pattern"].connect((pspec) => {
+			grid_pattern_check.active = editor.show_grid_pattern;
+		});
 		
 		default_typo_check.active = editor.use_default_typo;
 		editor.notify["use-default-typo"].connect((pspec) => {
@@ -261,6 +281,16 @@ public class PreferencesDialog : Dialog {
 		editor.notify["editor-font"].connect((pspec) => {
 			font_button.font_name = editor.editor_font;
 		});
+
+		prefer_dark_check.active = editor.prefer_dark;
+		editor.notify["prefer-dark"].connect((pspec) => {
+			prefer_dark_check.active = editor.prefer_dark;
+		});
+	}
+
+	private void on_scheme_selected(ListBoxRow row) {
+		Label scheme = row.get_child() as Label;
+		editor.color_scheme = scheme.label;
 	}
 	
 	private void set_combo_box_from_int (Gtk.ComboBox combo, int value) {
