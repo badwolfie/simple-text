@@ -115,6 +115,8 @@ public class SimpleSourceView : SourceView {
 		this.buffer = buff;
 
 		set_properties();
+
+		buff.set_modified(false);
 	}
 
 	private void connect_signals() {
