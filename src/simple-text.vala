@@ -143,7 +143,8 @@ public class SimpleText : Gtk.Application {
 
         string license = null;
         try {
-        	FileUtils.get_contents("data/LICENSE_HEADER", out license);
+        	FileUtils.get_contents(
+        		"/opt/simple-text/data/LICENSE_HEADER", out license);
         } catch (Error e) {
         	stderr.printf("Error: %s\n", e.message);
         }
