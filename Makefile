@@ -35,7 +35,7 @@ pre_install:
 install: pre_install
 	mv $(INSTALL_FOLDER) /opt
 	install -m755 $(OUTPUT).desktop $(LAUNCHER_FOLDER)
-	install -m755 simple-text $(EXEC_FOLDER)
+	ln -s /opt/$(OUTPUT)/$(OUTPUT) $(EXEC_FOLDER)/$(OUTPUT)
 
 uninstall:
 	rm -rf /opt/$(OUTPUT) $(LAUNCHER_FOLDER)/$(OUTPUT).desktop $(EXEC_FOLDER)/simple-text
