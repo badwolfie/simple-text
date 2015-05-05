@@ -2,7 +2,7 @@
 A very simple text and code editor written in Vala.
 
 Compiling: `$ make simple-text`  
-Installing: `# make install && make post_install`  
+Installing: `# make install`  
 Requires: Vala, GTK+ 3, GTKSourceView 3, Gee 0.8, VTE 2.91, dconf  
 *If you're using ArchLinux there's an AUR package for it called simple-text*
 
