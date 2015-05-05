@@ -184,7 +184,7 @@ public class SimpleText : Gtk.Application {
 		about_dialog.documenters = documenters;
 		about_dialog.authors = authors;
 		// about_dialog.translator_credits = translators;
-		about_dialog.version = ("0.9.6");
+		about_dialog.version = ("0.9.7");
 
 		// about_dialog.add_credit_section(_("Contributors"),contributors);
 
