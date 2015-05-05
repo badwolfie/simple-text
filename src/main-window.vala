@@ -27,12 +27,52 @@ public class MainWindow : ApplicationWindow {
 	public File[] arg_files {
 		set {
 			_arg_files = value;
-			
+			load_workspace();
+
 			if (_arg_files != null) {
 				foreach (var file in _arg_files) 
 					add_new_tab_from_file(file.get_path());
-			} else 
-				new_tab_cb(); 
+			}
+		}
+	}
+
+	private void load_workspace() {
+		string workspace = null;
+
+		try {
+			FileUtils.get_contents(
+				Environment.get_home_dir() + "/.simple-text/saved-workspace", 
+				out workspace);
+		} catch (Error e) {
+			stderr.printf("Error: %s\n", e.message);
+		}
+
+		if (workspace != null) {
+			if (workspace == "")
+				new_tab_cb();
+			else {
+				var workspace_files = workspace.split("/,/");
+				foreach (string file in workspace_files) {
+					if (file != "")
+						add_new_tab_from_file(file);
+				}
+			}
+		}
+	}
+
+	private void save_workspace() {
+		string workspace = "";
+		opened_files.foreach((entry) => {
+			if (entry.contains("/"))
+				workspace += (entry + "/,/");
+		});
+
+		try {
+			FileUtils.set_contents(
+				Environment.get_home_dir() + "/.simple-text/saved-workspace", 
+				workspace);
+		} catch (Error e) {
+			stderr.printf ("Error: %s\n", e.message);
 		}
 	}
 
@@ -608,7 +648,8 @@ public class MainWindow : ApplicationWindow {
 	}
 
 	private void quit_cb() {
-		while (opened_files.length() != 0)
+		save_workspace();
+		while (opened_files.length() != 0) 
 			close_tab_cb();
 		this.destroy();
 	}

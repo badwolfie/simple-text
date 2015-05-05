@@ -19,7 +19,19 @@ public class SimpleText : Gtk.Application {
 	protected override void startup() {
 		base.startup();
 
+		var conf_dir = File.new_for_path(
+			Environment.get_home_dir() + "/.simple-text");
+
+		var saved_workspace = File.new_for_path(
+			Environment.get_home_dir() + "/.simple-text/saved-workspace");
+
 		try {
+			if (!conf_dir.query_exists())
+				conf_dir.make_directory();
+				
+			if (!saved_workspace.query_exists())
+				saved_workspace.create(FileCreateFlags.PRIVATE);
+
 			var settings_schema_source = 
 				new GLib.SettingsSchemaSource.from_directory(
 					"/opt/simple-text/data",null,false);
@@ -147,7 +159,7 @@ public class SimpleText : Gtk.Application {
 
 		// string translators = _("Ian Hernández");
 
-		string[] contributors = { "Carlitos Phelps" };
+		// string[] contributors = { "Carlos López" };
 
 		string license = null;
 		try {
@@ -174,7 +186,7 @@ public class SimpleText : Gtk.Application {
 		// about_dialog.translator_credits = translators;
 		about_dialog.version = ("0.9.6");
 
-		about_dialog.add_credit_section(_("Contributors"),contributors);
+		// about_dialog.add_credit_section(_("Contributors"),contributors);
 
 		about_dialog.run();
 		about_dialog.destroy();
