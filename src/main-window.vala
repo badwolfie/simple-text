@@ -244,7 +244,7 @@ public class MainWindow : ApplicationWindow {
 		}
 	}
 
-	private void add_new_tab_from_file(string file_name) {		
+	private void add_new_tab_from_file(string file_name) {
 		if (file_is_opened(file_name)) {
 			check_pages();
 			return;
@@ -253,6 +253,7 @@ public class MainWindow : ApplicationWindow {
 		var tab_label = new SimpleTab.from_file(editor,
 			Path.get_basename(file_name),
 			file_name);
+		tab_label.view_drag_n_drop.connect(add_new_tab_from_file);
 		add_new_tab(tab_label);
 		
 		var current_page = tab_bar.get_current_page(
@@ -368,6 +369,7 @@ public class MainWindow : ApplicationWindow {
 	public void new_tab_cb() {
 		opened_files.append("%s %d".printf(untitled,counter + 1));
 		var tab = new SimpleTab(editor);
+		tab.view_drag_n_drop.connect(add_new_tab_from_file);
 		add_new_tab(tab);
 
 		status.refresh_statusbar(FileOpeartion.NEW_FILE,null);
@@ -420,6 +422,7 @@ public class MainWindow : ApplicationWindow {
 		var tab_label = new SimpleTab.from_file(editor,
 			last_file_basename,
 			last_file_path);
+		tab_label.view_drag_n_drop.connect(add_new_tab_from_file);
 		add_new_tab(tab_label);
 		
 		var current_page = tab_bar.get_current_page(

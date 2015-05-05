@@ -1,6 +1,8 @@
 using Gtk;
 
 public class SimpleTab : Box {
+	public signal void view_drag_n_drop(string file_name);
+
 	private TextEditor editor;
 
 	public signal void close_clicked (SimpleTab tab);
@@ -92,6 +94,7 @@ public class SimpleTab : Box {
 			}
 		} else
 			_text_view = new SimpleSourceView(editor);
+		_text_view.drag_n_drop.connect(on_drag_n_drop);
 		text_view.show();
 
 		_completion = text_view.get_completion();
@@ -105,6 +108,10 @@ public class SimpleTab : Box {
 		tab_widget.show();
 
 		show_all();
+	}
+
+	private void on_drag_n_drop(string file_name) {
+		view_drag_n_drop(file_name);
 	}
 
 	public void refresh_title() {

@@ -173,7 +173,6 @@ public class SimpleText : Gtk.Application {
         Intl.bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
         Intl.textdomain(GETTEXT_PACKAGE);
         
-        stdout.printf(args[0] + "\n");
 		Gtk.Window.set_default_icon_name ("text-editor");
 		var app = new SimpleText();
 

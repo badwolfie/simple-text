@@ -1,6 +1,13 @@
 using Gtk;
 
 public class SimpleSourceView : SourceView {
+	public signal void drag_n_drop(string file_name);
+
+	private const int TARGET_TYPE_URI_LIST = 80;
+	private const TargetEntry[] target_list = {
+		{ "text/uri-list", 0, TARGET_TYPE_URI_LIST }
+	};
+
 	private TextEditor editor;
 
 	public SimpleSourceView(TextEditor editor) {
@@ -75,6 +82,17 @@ public class SimpleSourceView : SourceView {
 		// set_background_pattern(SourceBackgroundPatternType.GRID);
 		smart_home_end = SourceSmartHomeEndType.BEFORE;
 		wrap_mode = WrapMode.NONE;
+
+		drag_dest_set(this,
+			DestDefaults.MOTION 
+			| DestDefaults.HIGHLIGHT 
+			| DestDefaults.DROP,
+			target_list,
+			Gdk.DragAction.COPY
+		);
+
+		drag_data_received.connect(on_drag_data_received);
+		// drag_drop.connect(on_drag_drop);
 	}
 
 	public void change_language(string language) {
@@ -144,5 +162,42 @@ public class SimpleSourceView : SourceView {
 			override_font(
 				Pango.FontDescription.from_string(editor.editor_font));
 		});
+	}
+
+	// private bool on_drag_drop(Widget widget, Gdk.DragContext context, 
+	// 						  int x, int y, uint time) {
+	// 	var target_type = 
+	// 		(Gdk.Atom) context.list_targets().nth_data(0);
+	// 	drag_get_data(widget, context, target_type, time);
+
+	// 	return true;
+	// }
+
+	private void on_drag_data_received(Widget widget, Gdk.DragContext context, 
+									   int x, int y, 
+									   SelectionData selection_data, 
+									   uint target_type, uint time) {
+		if (target_type == TARGET_TYPE_URI_LIST) {
+			var uri_list = ((string) selection_data.get_data()).strip();
+
+			var uris = uri_list.split("\n");
+			foreach (var uri in uris) {
+				string path = get_file_path_from_uri(uri);
+				drag_n_drop(path);
+			}
+		}
+	}
+
+	private string get_file_path_from_uri(string uri) {
+		string path = "";
+
+		if (uri.has_prefix("file://")) {
+			path = uri.substring("file://".length);
+		} else if (uri.has_prefix("file:")) {
+			path = uri.substring("file:".length);
+		}
+
+		path = path.strip();
+		return path;
 	}
 }
