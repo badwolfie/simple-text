@@ -22,7 +22,7 @@ public class SimpleTab : Box {
 
 	private EventBox evt_box;
 	private Label title_label;
-	private Button close_button;
+	private EventBox close_button;
 	private Separator separator;
 
 	private ScrolledWindow _tab_widget;
@@ -71,9 +71,12 @@ public class SimpleTab : Box {
 
 		title_label = new Label(tab_title);
 		separator = new Separator(Orientation.VERTICAL);
-		close_button = new Button.from_icon_name("window-close-symbolic",
+		var close_img = new Image.from_icon_name("window-close-symbolic",
 												 IconSize.MENU);
-		close_button.clicked.connect(button_clicked);
+		close_button = new EventBox();
+		close_button.child = close_img;
+		close_button.set_above_child(true);
+		close_button.button_press_event.connect(button_clicked);
 		
 		evt_box = new EventBox();
 		evt_box.child = title_label;
@@ -121,8 +124,9 @@ public class SimpleTab : Box {
 		}
 	}
 
-	private void button_clicked() {
+	private bool button_clicked(Gdk.EventButton evt) {
 		this.close_clicked(this);
+		return true;
 	}
 
 	private bool tab_clicked_action(Gdk.EventButton evt) {

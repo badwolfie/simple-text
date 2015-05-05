@@ -13,7 +13,6 @@ public class MainWindow : ApplicationWindow {
 	private SimpleHeaderBar headerbar;
 	private SimpleStatusbar status;
 	private Terminal terminal;
-	private Frame frame;
 	
 	private SimpleTabBar tab_bar;
 	private Stack documents;
@@ -182,22 +181,19 @@ public class MainWindow : ApplicationWindow {
 		status = new SimpleStatusbar(this);
 		status.change_syntax_request.connect(change_syntax_cb);
 		status.show();
-		
-		terminal = new Terminal();
-		frame = new Frame(null);
-		frame.add(terminal);
 
 		var vbox = new Box(Orientation.VERTICAL,0);
 		vbox.pack_start(search_bar,false,true,0);
-		vbox.pack_start(tab_bar,false,true,5);
+		vbox.pack_start(tab_bar,false,true,7);
 		vbox.pack_start(documents,true,true,0);
 		vbox.pack_start(status,false,true,0);
 		vbox.height_request = 500;
 		vbox.show();
 
+		terminal = new Terminal();
 		var pane = new Paned(Orientation.VERTICAL);
 		pane.add1(vbox);
-		pane.add2(frame);
+		pane.add2(terminal);
 		pane.show();
 
 		add(pane);
@@ -223,7 +219,6 @@ public class MainWindow : ApplicationWindow {
 		if (terminal.get_visible()) {
 			terminal.reset(true,true);
 			terminal.hide();
-			frame.hide();
 			
 			var visible_doc = documents.visible_child as ScrolledWindow;
 			visible_doc.get_child().grab_focus();
@@ -267,7 +262,7 @@ public class MainWindow : ApplicationWindow {
 				stderr.printf("Error: %s\n", e.message);
 			}
 			
-			frame.show_all();
+			terminal.show();
 			terminal.grab_focus();
 		}
 	}

@@ -9,7 +9,7 @@ public class SimpleTabBar : Box {
 	private Stack stack;
 
 	private Box extra_box;
-	private Button extra_menu;
+	private EventBox extra_menu;
 	private Popover extra_popup;
 
 	private List<SimpleTab> _extra_tabs;
@@ -34,13 +34,20 @@ public class SimpleTabBar : Box {
 		_extra_tabs = new List<SimpleTab>();
 		
 		extra_box = new Box(Orientation.VERTICAL,0);
-		extra_menu = new Button.from_icon_name(
+		var extra_menu_img = new Image.from_icon_name(
 			"view-more-symbolic",IconSize.MENU);
-		extra_menu.clicked.connect(() => {
+
+		extra_menu = new EventBox();
+		extra_menu.child = extra_menu_img;
+		extra_menu.set_above_child(true);
+
+		extra_menu.button_press_event.connect((event) => {
 			if (extra_popup.get_visible())
 				extra_popup.hide();
 			else
 				extra_popup.show_all();
+
+			return true;
 		});
 
 		extra_popup = new Popover(extra_menu);		
@@ -64,7 +71,7 @@ public class SimpleTabBar : Box {
 			tab_num++;
 		} else {
 			extra_menu.show();
-			extra_box.pack_start(tab,false,true,5);
+			extra_box.pack_start(tab,false,true,7);
 			_extra_tabs.append(tab);
 			tab_extra_num++;
 		}
