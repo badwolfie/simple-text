@@ -152,10 +152,15 @@ public class MainWindow : ApplicationWindow {
 		vbox.pack_start(tab_bar,false,true,5);
 		vbox.pack_start(documents,true,true,0);
 		vbox.pack_start(status,false,true,0);
-		vbox.pack_start(frame,false,true,0);
+		vbox.height_request = 500;
 		vbox.show();
 
-		add(vbox);
+		var pane = new Paned(Orientation.VERTICAL);
+		pane.add1(vbox);
+		pane.add2(frame);
+		pane.show();
+
+		add(pane);
 	}
 
 	private void on_page_switched(SimpleTab tab) {
