@@ -401,7 +401,7 @@ public class MainWindow : ApplicationWindow {
 		if (documents.visible_child == null) return ;
 
 		var current_page = tab_bar.get_current_page(documents.visible_child);
-		string filename =
+		string filename = 
 			opened_files.nth_data(tab_bar.get_page_num(current_page));
 		int page_num = tab_bar.get_page_num(current_page);
 		var view = current_page.text_view as SourceView;
