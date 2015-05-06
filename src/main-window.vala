@@ -187,13 +187,13 @@ public class MainWindow : ApplicationWindow {
 		vbox.pack_start(tab_bar,false,true,7);
 		vbox.pack_start(documents,true,true,0);
 		vbox.pack_start(status,false,true,0);
-		vbox.height_request = 500;
+		vbox.height_request = 400;
 		vbox.show();
 
 		terminal = new Terminal();
 		var pane = new Paned(Orientation.VERTICAL);
-		pane.add1(vbox);
-		pane.add2(terminal);
+		pane.pack1(vbox,false,false);
+		pane.pack2(terminal,true,true);
 		pane.show();
 
 		add(pane);
@@ -202,6 +202,14 @@ public class MainWindow : ApplicationWindow {
 	private void on_page_switched(SimpleTab tab) {
 		int page_num = tab_bar.get_page_num(tab);
 		headerbar.title = opened_files.nth_data(page_num);
+		
+		if (terminal.get_visible()) {
+			terminal.reset(true,true);
+			terminal.hide();
+			
+			var visible_doc = documents.visible_child as ScrolledWindow;
+			visible_doc.get_child().grab_focus();
+		}
 		
 		status.refresh_statusbar(FileOpeartion.NULL_OPERATION,null);
 		status.refresh_language(headerbar.title);

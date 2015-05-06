@@ -159,7 +159,9 @@ public class SimpleText : Gtk.Application {
 
 		// string translators = _("Ian Hernández");
 
-		// string[] contributors = { "Carlos López" };
+		string[] contributors = { 
+			"Carlos López <clopezr_1205@openmailbox.org>" 
+		};
 
 		string license = null;
 		try {
@@ -186,7 +188,7 @@ public class SimpleText : Gtk.Application {
 		// about_dialog.translator_credits = translators;
 		about_dialog.version = ("0.9.7");
 
-		// about_dialog.add_credit_section(_("Contributors"),contributors);
+		about_dialog.add_credit_section(_("Contributors"),contributors);
 
 		about_dialog.run();
 		about_dialog.destroy();
