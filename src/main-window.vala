@@ -285,6 +285,18 @@ public class MainWindow : ApplicationWindow {
 			_("Cancel"), ResponseType.CANCEL,
 			_("Open"), ResponseType.ACCEPT
 		);
+
+		if (documents.visible_child != null) {
+			var current_page = 
+				tab_bar.get_current_page(documents.visible_child);
+			string filename =
+				opened_files.nth_data(tab_bar.get_page_num(current_page));
+
+			if (filename.contains(untitled))
+				file_chooser.set_current_folder(Environment.get_home_dir());
+			else
+				file_chooser.set_current_folder(Path.get_dirname(filename));
+		}
 		
 		file_chooser.select_multiple = true;
 		if (file_chooser.run() == ResponseType.ACCEPT) {
@@ -293,8 +305,9 @@ public class MainWindow : ApplicationWindow {
 				add_new_tab_from_file((string) entry);
 			});
 			
-			file_chooser.destroy();
 		}
+		
+		file_chooser.destroy();
 	}
 
 	private void add_new_tab_from_file(string file_name) {
@@ -332,11 +345,11 @@ public class MainWindow : ApplicationWindow {
 
 	public void save_tab_to_file() {
 		var current_doc = documents.visible_child as ScrolledWindow;
-		var view = current_doc.get_child() as SourceView;
+		if (current_doc == null) return ;
 
+		var view = current_doc.get_child() as SourceView;
 		var tab_label = tab_bar.get_current_page(current_doc);
 		int page_num = tab_bar.get_page_num(tab_label);
-
 
 		if (headerbar.title.contains(untitled)) {
 			if (view.buffer.text == "") return;
@@ -345,6 +358,8 @@ public class MainWindow : ApplicationWindow {
 				_("Cancel"), ResponseType.CANCEL,
 				_("Save"), ResponseType.ACCEPT
 			);
+
+			file_chooser.set_current_folder(Environment.get_home_dir());
 
 			var p_langs = new ProgrammingLanguages();
 			string ext = p_langs.get_lang_ext(status.label.label);
@@ -383,6 +398,8 @@ public class MainWindow : ApplicationWindow {
 	}
 
 	private void save_as_cb() {
+		if (documents.visible_child == null) return ;
+
 		var current_page = tab_bar.get_current_page(documents.visible_child);
 		string filename =
 			opened_files.nth_data(tab_bar.get_page_num(current_page));
@@ -398,6 +415,10 @@ public class MainWindow : ApplicationWindow {
 		);
 
 		file_chooser.set_current_name(Path.get_basename(filename));
+		if (filename.contains(untitled))
+			file_chooser.set_current_folder(Environment.get_home_dir());
+		else 
+			file_chooser.set_current_folder(Path.get_dirname(filename));
 
 		switch (file_chooser.run()) {
 			case ResponseType.ACCEPT:
