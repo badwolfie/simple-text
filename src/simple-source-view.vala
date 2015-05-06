@@ -32,7 +32,10 @@ public class SimpleSourceView : SourceView {
 		var source_scheme = scheme_manager.get_scheme(editor.color_scheme);
 
 		buff.style_scheme = source_scheme;
+		
+		buff.begin_not_undoable_action();
 		buff.text = display_text;
+		buff.end_not_undoable_action();
 
 		Object(buffer: buff);
 		this.editor = editor;
@@ -55,7 +58,10 @@ public class SimpleSourceView : SourceView {
 
 		buff.style_scheme = source_scheme;
 		buff.highlight_syntax = true;
+		
+		buff.begin_not_undoable_action();
 		buff.text = display_text;
+		buff.end_not_undoable_action();
 
 		Object(buffer: buff);
 		this.editor = editor;
@@ -111,7 +117,9 @@ public class SimpleSourceView : SourceView {
 		buff.style_scheme = source_scheme;
 		buff.highlight_syntax = true;
 
+		buff.begin_not_undoable_action();
 		buff.text = this.buffer.text;
+		buff.end_not_undoable_action();
 		this.buffer = buff;
 
 		set_properties();
