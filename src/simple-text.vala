@@ -200,9 +200,9 @@ public class SimpleText : Gtk.Application {
 
 	public static int main(string[] args) {
 		Intl.setlocale(LocaleCategory.ALL, "");
-        Intl.bindtextdomain(GETTEXT_PACKAGE, LOCALE_DIR);
-        Intl.bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
-        Intl.textdomain(GETTEXT_PACKAGE);
+        Intl.bindtextdomain(Config.GETTEXT_PACKAGE, Config.LOCALEDIR);
+        Intl.bind_textdomain_codeset(Config.GETTEXT_PACKAGE, "UTF-8");
+        Intl.textdomain(Config.GETTEXT_PACKAGE);
         
 		Gtk.Window.set_default_icon_name ("text-editor");
 		var app = new SimpleText();
