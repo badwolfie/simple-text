@@ -5,7 +5,8 @@ Requires: Vala, GTK+ 3, GTKSourceView 3, Gee 0.8, VTE 2.91, dconf
 
 Compiling: `$ make simple-text`  
 Installing: `# make install`  
-*If you're using ArchLinux there's an AUR package for it called simple-text*
+
+Check the [releases page](https://github.com/BadWolfie/simple-text/releases) for more installation options.
 
 ![About](screenshots/about.png)
 

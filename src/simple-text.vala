@@ -153,9 +153,9 @@ public class SimpleText : Gtk.Application {
 	}
 
 	private void about_cb() {
-		const string[] authors = { "Ian Hernández <ihernandezs@openmailbox.org>" };
+		string[] authors = { "Ian Hernández <ihernandezs@openmailbox.org>" };
 
-		const string[] documenters = { "Ian Hernández" };
+		string[] documenters = { "Ian Hernández" };
 
 		// string translators = _("Ian Hernández");
 
