@@ -52,7 +52,7 @@ public class MainWindow : ApplicationWindow {
 			else {
 				var workspace_files = workspace.split("/,/");
 				foreach (string file in workspace_files) {
-					if (file != "")
+					if ((file != "") && File.new_for_path(file).query_exists())
 						add_new_tab_from_file(file);
 				}
 			}
