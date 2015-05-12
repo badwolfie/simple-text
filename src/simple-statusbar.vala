@@ -66,33 +66,34 @@ public class SimpleStatusbar : Box {
 	public void refresh_statusbar(FileOpeartion operation, string? file_name) {
 		status.pop(context_id);
 
+		string build_string = "Building...";
 		switch (operation) {
 			case FileOpeartion.NULL_OPERATION:
 				status.push(context_id,"");
 				break;
 			case FileOpeartion.NEW_FILE:
-				status.push(context_id,"New file");
+				status.push(context_id,_("New file"));
 				break;
 			case FileOpeartion.OPEN_FILE:
-				status.push(context_id,"Opened " + file_name);
+				status.push(context_id,_("Opened") + ": " + file_name);
 				break;
 			case FileOpeartion.EDIT_FILE:
-				status.push(context_id,"Editing...");
+				status.push(context_id,_("Editing..."));
 				break;
 			case FileOpeartion.SAVE_FILE:
-				status.push(context_id,"Saved " + file_name);
+				status.push(context_id,_("Saved") + ": " + file_name);
 				break;
 			case FileOpeartion.CLOSE_FILE:
-				status.push(context_id,"Closed " + file_name);
+				status.push(context_id,_("Closed") + ": " + file_name);
 				break;
 			case FileOpeartion.BUILD_FILE:
-				status.push(context_id,"Building...");
+				status.push(context_id,_(build_string));
 				break;
 			case FileOpeartion.BUILD_DONE:
-				status.push(context_id,"Building... Done");
+				status.push(context_id,_(build_string) + " " + _("Done"));
 				break;
 			case FileOpeartion.BUILD_FAIL:
-				status.push(context_id,"Building... Failed");
+				status.push(context_id,_(build_string) + " " + _("Failed"));
 				break;
 		}
 	}

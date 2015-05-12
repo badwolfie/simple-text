@@ -1,0 +1,262 @@
+# German translations for Simple Text package.
+# Deutsch Übersetzungen für das Simple Text Paket.
+# Copyright (C) 2015 Ian Hernández
+# This file is distributed under the same license as the Simple Text package.
+# Christian Kopp <christiankopp79@gmail.com>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Simple Text 0.9.7\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-05-11 21:24-0500\n"
+"PO-Revision-Date: 2015-05-11 21:24-0500\n"
+"Last-Translator: Christian Kopp <christiankopp79@gmail.com>\n"
+"Language-Team: German\n"	
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+
+#: ../data/menu.ui.h:1
+msgid "Preferences"
+msgstr "Einstellungen"
+
+#: ../data/menu.ui.h:2 ../src/simple-text.vala:175
+msgid "About"
+msgstr "Über"
+
+#: ../data/menu.ui.h:3
+msgid "Quit"
+msgstr "Beenden"
+
+#: ../src/main-window.vala:286 ../src/simple-header-bar.vala:48
+msgid "Open"
+msgstr "Öffnen"
+
+#: ../src/simple-header-bar.vala:49
+msgid "Open file"
+msgstr "Öffne Datei"
+
+#: ../src/simple-header-bar.vala:57 ../src/simple-statusbar.vala:75
+msgid "New file"
+msgstr "Neue Datei"
+
+#: ../src/main-window.vala:8 ../src/simple-tab.vala:11
+msgid "Untitled file"
+msgstr "Unbenannte Datei"
+
+#: ../src/confirm-exit.vala:16 ../src/main-window.vala:359
+#: ../src/main-window.vala:414 ../src/simple-header-bar.vala:52
+msgid "Save"
+msgstr "Speichern"
+
+#: ../src/simple-header-bar.vala:53
+msgid "Save file"
+msgstr "Datei speichern"
+
+#: ../src/simple-header-bar.vala:62
+msgid "Build using make"
+msgstr "Kompilieren mit make"
+
+#: ../src/confirm-exit.vala:15 ../src/main-window.vala:285
+#: ../src/main-window.vala:358 ../src/main-window.vala:413
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: ../data/menu.ui.h:4
+msgid "Save as..."
+msgstr "Speichern als..."
+
+#: ../data/menu.ui.h:5
+msgid "Show terminal"
+msgstr "Zeige Terminal"
+
+#: ../data/menu.ui.h:6
+msgid "Set syntax..."
+msgstr "Syntax setzen..."
+
+#: ../data/menu.ui.h:8
+msgid "Next tab"
+msgstr "Nächster Tab"
+
+#: ../data/menu.ui.h:9
+msgid "Previous tab"
+msgstr "Vorheriger Tab"
+
+#: ../data/menu.ui.h:10
+msgid "Close current tab"
+msgstr "Aktuellen Tab schließen"
+
+#: ../data/menu.ui.h:11
+msgid "Reopen last tab"
+msgstr "Letzten Tab erneut öffnen"
+
+#: ../src/simple-text.vala:180
+msgid "Web page"
+msgstr "Webseite"
+
+#: ../src/simple-text.vala:188
+msgid "Contributors"
+msgstr "Mitwirkende"
+
+#: ../src/simple-preferences.vala:55
+msgid "View"
+msgstr "Ansehen"
+
+#: ../src/simple-preferences.vala:60
+msgid "Show line numbers"
+msgstr "Zeilennummern anzeigen"
+
+#: ../src/simple-preferences.vala:66
+msgid "Show right margin on column:"
+msgstr "Rechten Rand auf Spalte zeigen:"
+
+#: ../src/simple-preferences.vala:102
+msgid "Show grid pattern"
+msgstr "Raster anzeigen"
+
+#: ../src/simple-preferences.vala:85
+msgid "Highlighting"
+msgstr "Hervorheben"
+
+#: ../src/simple-preferences.vala:90
+msgid "Highlight current line"
+msgstr "Aktuelle Zeile hervorheben"
+
+#: ../src/simple-preferences.vala:96
+msgid "Highlight matching brackets"
+msgstr "Passende Klammern hervorheben"
+
+#: ../src/simple-preferences.vala:56
+msgid "Editor"
+msgstr "Editor"
+
+#: ../src/simple-preferences.vala:121
+msgid "Tab width:"
+msgstr "Tab-Breite:"
+
+#: ../src/simple-preferences.vala:149
+msgid "Indent using spaces"
+msgstr "Einzug mit Leerzeichen"
+
+#: ../src/simple-preferences.vala:155
+msgid "Activate auto indent"
+msgstr "Automatischen Einzug benutzen"
+
+#: ../src/simple-preferences.vala:57
+msgid "Typography and colors"
+msgstr "Typographie und Farben"
+
+#: ../src/simple-preferences.vala:166
+msgid "Typography"
+msgstr "Typographie"
+
+#: ../src/simple-preferences.vala:171
+msgid "Use default typography"
+msgstr "Standardmäßige Typographie benutzen"
+
+#: ../src/simple-preferences.vala:189
+msgid "Color Scheme"
+msgstr "Farbschema"
+
+#: ../src/simple-preferences.vala:215
+msgid "Use dark theme variant"
+msgstr "Dunkle Variante des Themes benutzen"
+
+#: ../data/simple-text.desktop.in.h:2
+msgid "Text Editor"
+msgstr "Texteditor"
+
+#: ../src/confirm-exit.vala:12
+msgid "Do you wish to save changes before closing?"
+msgstr ""
+
+#: ../src/confirm-exit.vala:5
+msgid "Confirm operation"
+msgstr ""
+
+#: ../src/confirm-exit.vala:14
+msgid "Close without saving"
+msgstr ""
+
+#: ../src/main-window.vala:142
+msgid "Enter your search..."
+msgstr ""
+
+#: ../src/main-window.vala:283
+msgid "Open File"
+msgstr "Öffne Datei"
+
+#: ../src/main-window.vala:356 ../src/main-window.vala:411
+msgid "Save File"
+msgstr ""
+
+#: ../src/main-window.vala:469
+msgid "Build successful!"
+msgstr ""
+
+#: ../src/main-window.vala:472
+msgid "An error has occurred!"
+msgstr ""
+
+#: ../src/main-window.vala:477
+msgid "Build system"
+msgstr ""
+
+#: ../src/main-window.vala:478
+msgid "Accept"
+msgstr ""
+
+#: ../src/simple-language-picker.vala:32
+msgid "Search highlight mode..."
+msgstr ""
+
+#: ../src/simple-text.vala:155
+msgid "translator-credits"
+msgstr "Christian Kopp"
+
+#: ../data/menu.ui.h:7
+msgid "Search..."
+msgstr ""
+
+#: ../src/simple-preferences.vala:117
+msgid "Indentation"
+msgstr ""
+
+#: ../data/simple-text.desktop.in.h:1
+msgid "Simple Text"
+msgstr ""
+
+#: ../data/simple-text.desktop.in.h:4
+msgid "text;editor;development;programming;"
+msgstr ""
+
+#: ../data/simple-text.desktop.in.h:3 ../src/simple-text.vala:178
+msgid "A not so simple text and code editor written in Vala"
+msgstr "Ein in Vala geschriebener, nicht so einfacher Text- und Code-Editor."
+
+#: ../src/simple-statusbar.vala:78
+msgid "Opened"
+msgstr ""
+
+#: ../src/simple-statusbar.vala:81
+msgid "Editing..."
+msgstr ""
+
+#: ../src/simple-statusbar.vala:84
+msgid "Saved"
+msgstr ""
+
+#: ../src/simple-statusbar.vala:87
+msgid "Closed"
+msgstr ""
+
+#: ../src/simple-statusbar.vala:93
+msgid "Done"
+msgstr ""
+
+#: ../src/simple-statusbar.vala:96
+msgid "Failed"
+msgstr ""
+

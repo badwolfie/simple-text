@@ -475,7 +475,7 @@ public class MainWindow : ApplicationWindow {
 
 		build_message.show();		
 		build_dialog = new Dialog.with_buttons(_("Build system"),this,
-			DialogFlags.MODAL,_("OK"),ResponseType.ACCEPT,null);
+			DialogFlags.MODAL,_("Accept"),ResponseType.ACCEPT,null);
 		var content = build_dialog.get_content_area() as Box;
 		content.pack_start(build_message,true,true,10);
 		build_dialog.border_width = 10;

@@ -31,23 +31,13 @@ public class SimpleText : Gtk.Application {
 				
 			if (!saved_workspace.query_exists())
 				saved_workspace.create(FileCreateFlags.PRIVATE);
-
-			var settings_schema_source = 
-				new GLib.SettingsSchemaSource.from_directory(
-					"/opt/simple-text/data",null,false);
-			var settings_schema = settings_schema_source.lookup(
-				"com.github.badwolfie.simple-text",false);
-			if (settings_schema_source.lookup == null) {
-				stdout.printf("ID not found.");
-				Posix.exit(1);
-			}
-
-			settings = new GLib.Settings.full(settings_schema,null,null);
 		} catch (Error e) {
 			error("Error loading menu UI: %s",e.message);
 		}
 		
 		var editor = new TextEditor();
+		settings = new GLib.Settings("com.github.badwolfie.simple-text");
+		
 		editor.show_line_numbers = settings.get_boolean("show-line-numbers");
 		editor.show_right_margin = settings.get_boolean("show-right-margin");
 		editor.right_margin_at = settings.get_int("right-margin-at");
@@ -69,7 +59,8 @@ public class SimpleText : Gtk.Application {
 
 		var builder = new Gtk.Builder();
 		try {
-			builder.add_from_file("/opt/simple-text/data/menu.ui");
+			builder.add_from_resource(
+				"/com/github/badwolfie/simple-text/menu.ui");
 		} catch (Error e) {
 			error("Error loading menu UI: %s",e.message);
 		}
@@ -157,35 +148,41 @@ public class SimpleText : Gtk.Application {
 
 		string[] documenters = { "Ian Hernández" };
 
-		// string translators = _("Ian Hernández");
-
 		const string[] contributors = { 
 			"Carlos López <clopezr_1205@openmailbox.org>" 
 		};
+		
+		var translator_credits = _("translator-credits");
 
-		string license = null;
-		try {
-			FileUtils.get_contents(
-				"/opt/simple-text/data/LICENSE_HEADER", out license);
-		} catch (Error e) {
-			stderr.printf("Error: %s\n", e.message);
-		}
+		string license = 
+		"""Simple Text is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or
+(at your option) any later version.
+
+Simple Text is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Simple Text. If not, see <http://www.gnu.org/licenses/>.""";
 
 		var about_dialog = new AboutDialog();
 		about_dialog.set_transient_for(window);
 
         about_dialog.program_name = ("Simple Text");
-		about_dialog.title = _("About Simple Text");
+		about_dialog.title = _("About") + " Simple Text";
 		about_dialog.copyright = ("Copyright \xc2\xa9 2015 Ian Hernández");
 		about_dialog.comments = 
-			_("A not so simple text and code editor written in Vala.");
+			_("A not so simple text and code editor written in Vala");
 		about_dialog.website = ("https://github.com/BadWolfie/simple-text");
 		about_dialog.website_label = _("Web page");
-		about_dialog.license = _(license);
+		about_dialog.license = license;
 		about_dialog.logo_icon_name = ("text-editor");
 		about_dialog.documenters = documenters;
 		about_dialog.authors = authors;
-		// about_dialog.translator_credits = translators;
+		about_dialog.translator_credits = translator_credits;
 		about_dialog.version = ("0.9.7");
 
 		about_dialog.add_credit_section(_("Contributors"),contributors);

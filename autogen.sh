@@ -8,7 +8,7 @@ test -n "$srcdir" || srcdir=.
 ) || exit
 test -n "$NOCONFIGURE" || "$srcdir/configure" --enable-maintainer-mode "$@"
 
-aclocal
-autoconf
-automake --add-missing
-./configure --prefix="/home/iann/Github/Simple Text Editor/"
+# aclocal
+# automake --add-missing
+# autoconf
+# ./configure

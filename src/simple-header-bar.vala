@@ -31,7 +31,8 @@ public class SimpleHeaderBar : HeaderBar {
 	private void create_widgets() {
 		var builder = new Builder();
 		try {
-			builder.add_from_file("/opt/simple-text/data/menu.ui");
+			builder.add_from_resource(
+				"/com/github/badwolfie/simple-text/menu.ui");
 		} catch (Error e) {
 			error("Error loading menu UI: %s",e.message);
 		}

@@ -52,18 +52,18 @@ public class PreferencesDialog : Dialog {
 		get_content_area().pack_start(stack,true,true,0);
 		get_content_area().spacing = 10;
 		
-		stack.add_titled(box_view,"view"," View ");
-		stack.add_titled(box_editor,"editor"," Editor ");
-		stack.add_titled(box_typo,"typo"," Typography and colors ");
+		stack.add_titled(box_view,"view",_("View"));
+		stack.add_titled(box_editor,"editor",_("Editor"));
+		stack.add_titled(box_typo,"typo",_("Typography and colors"));
 		
-		line_numbers_check = new CheckButton.with_mnemonic(
-			" Show _line numbers");
+		line_numbers_check = new CheckButton.with_label(
+			_("Show line numbers"));
 		line_numbers_check.toggled.connect(() => {
 			editor.show_line_numbers = line_numbers_check.active;
 		});
 				
-		right_margin_check = new CheckButton.with_mnemonic(
-			" Show right _margin on column: ");
+		right_margin_check = new CheckButton.with_label(
+			_("Show right margin on column:"));
 		right_margin_check.toggled.connect(() => {
 			right_margin_spin.sensitive = right_margin_check.active;
 			editor.show_right_margin = right_margin_check.active;
@@ -82,24 +82,24 @@ public class PreferencesDialog : Dialog {
 		var aux_label_1 = new Label("");
 		aux_label_1.halign = Align.START;
 		
-		var highlight_label = new Label("<b>Highlighting</b>");
+		var highlight_label = new Label("<b>" + _("Highlighting") + "</b>");
 		highlight_label.use_markup = true;
 		highlight_label.halign = Align.START;
 		
-		current_line_check = new CheckButton.with_mnemonic(
-			" _Highlight current line");
+		current_line_check = new CheckButton.with_label(
+			_("Highlight current line"));
 		current_line_check.toggled.connect(() => {
 			editor.highlight_current_line = current_line_check.active;
 		});
 
-		brackets_check = new CheckButton.with_mnemonic(
-			" Highlight matching _brackets");
+		brackets_check = new CheckButton.with_label(
+			_("Highlight matching brackets"));
 		brackets_check.toggled.connect(() => {
 			editor.highlight_brackets = brackets_check.active;
 		});
 
-		grid_pattern_check = new CheckButton.with_mnemonic(
-			"Show _grid pattern");
+		grid_pattern_check = new CheckButton.with_label(
+			_("Show grid pattern"));
 		grid_pattern_check.toggled.connect(() => {
 			editor.show_grid_pattern = grid_pattern_check.active;
 		});
@@ -114,11 +114,11 @@ public class PreferencesDialog : Dialog {
 		box_view.add(brackets_check);
 		
 		
-		var indent_label = new Label("<b>Indentation</b>");
+		var indent_label = new Label("<b>" + _("Indentation") + "</b>");
 		indent_label.use_markup = true;
 		indent_label.halign = Align.START;
 		
-		var tab_width_label = new Label.with_mnemonic("_Tab width: ");
+		var tab_width_label = new Label(_("Tab width:"));
 		tab_width_label.halign = Align.START;
 		tab_width_combo = new ComboBox();
 		tab_width_label.mnemonic_widget = tab_width_combo;
@@ -145,14 +145,14 @@ public class PreferencesDialog : Dialog {
 		hbox_tab_width.pack_start(tab_width_label,true,true,0);
 		hbox_tab_width.pack_start(tab_width_combo,true,true,0);
 		
-		insert_spaces_check = new CheckButton.with_mnemonic(
-			"Indent using _spaces");
+		insert_spaces_check = new CheckButton.with_label(
+			_("Indent using spaces"));
 		insert_spaces_check.toggled.connect(() => {
 			editor.insert_spaces = insert_spaces_check.active;
 		});
 		
-		auto_indent_check = new CheckButton.with_mnemonic(
-			"Activate _auto indent");
+		auto_indent_check = new CheckButton.with_label(
+			_("Activate auto indent"));
 		auto_indent_check.toggled.connect(() => {
 			editor.auto_indent = auto_indent_check.active;
 		});
@@ -163,12 +163,12 @@ public class PreferencesDialog : Dialog {
 		box_editor.add(auto_indent_check);
 
 		
-		var typo_label = new Label("<b>Typography</b>");
+		var typo_label = new Label("<b>" + _("Typography") + "</b>");
 		typo_label.use_markup = true;
 		typo_label.halign = Align.START;
 		
-		default_typo_check = new CheckButton.with_mnemonic(
-			"Use default _typography (Monospace 10)");
+		default_typo_check = new CheckButton.with_label(
+			_("Use default typography") + " (Monospace 10)");
 		
 		default_typo_check.toggled.connect(() => {
 			font_button.sensitive = !default_typo_check.active;
@@ -186,7 +186,7 @@ public class PreferencesDialog : Dialog {
 		var aux_label_3 = new Label("");
 		aux_label_3.halign = Align.START;
 		
-		var color_scheme_label = new Label("<b>Color Scheme</b>");
+		var color_scheme_label = new Label("<b>" + _("Color Scheme") + "</b>");
 		color_scheme_label.use_markup = true;
 		color_scheme_label.halign = Align.START;
 		
@@ -211,8 +211,8 @@ public class PreferencesDialog : Dialog {
 		var frame = new Frame(null);
 		frame.add(scroll);
 
-		prefer_dark_check = new CheckButton.with_mnemonic(
-			"Use _dark theme variant");
+		prefer_dark_check = new CheckButton.with_label(
+			_("Use dark theme variant"));
 		prefer_dark_check.toggled.connect(() => {
 			editor.prefer_dark = prefer_dark_check.active;
 		});

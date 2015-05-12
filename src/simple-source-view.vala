@@ -13,7 +13,6 @@ public class SimpleSourceView : SourceView {
 	public SimpleSourceView(TextEditor editor) {
 		var buff = new SourceBuffer(null);
 		var scheme_manager = SourceStyleSchemeManager.get_default();
-		scheme_manager.append_search_path("/opt/simple-text/data/style_schemes");
 		var source_scheme = scheme_manager.get_scheme(editor.color_scheme);
 
 		buff.style_scheme = source_scheme;
@@ -28,7 +27,6 @@ public class SimpleSourceView : SourceView {
 	public SimpleSourceView.with_text(TextEditor editor, string display_text) {
 		var buff = new SourceBuffer(null);
 		var scheme_manager = SourceStyleSchemeManager.get_default();
-		scheme_manager.append_search_path("/opt/simple-text/data/style_schemes");
 		var source_scheme = scheme_manager.get_scheme(editor.color_scheme);
 
 		buff.style_scheme = source_scheme;
@@ -53,7 +51,6 @@ public class SimpleSourceView : SourceView {
 		var buff = new SourceBuffer.with_language(source_lang);
 
 		var scheme_manager = SourceStyleSchemeManager.get_default();
-		scheme_manager.append_search_path("/opt/simple-text/data/style_schemes");
 		var source_scheme = scheme_manager.get_scheme(editor.color_scheme);
 
 		buff.style_scheme = source_scheme;
@@ -110,7 +107,6 @@ public class SimpleSourceView : SourceView {
 		var buff = new SourceBuffer.with_language(source_lang);
 
 		var scheme_manager = SourceStyleSchemeManager.get_default();
-		scheme_manager.append_search_path("/opt/simple-text/data/style_schemes");
 		var source_scheme = scheme_manager.get_scheme(editor.color_scheme);
 
 		buff.highlight_matching_brackets = editor.highlight_brackets;
@@ -185,7 +181,6 @@ public class SimpleSourceView : SourceView {
 
 		editor.notify["color-scheme"].connect((pspec) => {
 			var scheme_manager = SourceStyleSchemeManager.get_default();
-			scheme_manager.append_search_path("/opt/simple-text/data/style_schemes");
 
 			var source_scheme = scheme_manager.get_scheme(editor.color_scheme);
 			(this.buffer as SourceBuffer).style_scheme = source_scheme;

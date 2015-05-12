@@ -1,0 +1,12 @@
+[Desktop Entry]
+_Name=Simple Text
+_GenericName=Text Editor
+_Comment=A not so simple text and code editor written in Vala
+_Keywords=text;editor;development;programming;
+Exec=simple-text %U
+Terminal=false
+StartupNotify=true
+MimeType=text/plain;
+Icon=text-editor
+Type=Application
+Categories=GNOME;GTK;Utility;TextEditor;Programming;

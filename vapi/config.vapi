@@ -1,4 +1,4 @@
-[CCode (cheader_filename = "config.h")]
+[CCode (prefix = "", lower_case_cprefix = "", cheader_filename = "config.h")]
 namespace Config
 {
 	/* Package information */
@@ -12,6 +12,6 @@ namespace Config
 	/* Configured paths - these variables are not present in config.h, they are
 	 * passed to underlying C code as cmd line macros. */
 	public const string LOCALEDIR;  /* /usr/local/share/locale  */
-	public const string PKGDATADIR; /* /opt/simple-text/data */
-	public const string PKGLIBDIR;  /* /opt/simple-text/lib   */
+	public const string PKGDATADIR; /* /usr/local/share/sampala */
+	public const string PKGLIBDIR;  /* /usr/local/lib/sampala   */
 }

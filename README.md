@@ -3,7 +3,7 @@ A *not so simple* text and code editor written in Vala.
 
 Requires: Vala, GTK+ 3, GTKSourceView 3, Gee 0.8, VTE 2.91, dconf
 
-Compiling: `$ make simple-text`  
+Compiling: `$ ./configure && make`  
 Installing: `# make install`  
 
 Check the [releases page](https://github.com/BadWolfie/simple-text/releases) for more installation options.
@@ -27,3 +27,9 @@ Check the [releases page](https://github.com/BadWolfie/simple-text/releases) for
 
 ### Edit preferences
 ![Edit preferences](screenshots/editing-prefs.png)
+
+### Color schemes
+![Color schemes](screenshots/color-schemes.png)
+
+### Dark theme variant
+![Dark theme variant](screenshots/dark-variant.png)

@@ -1,0 +1,262 @@
+# Spanish translations for Simple Text package.
+# Traducciones en español para el paquete Simple Text.
+# Copyright (C) 2015 Ian Hernández
+# This file is distributed under the same license as the Simple Text package.
+# Ian Hernández <ihernandezs@openmailbox.org>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Simple Text 0.9.7\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-05-11 21:24-0500\n"
+"PO-Revision-Date: 2015-05-11 21:24-0500\n"
+"Last-Translator: Ian Hernández <ihernandezs@openmailbox.org>\n"
+"Language-Team: Spanish\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+
+#: ../data/menu.ui.h:1
+msgid "Preferences"
+msgstr "Preferencias"
+
+#: ../data/menu.ui.h:2 ../src/simple-text.vala:175
+msgid "About"
+msgstr "Acerca de"
+
+#: ../data/menu.ui.h:3
+msgid "Quit"
+msgstr "Salir"
+
+#: ../src/main-window.vala:286 ../src/simple-header-bar.vala:48
+msgid "Open"
+msgstr "Abrir"
+
+#: ../src/simple-header-bar.vala:49
+msgid "Open file"
+msgstr "Abrir archivo"
+
+#: ../src/simple-header-bar.vala:57 ../src/simple-statusbar.vala:75
+msgid "New file"
+msgstr "Nuevo archivo"
+
+#: ../src/main-window.vala:8 ../src/simple-tab.vala:11
+msgid "Untitled file"
+msgstr "Archivo sin nombre"
+
+#: ../src/confirm-exit.vala:16 ../src/main-window.vala:359
+#: ../src/main-window.vala:414 ../src/simple-header-bar.vala:52
+msgid "Save"
+msgstr "Guardar"
+
+#: ../src/simple-header-bar.vala:53
+msgid "Save file"
+msgstr "Guardad archivo"
+
+#: ../src/simple-header-bar.vala:62
+msgid "Build using make"
+msgstr "Compilar usando make"
+
+#: ../src/confirm-exit.vala:15 ../src/main-window.vala:285
+#: ../src/main-window.vala:358 ../src/main-window.vala:413
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: ../data/menu.ui.h:4
+msgid "Save as..."
+msgstr "Guardar como..."
+
+#: ../data/menu.ui.h:5
+msgid "Show terminal"
+msgstr "Mostrar terminal"
+
+#: ../data/menu.ui.h:6
+msgid "Set syntax..."
+msgstr "Establecer sintaxis"
+
+#: ../data/menu.ui.h:8
+msgid "Next tab"
+msgstr "Pestaña siguiente"
+
+#: ../data/menu.ui.h:9
+msgid "Previous tab"
+msgstr "Pestaña anterior"
+
+#: ../data/menu.ui.h:10
+msgid "Close current tab"
+msgstr "Cerrar pestaña actual"
+
+#: ../data/menu.ui.h:11
+msgid "Reopen last tab"
+msgstr "Re-abrir última pestaña"
+
+#: ../src/simple-text.vala:180
+msgid "Web page"
+msgstr "Página web"
+
+#: ../src/simple-text.vala:188
+msgid "Contributors"
+msgstr "Contribuidores"
+
+#: ../src/simple-preferences.vala:55
+msgid "View"
+msgstr "Vista"
+
+#: ../src/simple-preferences.vala:60
+msgid "Show line numbers"
+msgstr "Mostrar números de línea"
+
+#: ../src/simple-preferences.vala:66
+msgid "Show right margin on column:"
+msgstr "Mostrar margen derecho en la columna:"
+
+#: ../src/simple-preferences.vala:102
+msgid "Show grid pattern"
+msgstr "Mostrar patrón de cuadrícula"
+
+#: ../src/simple-preferences.vala:85
+msgid "Highlighting"
+msgstr "Resaltado"
+
+#: ../src/simple-preferences.vala:90
+msgid "Highlight current line"
+msgstr "Resaltar la línea actual"
+
+#: ../src/simple-preferences.vala:96
+msgid "Highlight matching brackets"
+msgstr "Resaltar parejas de corchetes"
+
+#: ../src/simple-preferences.vala:56
+msgid "Editor"
+msgstr "Editor"
+
+#: ../src/simple-preferences.vala:121
+msgid "Tab width:"
+msgstr "Anchura del tabulador"
+
+#: ../src/simple-preferences.vala:149
+msgid "Indent using spaces"
+msgstr "Insertar espacios en lugar de tabuladores"
+
+#: ../src/simple-preferences.vala:155
+msgid "Activate auto indent"
+msgstr "Activar sangría automática"
+
+#: ../src/simple-preferences.vala:57
+msgid "Typography and colors"
+msgstr "Tipografías y colores"
+
+#: ../src/simple-preferences.vala:166
+msgid "Typography"
+msgstr "Tipografía"
+
+#: ../src/simple-preferences.vala:171
+msgid "Use default typography"
+msgstr "Usar tipografía por defecto"
+
+#: ../src/simple-preferences.vala:189
+msgid "Color Scheme"
+msgstr "Esquema de color"
+
+#: ../src/simple-preferences.vala:215
+msgid "Use dark theme variant"
+msgstr "Usar variante oscura del tema"
+
+#: ../data/simple-text.desktop.in.h:2
+msgid "Text Editor"
+msgstr "Editor de textos"
+
+#: ../src/confirm-exit.vala:12
+msgid "Do you wish to save changes before closing?"
+msgstr "¿Desea guardad los cambios antes de cerrar?"
+
+#: ../src/confirm-exit.vala:5
+msgid "Confirm operation"
+msgstr "Confirmar operación"
+
+#: ../src/confirm-exit.vala:14
+msgid "Close without saving"
+msgstr "Cerrar sin guardar"
+
+#: ../src/main-window.vala:142
+msgid "Enter your search..."
+msgstr "Introduzca su búsqueda..."
+
+#: ../src/main-window.vala:283
+msgid "Open File"
+msgstr "Abrir ar"
+
+#: ../src/main-window.vala:356 ../src/main-window.vala:411
+msgid "Save File"
+msgstr "Guardad archivo"
+
+#: ../src/main-window.vala:469
+msgid "Build successful!"
+msgstr "¡Compilación exitosa!"
+
+#: ../src/main-window.vala:472
+msgid "An error has occurred!"
+msgstr "¡Ha ocurrido un error!"
+
+#: ../src/main-window.vala:477
+msgid "Build system"
+msgstr "Sistema de compilación"
+
+#: ../src/main-window.vala:478
+msgid "Accept"
+msgstr "Aceptar"
+
+#: ../src/simple-language-picker.vala:32
+msgid "Search highlight mode..."
+msgstr "Buscar modo de resaltado..."
+
+#: ../src/simple-text.vala:155
+msgid "translator-credits"
+msgstr "Ian Hernández"
+
+#: ../data/menu.ui.h:7
+msgid "Search..."
+msgstr "Buscar..."
+
+#: ../src/simple-preferences.vala:117
+msgid "Indentation"
+msgstr "Tabulación"
+
+#: ../data/simple-text.desktop.in.h:1
+msgid "Simple Text"
+msgstr "Simple Text"
+
+#: ../data/simple-text.desktop.in.h:4
+msgid "text;editor;development;programming;"
+msgstr "texto;editor;desarrollo;programación"
+
+#: ../data/simple-text.desktop.in.h:3 ../src/simple-text.vala:178
+msgid "A not so simple text and code editor written in Vala"
+msgstr "Un editor de texto y código, no tan simple, escrito en Vala."
+
+#: ../src/simple-statusbar.vala:78
+msgid "Opened"
+msgstr "Abierto"
+
+#: ../src/simple-statusbar.vala:81
+msgid "Editing..."
+msgstr "Editando..."
+
+#: ../src/simple-statusbar.vala:84
+msgid "Saved"
+msgstr "Guardado"
+
+#: ../src/simple-statusbar.vala:87
+msgid "Closed"
+msgstr "Cerrado"
+
+#: ../src/simple-statusbar.vala:93
+msgid "Done"
+msgstr "Hecho"
+
+#: ../src/simple-statusbar.vala:96
+msgid "Failed"
+msgstr "Fallado"
+
