@@ -1,5 +1,5 @@
 gsettings_SCHEMAS = com.github.badwolfie.simple-text.gschema.xml
-# @GSETTINGS_RULES@
+@GSETTINGS_RULES@
 
 desktopdir = $(datadir)/applications
 desktop_in_files = simple-text.desktop.in

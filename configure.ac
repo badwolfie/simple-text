@@ -6,6 +6,7 @@ AC_CONFIG_HEADERS([config.h])
 
 # AM_INIT_AUTOMAKE([no-dist-gzip dist-bzip2])
 AM_INIT_AUTOMAKE([1.11 no-dist-gzip dist-xz foreign])
+GNOME_MAINTAINER_MODE_DEFINES
 
 # Enable silent rules is available
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
