@@ -700,7 +700,7 @@ static void simple_text_about_cb (SimpleText* self) {
 	gtk_about_dialog_set_documenters (about_dialog, documenters);
 	gtk_about_dialog_set_authors (about_dialog, authors);
 	gtk_about_dialog_set_translator_credits (about_dialog, translator_credits);
-	gtk_about_dialog_set_version (about_dialog, "0.9.7");
+	gtk_about_dialog_set_version (about_dialog, "0.9.8");
 	_tmp14_ = _ ("Contributors");
 	gtk_about_dialog_add_credit_section (about_dialog, _tmp14_, contributors);
 	gtk_dialog_run ((GtkDialog*) about_dialog);

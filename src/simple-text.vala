@@ -183,7 +183,7 @@ along with Simple Text. If not, see <http://www.gnu.org/licenses/>.""";
 		about_dialog.documenters = documenters;
 		about_dialog.authors = authors;
 		about_dialog.translator_credits = translator_credits;
-		about_dialog.version = ("0.9.7");
+		about_dialog.version = ("0.9.8");
 
 		about_dialog.add_credit_section(_("Contributors"),contributors);
 

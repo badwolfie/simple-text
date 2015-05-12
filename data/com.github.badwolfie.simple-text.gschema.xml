@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-  <schema path="/com/github/badwolfie/simple-text/" id="com.github.badwolfie.simple-text" gettext-domain="text-editor">
+  <schema path="/com/github/badwolfie/simple-text/" id="com.github.badwolfie.simple-text" gettext-domain="simple-text">
     <key type="b" name="show-line-numbers">
       <default>false</default>
       <summary>Show line numbers</summary>

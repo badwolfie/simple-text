@@ -4,7 +4,7 @@
 /* always defined to indicate that i18n is enabled */
 #define ENABLE_NLS 1
 
-/* Gettext Package */
+/* GETTEXT_PACKAGE */
 #define GETTEXT_PACKAGE "simple-text"
 
 /* Define to 1 if you have the `bind_textdomain_codeset' function. */
