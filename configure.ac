@@ -15,6 +15,8 @@ AM_MAINTAINER_MODE
 
 AC_PATH_PROG(GLIB_COMPILE_RESOURCES, glib-compile-resources)
 
+GLIB_GSETTINGS
+
 AC_PROG_CC
 AM_PROG_CC_C_O
 AM_PROG_VALAC([0.24])
@@ -22,7 +24,7 @@ AC_PROG_INSTALL
 IT_PROG_INTLTOOL([0.50.1])
 
 pkg_modules="gtk+-3.0 >= 3.10.0 gtksourceview-3.0 >= 3.16.1 gee-0.8 >= 0.18.0 vte-2.91 >= 0.40.0"
-simple_text_PACKAGES="--pkg gtk+-3.0 --pkg gtksourceview-3.0 --pkg gee-0.8 --pkg vte-2.91 --pkg posix"
+simple_text_PACKAGES="--pkg gtk+-3.0 --pkg gtksourceview-3.0 --pkg gee-0.8 --pkg vte-2.91 --pkg posix --target-glib 2.32"
 PKG_CHECK_MODULES(simple_text, [$pkg_modules])
 AC_SUBST(simple_text_CFLAGS)
 AC_SUBST(simple_text_LIBS)
