@@ -170,19 +170,19 @@ msgstr "Texteditor"
 
 #: ../src/confirm-exit.vala:12
 msgid "Do you wish to save changes before closing?"
-msgstr ""
+msgstr "Möchtest Du die Änderungen vor dem Schließen speichern?"
 
 #: ../src/confirm-exit.vala:5
 msgid "Confirm operation"
-msgstr ""
+msgstr "Befehl bestätigen"
 
 #: ../src/confirm-exit.vala:14
 msgid "Close without saving"
-msgstr ""
+msgstr "Schließen ohne zu speichern"
 
 #: ../src/main-window.vala:142
 msgid "Enter your search..."
-msgstr ""
+msgstr "Suchwort eingeben..."
 
 #: ../src/main-window.vala:283
 msgid "Open File"
@@ -190,27 +190,27 @@ msgstr "Öffne Datei"
 
 #: ../src/main-window.vala:356 ../src/main-window.vala:411
 msgid "Save File"
-msgstr ""
+msgstr "Datei speichern"
 
 #: ../src/main-window.vala:469
 msgid "Build successful!"
-msgstr ""
+msgstr "Build war erfolgreich!"
 
 #: ../src/main-window.vala:472
 msgid "An error has occurred!"
-msgstr ""
+msgstr "Ein Fehler ist aufgetreten!"
 
 #: ../src/main-window.vala:477
 msgid "Build system"
-msgstr ""
+msgstr "Build-System"
 
 #: ../src/main-window.vala:478
 msgid "Accept"
-msgstr ""
+msgstr "Bestätigen"
 
 #: ../src/simple-language-picker.vala:32
 msgid "Search highlight mode..."
-msgstr ""
+msgstr "Suche im Highlight-Modus..."
 
 #: ../src/simple-text.vala:155
 msgid "translator-credits"
@@ -218,15 +218,15 @@ msgstr "Christian Kopp"
 
 #: ../data/menu.ui.h:7
 msgid "Search..."
-msgstr ""
+msgstr "Suche..."
 
 #: ../src/simple-preferences.vala:117
 msgid "Indentation"
-msgstr ""
+msgstr "Texteinzug"
 
 #: ../data/simple-text.desktop.in.h:1
 msgid "Simple Text"
-msgstr ""
+msgstr "Simple Text"
 
 #: ../data/simple-text.desktop.in.h:4
 msgid "text;editor;development;programming;"
@@ -238,25 +238,25 @@ msgstr "Ein in Vala geschriebener, nicht so einfacher Text- und Code-Editor."
 
 #: ../src/simple-statusbar.vala:78
 msgid "Opened"
-msgstr ""
+msgstr "Geöffnet"
 
 #: ../src/simple-statusbar.vala:81
 msgid "Editing..."
-msgstr ""
+msgstr "Bearbeiten..."
 
 #: ../src/simple-statusbar.vala:84
 msgid "Saved"
-msgstr ""
+msgstr "Gespeichert"
 
 #: ../src/simple-statusbar.vala:87
 msgid "Closed"
-msgstr ""
+msgstr "Geschlossen"
 
 #: ../src/simple-statusbar.vala:93
 msgid "Done"
-msgstr ""
+msgstr "Erledigt"
 
 #: ../src/simple-statusbar.vala:96
 msgid "Failed"
-msgstr ""
+msgstr "Fehlgeschlagen"
 

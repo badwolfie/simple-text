@@ -182,9 +182,13 @@ public class MainWindow : ApplicationWindow {
 		status.change_syntax_request.connect(change_syntax_cb);
 		status.show();
 
+		var separator = new Separator(Orientation.HORIZONTAL);
+		separator.show();
+
 		var vbox = new Box(Orientation.VERTICAL,0);
 		vbox.pack_start(search_bar,false,true,0);
 		vbox.pack_start(tab_bar,false,true,7);
+		vbox.pack_start(separator,false,true,0);
 		vbox.pack_start(documents,true,true,0);
 		vbox.pack_start(status,false,true,0);
 		vbox.height_request = 400;
