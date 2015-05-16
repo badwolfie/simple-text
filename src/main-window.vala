@@ -50,7 +50,7 @@ public class MainWindow : ApplicationWindow {
 			if (workspace == "")
 				new_tab_cb();
 			else {
-				var workspace_files = workspace.split("/,/");
+				var workspace_files = workspace.split("\n");
 				foreach (string file in workspace_files) {
 					if ((file != "") && File.new_for_path(file).query_exists())
 						add_new_tab_from_file(file);
@@ -63,7 +63,7 @@ public class MainWindow : ApplicationWindow {
 		string workspace = "";
 		opened_files.foreach((entry) => {
 			if (entry.contains("/"))
-				workspace += (entry + "/,/");
+				workspace += (entry + "\n");
 		});
 
 		try {
@@ -86,7 +86,7 @@ public class MainWindow : ApplicationWindow {
 		opened_files = new List<string>();
 		closed_files = new Array<string>();
 
-		window_position = WindowPosition.CENTER_ALWAYS;
+		window_position = WindowPosition.CENTER;
 		set_default_size(1000,700);
 		border_width = 0;
 		maximize();
