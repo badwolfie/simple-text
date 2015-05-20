@@ -1,9 +1,19 @@
 using Gtk;
 
 public class SimpleText : Gtk.Application {
+	private const string APP_NAME = "Simple Text";
+	private const string APP_VERSION = "0.9.8";
+
 	private GLib.Settings settings;
 	private PreferencesDialog preferences_dialog;
 	private MainWindow window;
+
+	private const OptionEntry[] option_entries = {
+		{ "version", 'v', 0, 
+		  OptionArg.NONE, null, 
+		  ("Show release version"), null },
+		{ null }
+	};
 
 	private const GLib.ActionEntry[] app_entries = {
 		{ "prefs", show_prefs_cb, null, null, null },
@@ -13,7 +23,8 @@ public class SimpleText : Gtk.Application {
 
 	public SimpleText() {
 		Object(application_id: "badwolfie.simple-text.app",
-			flags: ApplicationFlags.HANDLES_OPEN);
+			   flags: ApplicationFlags.HANDLES_OPEN);
+		add_main_option_entries(option_entries);
 	}
 
 	protected override void startup() {
@@ -112,6 +123,15 @@ public class SimpleText : Gtk.Application {
 		window.present();
 	}
 
+	protected override int handle_local_options(VariantDict options) {
+		if (options.contains("version")) {
+			stderr.printf("%1$s %2$s\n", APP_NAME, APP_VERSION);
+			return Posix.EXIT_SUCCESS;
+		}
+
+		return -1;
+	}
+
 	protected override void shutdown() {
 		base.shutdown();
 		
@@ -144,18 +164,20 @@ public class SimpleText : Gtk.Application {
 	}
 
 	private void about_cb() {
-		string[] authors = { "Ian Hernández <ihernandezs@openmailbox.org>" };
+		string[] authors = { 
+			"Ian Hernández <ihernandezs@openmailbox.org>" 
+		};
 
-		string[] documenters = { "Ian Hernández" };
+		// string[] documenters = { "Ian Hernández" };
 
-		const string[] contributors = { 
+		string[] contributors = { 
 			"Carlos López <clopezr_1205@openmailbox.org>" 
 		};
 		
 		var translator_credits = _("translator-credits");
 
 		string license = 
-		"""Simple Text is free software: you can redistribute it and/or modify
+"""Simple Text is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 2 of the License, or
 (at your option) any later version.
@@ -171,7 +193,7 @@ along with Simple Text. If not, see <http://www.gnu.org/licenses/>.""";
 		var about_dialog = new AboutDialog();
 		about_dialog.set_transient_for(window);
 
-        about_dialog.program_name = ("Simple Text");
+        about_dialog.program_name = (APP_NAME);
 		about_dialog.title = _("About") + " Simple Text";
 		about_dialog.copyright = ("Copyright \xc2\xa9 2015 Ian Hernández");
 		about_dialog.comments = 
@@ -180,10 +202,10 @@ along with Simple Text. If not, see <http://www.gnu.org/licenses/>.""";
 		about_dialog.website_label = _("Web page");
 		about_dialog.license = license;
 		about_dialog.logo_icon_name = ("text-editor");
-		about_dialog.documenters = documenters;
+		// about_dialog.documenters = documenters;
 		about_dialog.authors = authors;
 		about_dialog.translator_credits = translator_credits;
-		about_dialog.version = ("0.9.8");
+		about_dialog.version = (APP_VERSION);
 
 		about_dialog.add_credit_section(_("Contributors"),contributors);
 
@@ -197,9 +219,9 @@ along with Simple Text. If not, see <http://www.gnu.org/licenses/>.""";
 
 	public static int main(string[] args) {
 		Intl.setlocale(LocaleCategory.ALL, "");
-        Intl.bindtextdomain(Config.GETTEXT_PACKAGE, Config.LOCALEDIR);
-        Intl.bind_textdomain_codeset(Config.GETTEXT_PACKAGE, "UTF-8");
-        Intl.textdomain(Config.GETTEXT_PACKAGE);
+        Intl.bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR);
+        Intl.bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+        Intl.textdomain(GETTEXT_PACKAGE);
         
 		Gtk.Window.set_default_icon_name ("text-editor");
 		var app = new SimpleText();
