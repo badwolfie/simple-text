@@ -92,6 +92,7 @@ public class MainWindow : ApplicationWindow {
 		maximize();
 		
 		create_widgets();
+		this.destroy.connect(quit_cb);
 	}
 
 	private void create_widgets() {
