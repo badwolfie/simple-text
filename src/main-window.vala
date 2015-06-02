@@ -1,27 +1,54 @@
 using Gtk;
 using Vte;
 
+/**
+ * The application main window.
+ */
 public class MainWindow : ApplicationWindow {
+	/** Variable that stores the application preferences */
 	private TextEditor _editor;
 	public TextEditor editor { get { return _editor; } }
 
+	/** Constant string to create the title of untitled files */
 	private string untitled = _("Untitled file");
+	
+	/** List that stores the recently closed files so they can be reopened */
 	private Array<string> closed_files;
+	
+	/** List that stores the files that are currently open */
 	private List<string> opened_files;
+	
+	/** Auxiliar counter for numering opened files */
 	private int counter = 0;
 
+	/** Custom headerbar for the window */
 	private SimpleHeaderBar headerbar;
+	
+	/** Custom statusbar for the window */
 	private SimpleStatusbar status;
+	
+	/** Embeded terminal for the window */
 	private Terminal terminal;
 	
+	/** Custom tab bar for the window */
 	private SimpleTabBar tab_bar;
+	
+	/** Stack that stores and shows the opened files */
 	private Stack documents;
 
+	/** SearchEntry for the window (dummy only, for now...) */
 	private SearchEntry search_entry;
+	
+	/** SearchBar for showing the SearchEntry and buttons to interact with it */
 	private SearchBar search_bar;
+	
+	/** Button that interacts with the SearchEntry finds previous occurrency*/
 	private Button previous_search;
+	
+	/** Button that interacts with the SearchEntry finds next occurrency*/
 	private Button next_search;
 	
+	/** Array of files to be opened from the command line option */
 	private File[] _arg_files = null;
 	public File[] arg_files {
 		set {
@@ -35,7 +62,13 @@ public class MainWindow : ApplicationWindow {
 		}
 	}
 
-	private void load_workspace() {
+	/**
+	 * Function that loads the saved workspace (if any) and opens all files 
+	 * listed in it.
+	 *
+	 * @return void
+	 */
+	private void load_workspace(void) {
 		string workspace = null;
 
 		try {
@@ -59,7 +92,13 @@ public class MainWindow : ApplicationWindow {
 		}
 	}
 
-	private void save_workspace() {
+	/**
+	 * Function that saves the currently open files into the workspace so it 
+	 * can be loaded on opening.
+	 *
+	 * @return void
+	 */
+	private void save_workspace(void) {
 		string workspace = "";
 		opened_files.foreach((entry) => {
 			if (entry.contains("/"))
@@ -75,6 +114,12 @@ public class MainWindow : ApplicationWindow {
 		}
 	}
 
+	/**
+	 * Class constructor
+	 *
+	 * @param app Gtk.Application for this
+	 * @param editor TextEditor that stores the application preferences
+	 */
 	public MainWindow(Gtk.Application app, TextEditor editor) {
 		Object(application: app);
 		_editor = editor;
@@ -95,7 +140,12 @@ public class MainWindow : ApplicationWindow {
 		this.destroy.connect(quit_cb);
 	}
 
-	private void create_widgets() {
+	/**
+	 * Function that creates and initializes all widgets in the window.
+	 * 
+	 * @return void
+	 */
+	private void create_widgets(void) {
 		Gtk.Settings.get_default().set(
 			"gtk-application-prefer-dark-theme",_editor.prefer_dark);
 
@@ -204,6 +254,13 @@ public class MainWindow : ApplicationWindow {
 		add(pane);
 	}
 
+	/**
+	 * Function that gets executed when a page is switched on the Stack, and a 
+	 * signal is sent from it.
+	 *
+	 * @param tab SimpleTab that is now being shown
+	 * @return void
+	 */
 	private void on_page_switched(SimpleTab tab) {
 		int page_num = tab_bar.get_page_num(tab);
 		headerbar.title = opened_files.nth_data(page_num);
@@ -220,6 +277,13 @@ public class MainWindow : ApplicationWindow {
 		status.refresh_language(headerbar.title);
 	}
 
+	/**
+	 * Function that gets called when a request for changing the current view's 
+	 * language is made.
+	 *
+	 * @param language string containing the requested language
+	 * @return void
+	 */
 	private void change_syntax_cb(string language) {
 		var current_page = tab_bar.get_current_page(documents.visible_child);
 		var p_langs = new ProgrammingLanguages();
@@ -228,7 +292,13 @@ public class MainWindow : ApplicationWindow {
 		current_page.text_view.change_language(lang_id);
 	}
 	
-	private void on_show_terminal() {
+	/**
+	 * Function called when a request for making the embeded terminal visible is
+	 * made.
+	 *
+	 * @return void
+	 */
+	private void on_show_terminal(void) {
 		if (terminal.get_visible()) {
 			terminal.reset(true,true);
 			terminal.hide();
@@ -280,11 +350,21 @@ public class MainWindow : ApplicationWindow {
 		}
 	}
 
-	private void set_syntax_cb() {
+	/**
+	 * Function that toggles the sytax setter popover
+	 *
+	 * @return void
+	 */
+	private void set_syntax_cb(void) {
 		status.toggle_picker();
 	}
 	
-	public void open_file_cb() {
+	/**
+	 * Function called when a request for opening a file is made
+	 * 
+	 * @return void
+	 */
+	public void open_file_cb(void) {
 		var file_chooser = new FileChooserDialog(_("Open File"), this,
 			FileChooserAction.OPEN,
 			_("Cancel"), ResponseType.CANCEL,
@@ -315,6 +395,12 @@ public class MainWindow : ApplicationWindow {
 		file_chooser.destroy();
 	}
 
+	/**
+	 * Function that adds a new tab from a file
+	 *
+	 * @param file_name string that contains the name of the file to be opened
+	 * @return void
+	 */
 	private void add_new_tab_from_file(string file_name) {
 		if (file_is_opened(file_name)) {
 			check_pages();
@@ -340,6 +426,12 @@ public class MainWindow : ApplicationWindow {
 		check_pages();
 	}
 	
+	/**
+	 * Function that determins wheter or not a file is already open 
+	 *
+	 * @param needle string that contains the name of the file to be checked
+	 * @return bool
+	 */
 	private bool file_is_opened(string needle) {
 		for (int i = 0; i < opened_files.length(); i++) {
 			if (needle == opened_files.nth_data(i)) return true;
@@ -348,7 +440,12 @@ public class MainWindow : ApplicationWindow {
 		return false;
 	}
 
-	public void save_tab_to_file() {
+	/**
+	 * Function that saves the content of a tab document to a file
+	 *
+	 * @return void
+	 */
+	public void save_tab_to_file(void) {
 		var current_doc = documents.visible_child as ScrolledWindow;
 		if (current_doc == null) return ;
 
@@ -401,8 +498,13 @@ public class MainWindow : ApplicationWindow {
 			reset_changes(tab_label);
 		}
 	}
-
-	private void save_as_cb() {
+	
+	/**
+	 * Function called when a "save as" request is made
+	 *
+	 * @return void
+	 */
+	private void save_as_cb(void) {
 		if (documents.visible_child == null) return ;
 
 		var current_page = tab_bar.get_current_page(documents.visible_child);
@@ -445,7 +547,12 @@ public class MainWindow : ApplicationWindow {
 		file_chooser.destroy();
 	}
 
-	public void new_tab_cb() {
+	/**
+	 * Function called when a "new tab" request is made
+	 *
+	 * @return void
+	 */
+	public void new_tab_cb(void) {
 		opened_files.append("%s %d".printf(untitled,counter + 1));
 		var tab = new SimpleTab(editor);
 		tab.view_drag_n_drop.connect(add_new_tab_from_file);
@@ -455,7 +562,16 @@ public class MainWindow : ApplicationWindow {
 		status.refresh_language(untitled);
 	}
 
-	public void build_code() {
+	/**
+	 * Function that runs "make" on the file's directory in attempt to build the
+	 * code (if its a language that needs to be compiled
+	 *
+	 * You need to have a previously created Makefile on said directory in order
+	 * for this to work
+	 *
+	 * @return void
+	 */
+	public void build_code(void) {
 		save_tab_to_file();
 		status.refresh_statusbar(FileOpeartion.BUILD_FILE,null);
 
@@ -489,8 +605,13 @@ public class MainWindow : ApplicationWindow {
 		build_dialog.destroy();
 		status.refresh_statusbar(build_status,null);
 	}
-
-	private void re_open_cb() {
+	
+	/**
+	 * Function called when a "re open file" request is made
+	 *
+	 * @return void 
+	 */
+	private void re_open_cb(void) {
 		if (closed_files.length == 0) return;
 
 		string last_file_path = closed_files.data[closed_files.length - 1];
@@ -521,11 +642,21 @@ public class MainWindow : ApplicationWindow {
 		check_pages();
 	}
 
-	private void search_mode_cb() {
+	/**
+	 * Dummy function
+	 *
+	 * @return void
+	 */
+	private void search_mode_cb(void) {
 		search_bar.search_mode_enabled = !search_bar.search_mode_enabled;
 	}
 
-	private void close_tab_cb() {
+	/**
+	 * Function called when a "close tab" request is made
+	 * 
+	 * @return void
+	 */
+	private void close_tab_cb(void) {
 		SimpleTab current_page =
 			tab_bar.get_current_page(documents.visible_child);
 		if (confirm_close(current_page))
@@ -535,7 +666,14 @@ public class MainWindow : ApplicationWindow {
 		var p_langs = new ProgrammingLanguages();
 		headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
 	}
-
+	
+	/**
+	 * Function called when a tab gets closed
+	 *
+	 * @param tab SimpleTab that has been closed
+	 * @param page_num int that contains the page number of the closed tab
+	 * @return void
+	 */
 	private void on_page_close(SimpleTab? tab, int page_num) {
 		string f_name = opened_files.nth_data(page_num);
 		status.refresh_statusbar(FileOpeartion.CLOSE_FILE,f_name);
@@ -552,16 +690,34 @@ public class MainWindow : ApplicationWindow {
 
 		tab_bar.get_current_page(documents.visible_child).mark_title();
 	}
-
-	private void search_stuff_next() {
+	
+	/**
+	 * Dummy function
+	 *
+	 * @return void
+	 */
+	private void search_stuff_next(void) {
 		stdout.printf("Next\n");
 	}
-
-	private void search_stuff_prev() {
+	
+	/**
+	 * Dummy function
+	 *
+	 * @return void
+	 */
+	private void search_stuff_prev(void) {
 		stdout.printf("Previous\n");
 	}
 
-	private void check_pages() {
+	/**
+	 * Function that checks the number of tabs currently opened, if there are 
+	 * two or more opened the tab bar gets shown, otherwise gets hidden
+	 *
+	 * Also, if no tabs are opened the title is changed to "Simple Text"
+	 *
+	 * @return void
+	 */
+	private void check_pages(void) {
 		if (opened_files.length() < 2) {
 			tab_bar.hide();
 			
@@ -572,7 +728,16 @@ public class MainWindow : ApplicationWindow {
 			tab_bar.show();
 		}
 	}
-
+	
+	/**
+	 * Function that checks wheter or not a change has been made to the 
+	 * currently opened document 
+	 * 
+	 * If so, an '*' character is prepended to the tab label
+	 * 
+	 * @param event Gdk.EventKey that triggered this function
+	 * @return bool
+	 */
 	private bool changes_done(Gdk.EventKey event) {
 		var page = documents.visible_child as ScrolledWindow;
 		var view = page.get_child() as SourceView;
@@ -592,13 +757,26 @@ public class MainWindow : ApplicationWindow {
 		return true;
 	}
 
+	/**
+	 * Function that removes the '*' character from the tab label after the 
+	 * document is saved
+	 *
+	 * @param tab_label SimpleTab which's label will be restore
+	 * @return void 
+	 */
 	private void reset_changes(SimpleTab tab_label) {
 		if (tab_label.tab_title.contains("*")) {
 			tab_label.tab_title = tab_label.tab_title.replace("*","");
 			tab_label.mark_title();
 		}
 	}
-
+	
+	/**
+	 * Function that adds a new tab to the Stack
+	 *
+	 * @param tab_label SimpleTab added to the Stack
+	 * @return void
+	 */
 	private void add_new_tab(SimpleTab tab_label) {
 		var tab_title = "tab - %d".printf(counter++);
 		documents.add_titled(
@@ -619,8 +797,16 @@ public class MainWindow : ApplicationWindow {
 		
 		check_pages();
 	}
-
-	private void save_file(SourceView view,string filename) {
+	
+	/**
+	 * Function that saves the content of a document to a file
+	 * 
+	 * @param view SourceView which's content will be saved
+	 * @param filename string that contains the path for the file where the 
+	 * view's content will be saved
+	 * @return void
+	 */
+	private void save_file(SourceView view, string filename) {
 		try {
 			FileUtils.set_contents(filename,view.buffer.text);
 			view.buffer.set_modified(false);
@@ -632,7 +818,13 @@ public class MainWindow : ApplicationWindow {
 		}
 	}
 
-	private void next_tab_cb() {
+	/**
+	 * Function called when a request is made to change from the current tab to 
+	 * the next one
+	 *
+	 * @return void
+	 */
+	private void next_tab_cb(void) {
 		var current_page = tab_bar.get_current_page(documents.visible_child);
 		tab_bar.switch_page_next(current_page);
 
@@ -641,7 +833,13 @@ public class MainWindow : ApplicationWindow {
 		headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
 	}
 
-	private void prev_tab_cb() {
+	/**
+	 * Function called when a request is made to change from the current tab to 
+	 * the previous one
+	 *
+	 * @return void
+	 */
+	private void prev_tab_cb(void) {
 		var current_page = tab_bar.get_current_page(documents.visible_child);
 		tab_bar.switch_page_prev(current_page);
 
@@ -650,6 +848,14 @@ public class MainWindow : ApplicationWindow {
 		headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
 	}	
 
+	/**
+	 * Function called when a "close tab" request was made, checks wheter or not
+	 * there's unsaved changes, shows a ConfirmExit dialog and returns the 
+	 * user's choice to save them before closing or not
+	 *
+	 * @param tab SimpleTab that is being checked
+	 * @return bool 
+	 */
 	private bool confirm_close(SimpleTab? tab) {
 		if (tab == null) return false;
 		if (tab.tab_title.contains("*")) {
@@ -676,7 +882,13 @@ public class MainWindow : ApplicationWindow {
 		return true;
 	}
 
-	private void quit_cb() {
+	/**
+	 * Function called when a "quit" request is made, it checks and closes every
+	 * opened document before closing the window
+	 *
+	 * @return void
+	 */
+	private void quit_cb(void) {
 		save_workspace();
 		while (opened_files.length() != 0) 
 			close_tab_cb();
