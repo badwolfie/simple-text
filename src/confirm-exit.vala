@@ -1,5 +1,9 @@
 using Gtk;
 
+/**
+ * Dialog to inform the application if you want to save changes to a modified 
+ * document upon exit or not.
+ */
 public class ConfirmExit : Dialog {
 	public ConfirmExit() {
 		title = _("Confirm operation");
