@@ -68,7 +68,7 @@ public class MainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void load_workspace(void) {
+	private void load_workspace() {
 		string workspace = null;
 
 		try {
@@ -98,7 +98,7 @@ public class MainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void save_workspace(void) {
+	private void save_workspace() {
 		string workspace = "";
 		opened_files.foreach((entry) => {
 			if (entry.contains("/"))
@@ -145,7 +145,7 @@ public class MainWindow : ApplicationWindow {
 	 * 
 	 * @return void
 	 */
-	private void create_widgets(void) {
+	private void create_widgets() {
 		Gtk.Settings.get_default().set(
 			"gtk-application-prefer-dark-theme",_editor.prefer_dark);
 
@@ -298,7 +298,7 @@ public class MainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void on_show_terminal(void) {
+	private void on_show_terminal() {
 		if (terminal.get_visible()) {
 			terminal.reset(true,true);
 			terminal.hide();
@@ -355,7 +355,7 @@ public class MainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void set_syntax_cb(void) {
+	private void set_syntax_cb() {
 		status.toggle_picker();
 	}
 	
@@ -364,7 +364,7 @@ public class MainWindow : ApplicationWindow {
 	 * 
 	 * @return void
 	 */
-	public void open_file_cb(void) {
+	public void open_file_cb() {
 		var file_chooser = new FileChooserDialog(_("Open File"), this,
 			FileChooserAction.OPEN,
 			_("Cancel"), ResponseType.CANCEL,
@@ -445,7 +445,7 @@ public class MainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	public void save_tab_to_file(void) {
+	public void save_tab_to_file() {
 		var current_doc = documents.visible_child as ScrolledWindow;
 		if (current_doc == null) return ;
 
@@ -504,7 +504,7 @@ public class MainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void save_as_cb(void) {
+	private void save_as_cb() {
 		if (documents.visible_child == null) return ;
 
 		var current_page = tab_bar.get_current_page(documents.visible_child);
@@ -552,7 +552,7 @@ public class MainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	public void new_tab_cb(void) {
+	public void new_tab_cb() {
 		opened_files.append("%s %d".printf(untitled,counter + 1));
 		var tab = new SimpleTab(editor);
 		tab.view_drag_n_drop.connect(add_new_tab_from_file);
@@ -571,7 +571,7 @@ public class MainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	public void build_code(void) {
+	public void build_code() {
 		save_tab_to_file();
 		status.refresh_statusbar(FileOpeartion.BUILD_FILE,null);
 
@@ -611,7 +611,7 @@ public class MainWindow : ApplicationWindow {
 	 *
 	 * @return void 
 	 */
-	private void re_open_cb(void) {
+	private void re_open_cb() {
 		if (closed_files.length == 0) return;
 
 		string last_file_path = closed_files.data[closed_files.length - 1];
@@ -647,7 +647,7 @@ public class MainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void search_mode_cb(void) {
+	private void search_mode_cb() {
 		search_bar.search_mode_enabled = !search_bar.search_mode_enabled;
 	}
 
@@ -656,7 +656,7 @@ public class MainWindow : ApplicationWindow {
 	 * 
 	 * @return void
 	 */
-	private void close_tab_cb(void) {
+	private void close_tab_cb() {
 		SimpleTab current_page =
 			tab_bar.get_current_page(documents.visible_child);
 		if (confirm_close(current_page))
@@ -696,7 +696,7 @@ public class MainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void search_stuff_next(void) {
+	private void search_stuff_next() {
 		stdout.printf("Next\n");
 	}
 	
@@ -705,7 +705,7 @@ public class MainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void search_stuff_prev(void) {
+	private void search_stuff_prev() {
 		stdout.printf("Previous\n");
 	}
 
@@ -717,7 +717,7 @@ public class MainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void check_pages(void) {
+	private void check_pages() {
 		if (opened_files.length() < 2) {
 			tab_bar.hide();
 			
@@ -824,7 +824,7 @@ public class MainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void next_tab_cb(void) {
+	private void next_tab_cb() {
 		var current_page = tab_bar.get_current_page(documents.visible_child);
 		tab_bar.switch_page_next(current_page);
 
@@ -839,7 +839,7 @@ public class MainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void prev_tab_cb(void) {
+	private void prev_tab_cb() {
 		var current_page = tab_bar.get_current_page(documents.visible_child);
 		tab_bar.switch_page_prev(current_page);
 
@@ -888,7 +888,7 @@ public class MainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void quit_cb(void) {
+	private void quit_cb() {
 		save_workspace();
 		while (opened_files.length() != 0) 
 			close_tab_cb();
