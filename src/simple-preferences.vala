@@ -20,7 +20,7 @@ public class PreferencesDialog : Dialog {
 	
 	private CheckButton default_typo_check;
 	private FontButton font_button;
-	private ListBox scheme_chooser;
+	private SimpleSourceStylePicker scheme_chooser;
 	private CheckButton prefer_dark_check;
 
 	public PreferencesDialog(MainWindow parent, TextEditor ed) {
@@ -189,27 +189,13 @@ public class PreferencesDialog : Dialog {
 		var color_scheme_label = new Label("<b>" + _("Color Scheme") + "</b>");
 		color_scheme_label.use_markup = true;
 		color_scheme_label.halign = Align.START;
-		
-		var scheme_manager = SourceStyleSchemeManager.get_default();
-		scheme_manager.append_search_path("/opt/simple-text/style_schemes");
 
-		scheme_chooser = new ListBox();
-		scheme_chooser.selection_mode = SelectionMode.SINGLE;
-		scheme_chooser.activate_on_single_click = true;
-		scheme_chooser.row_activated.connect(on_scheme_selected);
-
-		foreach (string scheme in scheme_manager.scheme_ids) {
-			var label = new Label(scheme);
-			scheme_chooser.add(label);
-		}
-
-		var scroll = new ScrolledWindow(null,null);
-		scroll.set_policy(PolicyType.NEVER,PolicyType.AUTOMATIC);
-		scroll.height_request = 100;
-		scroll.add(scheme_chooser);
+		scheme_chooser = new SimpleSourceStylePicker();
+		scheme_chooser.style_selected.connect(on_scheme_selected);
+		scheme_chooser.height_request = 100;
 
 		var frame = new Frame(null);
-		frame.add(scroll);
+		frame.add(scheme_chooser);
 
 		prefer_dark_check = new CheckButton.with_label(
 			_("Use dark theme variant"));
@@ -288,9 +274,8 @@ public class PreferencesDialog : Dialog {
 		});
 	}
 
-	private void on_scheme_selected(ListBoxRow row) {
-		Label scheme = row.get_child() as Label;
-		editor.color_scheme = scheme.label;
+	private void on_scheme_selected(string scheme) {
+		editor.color_scheme = scheme;
 	}
 	
 	private void set_combo_box_from_int (Gtk.ComboBox combo, int value) {

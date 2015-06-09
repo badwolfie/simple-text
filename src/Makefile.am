@@ -19,6 +19,7 @@ simple_text_SOURCES = \
 	simple-header-bar.vala \
 	simple-language-picker.vala \
 	simple-preferences.vala \
+	simple-source-style-picker.vala \
 	simple-source-view.vala \
 	simple-statusbar.vala \
 	simple-tab-bar.vala \

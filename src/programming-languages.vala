@@ -1,4 +1,5 @@
 using Gee;
+using Gtk;
 
 public class ProgrammingLanguages {
 	private HashMap<string,string> lang_ids;
@@ -23,6 +24,12 @@ public class ProgrammingLanguages {
 	}
 
 	private void setup_languages() {
+		var lang_manager = SourceLanguageManager.get_default();
+		foreach (string lang_id in lang_manager.language_ids) {
+			var lang = lang_manager.get_language(lang_id);
+			_languages.append(lang.name);
+		}
+		
 		lang_ids.set("c","c");
 		lang_ids.set("h","cpp");
 		lang_ids.set("cc","cpp");
@@ -169,39 +176,6 @@ public class ProgrammingLanguages {
 		buildables.append_val("VHDL");
 		buildables.append_val("Bison");
 		buildables.append_val("YAAC");
-
-
-		_languages.append("Bibtex");
-		_languages.append("Bison");
-		_languages.append("C");
-		_languages.append("C++");
-		_languages.append("C#");
-		_languages.append("C/C++ header file");
-		_languages.append("CSS");
-		_languages.append("Desktop launcher");
-		_languages.append("Flex");
-		_languages.append("Glade UI");
-		_languages.append("HTML");
-		_languages.append("Java");
-		_languages.append("Javascript");
-		_languages.append("JSon");
-		_languages.append("LaTeX");
-		_languages.append("Lex");
-		_languages.append("Makefile");
-		_languages.append("Markdown");
-		_languages.append("MatLab");
-		_languages.append("Perl");
-		_languages.append("PHP");
-		_languages.append("Python");
-		_languages.append("Shell script");
-		_languages.append("Ruby");
-		_languages.append("SQL");
-		_languages.append("Vala");
-		_languages.append("Vapi");
-		_languages.append("VHDL");
-		_languages.append("XML");
-		_languages.append("XSLT");
-		_languages.append("YAAC");
 	}
 
 	private string get_file_extension(string filename) {
