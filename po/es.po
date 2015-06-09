@@ -22,7 +22,7 @@ msgstr ""
 msgid "Preferences"
 msgstr "Preferencias"
 
-#: ../data/menu.ui.h:2 ../src/simple-text.vala:197
+#: ../data/menu.ui.h:2 ../src/simple-text.vala:203
 msgid "About"
 msgstr "Acerca de"
 
@@ -30,15 +30,15 @@ msgstr "Acerca de"
 msgid "Quit"
 msgstr "Salir"
 
-#: ../src/main-window.vala:371 ../src/simple-header-bar.vala:48
+#: ../src/main-window.vala:416 ../src/simple-header-bar.vala:49
 msgid "Open"
 msgstr "Abrir"
 
-#: ../src/simple-header-bar.vala:49
+#: ../src/simple-header-bar.vala:50
 msgid "Open file"
 msgstr "Abrir archivo"
 
-#: ../src/simple-header-bar.vala:57 ../src/simple-statusbar.vala:75
+#: ../src/simple-header-bar.vala:58 ../src/simple-statusbar.vala:75
 msgid "New file"
 msgstr "Nuevo archivo"
 
@@ -46,61 +46,49 @@ msgstr "Nuevo archivo"
 msgid "Untitled file"
 msgstr "Archivo sin nombre"
 
-#: ../src/confirm-exit.vala:20 ../src/main-window.vala:461
-#: ../src/main-window.vala:521 ../src/simple-header-bar.vala:52
+#: ../src/confirm-exit.vala:20 ../src/main-window.vala:507
+#: ../src/main-window.vala:568 ../src/simple-header-bar.vala:53
 msgid "Save"
 msgstr "Guardar"
 
-#: ../src/simple-header-bar.vala:53
+#: ../src/simple-header-bar.vala:54
 msgid "Save file"
 msgstr "Guardad archivo"
 
-#: ../src/simple-header-bar.vala:62
-msgid "Build using make"
-msgstr "Compilar usando make"
-
-#: ../src/confirm-exit.vala:19 ../src/main-window.vala:370
-#: ../src/main-window.vala:460 ../src/main-window.vala:520
+#: ../src/confirm-exit.vala:19 ../src/main-window.vala:415
+#: ../src/main-window.vala:506 ../src/main-window.vala:567
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../data/menu.ui.h:4
+#: ../data/menu.ui.h:7
 msgid "Save as..."
 msgstr "Guardar como..."
 
-#: ../data/menu.ui.h:5
-msgid "Show terminal"
-msgstr "Mostrar terminal"
-
-#: ../data/menu.ui.h:6
-msgid "Set syntax..."
-msgstr "Establecer sintaxis"
-
-#: ../data/menu.ui.h:8
+#: ../data/menu.ui.h:15
 msgid "Next tab"
 msgstr "Pestaña siguiente"
 
-#: ../data/menu.ui.h:9
+#: ../data/menu.ui.h:16
 msgid "Previous tab"
 msgstr "Pestaña anterior"
 
-#: ../data/menu.ui.h:10
+#: ../data/menu.ui.h:18
 msgid "Close current tab"
 msgstr "Cerrar pestaña actual"
 
-#: ../data/menu.ui.h:11
+#: ../data/menu.ui.h:17
 msgid "Reopen last tab"
 msgstr "Re-abrir última pestaña"
 
-#: ../src/simple-text.vala:202
+#: ../src/simple-text.vala:208
 msgid "Web page"
 msgstr "Página web"
 
-#: ../src/simple-text.vala:210
+#: ../src/simple-text.vala:216
 msgid "Contributors"
 msgstr "Contribuidores"
 
-#: ../src/simple-preferences.vala:55
+#: ../data/menu.ui.h:11 ../src/simple-preferences.vala:55
 msgid "View"
 msgstr "Vista"
 
@@ -160,7 +148,7 @@ msgstr "Usar tipografía por defecto"
 msgid "Color Scheme"
 msgstr "Esquema de color"
 
-#: ../src/simple-preferences.vala:215
+#: ../src/simple-preferences.vala:201
 msgid "Use dark theme variant"
 msgstr "Usar variante oscura del tema"
 
@@ -180,31 +168,31 @@ msgstr "Confirmar operación"
 msgid "Close without saving"
 msgstr "Cerrar sin guardar"
 
-#: ../src/main-window.vala:193
+#: ../src/main-window.vala:213
 msgid "Enter your search..."
 msgstr "Introduzca su búsqueda..."
 
-#: ../src/main-window.vala:368
+#: ../src/main-window.vala:413
 msgid "Open File"
 msgstr "Abrir ar"
 
-#: ../src/main-window.vala:458 ../src/main-window.vala:518
+#: ../src/main-window.vala:504 ../src/main-window.vala:565
 msgid "Save File"
 msgstr "Guardad archivo"
 
-#: ../src/main-window.vala:590
+#: ../src/main-window.vala:638
 msgid "Build successful!"
 msgstr "¡Compilación exitosa!"
 
-#: ../src/main-window.vala:593
+#: ../src/main-window.vala:641
 msgid "An error has occurred!"
 msgstr "¡Ha ocurrido un error!"
 
-#: ../src/main-window.vala:598
+#: ../src/main-window.vala:646
 msgid "Build system"
 msgstr "Sistema de compilación"
 
-#: ../src/main-window.vala:599
+#: ../src/main-window.vala:647
 msgid "Accept"
 msgstr "Aceptar"
 
@@ -212,11 +200,11 @@ msgstr "Aceptar"
 msgid "Search highlight mode..."
 msgstr "Buscar modo de resaltado..."
 
-#: ../src/simple-text.vala:177
+#: ../src/simple-text.vala:183
 msgid "translator-credits"
 msgstr "Ian Hernández"
 
-#: ../data/menu.ui.h:7
+#: ../data/menu.ui.h:9
 msgid "Search..."
 msgstr "Buscar..."
 
@@ -232,7 +220,7 @@ msgstr "Simple Text"
 msgid "text;editor;development;programming;"
 msgstr "texto;editor;desarrollo;programación"
 
-#: ../data/simple-text.desktop.in.h:3 ../src/simple-text.vala:200
+#: ../data/simple-text.desktop.in.h:3 ../src/simple-text.vala:206
 msgid "A not so simple text and code editor written in Vala"
 msgstr "Un editor de texto y código, no tan simple, escrito en Vala."
 
@@ -259,4 +247,44 @@ msgstr "Hecho"
 #: ../src/simple-statusbar.vala:96
 msgid "Failed"
 msgstr "Fallado"
+
+#: ../data/menu.ui.h:4
+msgid "Reload"
+msgstr "Recargar"
+
+#: ../data/menu.ui.h:5
+msgid "Build"
+msgstr "Compilar"
+
+#: ../data/menu.ui.h:6
+msgid "Fullscreen"
+msgstr "Pantalla completa"
+
+#: ../data/menu.ui.h:8
+msgid "Save all"
+msgstr "Guardar todo"
+
+#: ../data/menu.ui.h:10
+msgid "Search and replace"
+msgstr "Buscar y reemplazar"
+
+#: ../data/menu.ui.h:12
+msgid "Embedded terminal"
+msgstr "Terminal embebida"
+
+#: ../data/menu.ui.h:13
+msgid "Highlighting mode..."
+msgstr "Modo de resaltado..."
+
+#: ../data/menu.ui.h:14
+msgid "Navigation"
+msgstr "Navegación"
+
+#: ../data/menu.ui.h:19
+msgid "Close all"
+msgstr "Cerrar todo"
+
+#: ../src/main-window.vala:163
+msgid "Leave fullscreen mode"
+msgstr "Salir del modo a pantalla completa"
 
