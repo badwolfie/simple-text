@@ -79,6 +79,15 @@ public class SimpleText : Gtk.Application {
 		var menu = builder.get_object("appmenu") as MenuModel;
 		set_app_menu(menu);
 
+		const string[] accels_reload = {"<control>R",null};
+		set_accels_for_action("win.reload",accels_reload);
+
+		const string[] accels_build = {"<control>B",null};
+		set_accels_for_action("win.build",accels_build);
+
+		const string[] accels_fullscreen = {"F11",null};
+		set_accels_for_action("win.fullscreen",accels_fullscreen);
+
 		const string[] accels_re_open = {"<control><shift>T",null};
 		set_accels_for_action("win.re_open",accels_re_open);
 
@@ -103,9 +112,6 @@ public class SimpleText : Gtk.Application {
 		const string[] accels_search = {"<control>F",null};
 		set_accels_for_action("win.search_mode",accels_search);
 
-		const string[] accels_quit = {"<control>Q",null};
-		set_accels_for_action("win.quit_window",accels_quit);
-		
 		Posix.system("clear");
 	}
 

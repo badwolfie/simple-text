@@ -7,9 +7,9 @@ public class SimpleHeaderBar : HeaderBar {
 	private Button abrir;
 	private Button guardar;
 	private Button nuevo;
-	private Button build;
+	// private Button build;
 
-	private bool _buildable;
+	/* private bool _buildable;
 	public bool buildable {
 		get { return _buildable; }
 		set {
@@ -18,7 +18,7 @@ public class SimpleHeaderBar : HeaderBar {
 				build.sensitive = buildable;
 			}
 		}
-	}
+	}*/
 
 	public SimpleHeaderBar(MainWindow parent) {
 		Object();
@@ -42,7 +42,8 @@ public class SimpleHeaderBar : HeaderBar {
 		
 		menu_b.menu_model = builder.get_object("window-menu") as MenuModel;
 		menu_b.relief = Gtk.ReliefStyle.NONE;
-		menu_b.use_popover = false;
+		menu_b.popover.width_request = 275;
+		menu_b.use_popover = true;
 		menu_b.show_all();
 
 		abrir = new Button.with_label(_("Open"));
@@ -57,16 +58,16 @@ public class SimpleHeaderBar : HeaderBar {
 		nuevo.set_tooltip_text(_("New file") + " (Ctrl+N)");
 		nuevo.show();
 
-		build = new Button.from_icon_name("media-playback-start-symbolic",
+		/* build = new Button.from_icon_name("media-playback-start-symbolic",
 			IconSize.MENU);
 		build.set_tooltip_text(_("Build using make") + " (Ctrl+B)");
 		buildable = false;
-		build.show();
+		build.show(); */
 
 		pack_start(abrir);
 		pack_start(nuevo);
 		pack_end(menu_b);
-		pack_end(build);
+		// pack_end(build);
 		pack_end(guardar);
 	}
 
@@ -74,7 +75,7 @@ public class SimpleHeaderBar : HeaderBar {
 		abrir.clicked.connect(parent_window.open_file_cb);
 		guardar.clicked.connect(parent_window.save_tab_to_file);
 		nuevo.clicked.connect(parent_window.new_tab_cb);
-		build.clicked.connect(parent_window.build_code);
+		// build.clicked.connect(parent_window.build_code);
 
 		var accels = new AccelGroup();
 		parent_window.add_accel_group(accels);
@@ -84,7 +85,7 @@ public class SimpleHeaderBar : HeaderBar {
 			Gdk.ModifierType.CONTROL_MASK,AccelFlags.VISIBLE);
 		nuevo.add_accelerator("activate",accels,Gdk.Key.N,
 			Gdk.ModifierType.CONTROL_MASK,AccelFlags.VISIBLE);
-		build.add_accelerator("activate",accels,Gdk.Key.B,
-			Gdk.ModifierType.CONTROL_MASK,AccelFlags.VISIBLE);
+		/* build.add_accelerator("activate",accels,Gdk.Key.B,
+			Gdk.ModifierType.CONTROL_MASK,AccelFlags.VISIBLE); */
 	}
 }

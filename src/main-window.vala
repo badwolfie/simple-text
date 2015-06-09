@@ -24,6 +24,9 @@ public class MainWindow : ApplicationWindow {
 	/** Custom headerbar for the window */
 	private SimpleHeaderBar headerbar;
 	
+	/** Custom headerbar for the window when it's on fullscreen mode */
+	private SimpleHeaderBar fs_headerbar;
+	
 	/** Custom statusbar for the window */
 	private SimpleStatusbar status;
 	
@@ -153,41 +156,58 @@ public class MainWindow : ApplicationWindow {
 		set_titlebar(headerbar);
 		headerbar.show();
 
-		var action_re_open = new SimpleAction("re_open",null);
+		fs_headerbar = new SimpleHeaderBar(this);
+		fs_headerbar.show_close_button = false;
+		var leave_fs = new Button.from_icon_name("view-restore-symbolic", 
+												 IconSize.MENU);
+		leave_fs.set_tooltip_text(_("Leave fullscreen mode"));
+		
+		leave_fs.clicked.connect(on_fullscreen);
+		fs_headerbar.pack_end(leave_fs);
+
+		var action_re_open = new SimpleAction("re_open", null);
 		action_re_open.activate.connect(re_open_cb);
 		add_action(action_re_open);
 
-		var action_save_as = new SimpleAction("save_as",null);
+		var action_save_as = new SimpleAction("save_as", null);
 		action_save_as.activate.connect(save_as_cb);
 		add_action(action_save_as);
 
-		var action_next_tab = new SimpleAction("next_tab",null);
+		var action_next_tab = new SimpleAction("next_tab", null);
 		action_next_tab.activate.connect(next_tab_cb);
 		add_action(action_next_tab);
 
-		var action_prev_tab = new SimpleAction("prev_tab",null);
+		var action_prev_tab = new SimpleAction("prev_tab", null);
 		action_prev_tab.activate.connect(prev_tab_cb);
 		add_action(action_prev_tab);
 
-		var action_close_tab = new SimpleAction("close_tab",null);
+		var action_close_tab = new SimpleAction("close_tab", null);
 		action_close_tab.activate.connect(close_tab_cb);
 		add_action(action_close_tab);
 
-		var action_set_syntax = new SimpleAction("set_syntax",null);
+		var action_set_syntax = new SimpleAction("set_syntax", null);
 		action_set_syntax.activate.connect(set_syntax_cb);
 		add_action(action_set_syntax);
 		
-		var action_show_terminal = new SimpleAction("toggle_terminal",null);
+		var action_show_terminal = new SimpleAction("toggle_terminal", null);
 		action_show_terminal.activate.connect(on_show_terminal);
 		add_action(action_show_terminal);
 
-		var action_search_mode = new SimpleAction("search_mode",null);
+		var action_search_mode = new SimpleAction("search_mode", null);
 		action_search_mode.activate.connect(search_mode_cb);
 		add_action(action_search_mode);
 
-		var action_quit = new SimpleAction("quit_window",null);
-		action_quit.activate.connect(quit_cb);
-		add_action(action_quit);		
+		var action_reload = new SimpleAction("reload", null);
+		action_reload.activate.connect(on_reload);
+		add_action(action_reload);
+
+		var action_fullscreen = new SimpleAction("fullscreen", null);
+		action_fullscreen.activate.connect(on_fullscreen);
+		add_action(action_fullscreen);
+
+		var action_build = new SimpleAction("build", null);
+		action_build.activate.connect(build_code);
+		add_action(action_build);
 
 		search_entry = new SearchEntry();
 		search_entry.placeholder_text = _("Enter your search...");
@@ -237,6 +257,7 @@ public class MainWindow : ApplicationWindow {
 		separator.show();
 
 		var vbox = new Box(Orientation.VERTICAL,0);
+		vbox.pack_start(fs_headerbar,false,true,0);
 		vbox.pack_start(search_bar,false,true,0);
 		vbox.pack_start(tab_bar,false,true,7);
 		vbox.pack_start(separator,false,true,0);
@@ -253,6 +274,30 @@ public class MainWindow : ApplicationWindow {
 
 		add(pane);
 	}
+
+	/**
+	 * Function that toggles fullscreen mode for the application.
+	 *
+	 * @return void
+	 */
+	private void on_fullscreen() {
+		if ((this.get_window ().get_state () & Gdk.WindowState.FULLSCREEN) != 0) {
+			this.unfullscreen ();
+			fs_headerbar.hide();
+		}
+		else {
+			this.fullscreen ();
+			fs_headerbar.show_all();
+		}
+	}
+
+	/**
+	 * Function that forces the file buffer to reload in case of an external
+	 * modification.
+	 *
+	 * @return void
+	 */
+	private void on_reload() {}
 
 	/**
 	 * Function that gets executed when a page is switched on the Stack, and a 
@@ -418,6 +463,7 @@ public class MainWindow : ApplicationWindow {
 		int page_num = tab_bar.get_page_num(current_page);
 
 		headerbar.set_title(file_name);
+		fs_headerbar.set_title(file_name);
 		opened_files.insert(file_name,page_num);
 		
 		status.refresh_statusbar(FileOpeartion.OPEN_FILE,file_name);
@@ -481,6 +527,7 @@ public class MainWindow : ApplicationWindow {
 					tab_label.tab_title = 
 						file_chooser.get_file().get_basename();
 					headerbar.set_title(file_chooser.get_filename());
+					fs_headerbar.set_title(file_chooser.get_filename());
 					save_file(view,file_chooser.get_filename());
 					tab_label.mark_title();
 					
@@ -531,6 +578,7 @@ public class MainWindow : ApplicationWindow {
 			case ResponseType.ACCEPT:
 				current_page.tab_title = file_chooser.get_file().get_basename();
 				headerbar.set_title(file_chooser.get_filename());
+				fs_headerbar.set_title(file_chooser.get_filename());
 				save_file(view,file_chooser.get_filename());
 				current_page.mark_title();
 
@@ -630,6 +678,7 @@ public class MainWindow : ApplicationWindow {
 		int page_num = tab_bar.get_page_num(current_page);
 
 		headerbar.set_title(last_file_basename);
+		fs_headerbar.set_title(last_file_basename);
 		opened_files.insert(last_file_basename,page_num);
 
 		string f_name = opened_files.nth_data(page_num);
@@ -637,8 +686,8 @@ public class MainWindow : ApplicationWindow {
 		status.refresh_language(f_name);
 
 		current_page = tab_bar.get_current_page(documents.visible_child);
-		var p_langs = new ProgrammingLanguages();
-		headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
+		// var p_langs = new ProgrammingLanguages();
+		// headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
 		check_pages();
 	}
 
@@ -663,8 +712,8 @@ public class MainWindow : ApplicationWindow {
 			tab_bar.close_page(current_page);
 
 		current_page = tab_bar.get_current_page(documents.visible_child);
-		var p_langs = new ProgrammingLanguages();
-		headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
+		// var p_langs = new ProgrammingLanguages();
+		// headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
 	}
 	
 	/**
@@ -791,9 +840,10 @@ public class MainWindow : ApplicationWindow {
 		int page_num = tab_bar.get_page_num(current_page);
 		string file_name = opened_files.nth_data(page_num);
 		headerbar.set_title(file_name);
+		fs_headerbar.set_title(file_name);
 
-		var p_langs = new ProgrammingLanguages();
-		headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
+		// var p_langs = new ProgrammingLanguages();
+		// headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
 		
 		check_pages();
 	}
@@ -829,8 +879,8 @@ public class MainWindow : ApplicationWindow {
 		tab_bar.switch_page_next(current_page);
 
 		current_page = tab_bar.get_current_page(documents.visible_child);
-		var p_langs = new ProgrammingLanguages();
-		headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
+		// var p_langs = new ProgrammingLanguages();
+		// headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
 	}
 
 	/**
@@ -844,8 +894,8 @@ public class MainWindow : ApplicationWindow {
 		tab_bar.switch_page_prev(current_page);
 
 		current_page = tab_bar.get_current_page(documents.visible_child);
-		var p_langs = new ProgrammingLanguages();
-		headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
+		// var p_langs = new ProgrammingLanguages();
+		// headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
 	}	
 
 	/**
