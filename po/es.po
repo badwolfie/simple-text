@@ -90,7 +90,7 @@ msgstr "Contribuidores"
 
 #: ../data/menu.ui.h:11 ../src/simple-preferences.vala:55
 msgid "View"
-msgstr "Vista"
+msgstr "Ver"
 
 #: ../src/simple-preferences.vala:60
 msgid "Show line numbers"
