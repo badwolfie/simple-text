@@ -10,45 +10,17 @@ public class SimpleSourceView : SourceView {
 
 	private TextEditor editor;
 
-	public SimpleSourceView(TextEditor editor) {
-		var buff = new SourceBuffer(null);
-		var scheme_manager = SourceStyleSchemeManager.get_default();
-		var source_scheme = scheme_manager.get_scheme(editor.color_scheme);
-
-		buff.style_scheme = source_scheme;
-		Object(buffer: buff);
-		this.editor = editor;
-		connect_signals();
-		set_properties();
-		
-		buff.set_modified(false);
-	}
-
-	public SimpleSourceView.with_text(TextEditor editor, string display_text) {
-		var buff = new SourceBuffer(null);
-		var scheme_manager = SourceStyleSchemeManager.get_default();
-		var source_scheme = scheme_manager.get_scheme(editor.color_scheme);
-
-		buff.style_scheme = source_scheme;
-		
-		buff.begin_not_undoable_action();
-		buff.text = display_text;
-		buff.end_not_undoable_action();
-
-		Object(buffer: buff);
-		this.editor = editor;
-		connect_signals();
-		set_properties();
-		
-		buff.set_modified(false);
-	}
-
-	public SimpleSourceView.with_language(
-		TextEditor editor, string language, string display_text) {
+	public SimpleSourceView
+	(TextEditor editor, string? filename, string? display_text) {
 
 		var lang_manager = SourceLanguageManager.get_default();
-		var source_lang = lang_manager.get_language(language);
-		var buff = new SourceBuffer.with_language(source_lang);
+		var source_lang = lang_manager.guess_language(filename, null);
+		
+		SourceBuffer buff;
+		if (source_lang != null)
+			buff = new SourceBuffer.with_language(source_lang);
+		else
+			buff = new SourceBuffer(null);
 
 		var scheme_manager = SourceStyleSchemeManager.get_default();
 		var source_scheme = scheme_manager.get_scheme(editor.color_scheme);
@@ -57,7 +29,7 @@ public class SimpleSourceView : SourceView {
 		buff.highlight_syntax = true;
 		
 		buff.begin_not_undoable_action();
-		buff.text = display_text;
+		buff.text = (display_text == null)? "": display_text;
 		buff.end_not_undoable_action();
 
 		Object(buffer: buff);

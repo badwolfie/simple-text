@@ -35,11 +35,13 @@ public class SimpleLanguagePicker : Popover {
 			list_view.invalidate_filter();
 			return true;
 		});
-
-		plangs.languages.foreach((entry) => {
-			var label = new Label((string) entry);
+	
+		var lang_manager = SourceLanguageManager.get_default();
+		foreach (string lang_id in lang_manager.language_ids) {
+			var lang = lang_manager.get_language(lang_id);
+			var label = new Label(lang.name);
 			list_view.add(label);
-		});
+		}
 		
 		scroll = new ScrolledWindow(null,null);
 		scroll.set_policy(PolicyType.NEVER,PolicyType.AUTOMATIC);

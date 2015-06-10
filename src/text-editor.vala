@@ -125,4 +125,14 @@ public class TextEditor : Object {
 				_prefer_dark = value;
 		}
 	}
+	
+	private bool _show_welcome;
+	public bool show_welcome {
+		get { return _show_welcome; }
+		set {
+			if (_show_welcome != value)
+				_show_welcome = value;
+		}
+	}
 }
+

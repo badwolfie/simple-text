@@ -63,7 +63,7 @@ public class SimpleStatusbar : Box {
 			lang_picker.show_all();
 	}
 
-	public void refresh_statusbar(FileOpeartion operation, string? file_name) {
+	public void refresh_statusbar(FileOpeartion operation, string? filename) {
 		status.pop(context_id);
 
 		string build_string = "Building...";
@@ -75,16 +75,16 @@ public class SimpleStatusbar : Box {
 				status.push(context_id,_("New file"));
 				break;
 			case FileOpeartion.OPEN_FILE:
-				status.push(context_id,_("Opened") + ": " + file_name);
+				status.push(context_id,_("Opened") + ": " + filename);
 				break;
 			case FileOpeartion.EDIT_FILE:
 				status.push(context_id,_("Editing..."));
 				break;
 			case FileOpeartion.SAVE_FILE:
-				status.push(context_id,_("Saved") + ": " + file_name);
+				status.push(context_id,_("Saved") + ": " + filename);
 				break;
 			case FileOpeartion.CLOSE_FILE:
-				status.push(context_id,_("Closed") + ": " + file_name);
+				status.push(context_id,_("Closed") + ": " + filename);
 				break;
 			case FileOpeartion.BUILD_FILE:
 				status.push(context_id,_(build_string));
@@ -98,13 +98,15 @@ public class SimpleStatusbar : Box {
 		}
 	}
 
-	public void refresh_language(string? file_name) {
-		if (file_name == null)
+	public void refresh_language(string? filename) {
+		if (filename == null)
 			_label.label = "";
 		else {
-			var plangs = new ProgrammingLanguages();
-			string p_name = plangs.get_lang_name(file_name);
-			_label.label = p_name == null? "Plain text":	p_name;
+			_label.label = "Plain text";
+			
+			var lang_manager = SourceLanguageManager.get_default();
+			var language = lang_manager.guess_language(filename,null);
+			if (language != null) _label.label = language.name;
 		}
 	}
 

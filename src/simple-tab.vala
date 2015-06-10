@@ -50,7 +50,8 @@ public class SimpleTab : Box {
 		create_widgets(null,null);
 	}
 
-	public SimpleTab.from_file(TextEditor editor, string base_name, string file_path) {
+	public SimpleTab.from_file
+	(TextEditor editor, string base_name, string file_path) {
 		Object();
 		this.editor = editor;
 		this.tab_title = base_name;
@@ -58,14 +59,13 @@ public class SimpleTab : Box {
 		try {
 			string text;
 			FileUtils.get_contents(file_path, out text);
-			var plangs = new ProgrammingLanguages();
-			create_widgets(plangs.get_lang_id(base_name),text);
+			create_widgets(base_name, text);
 		} catch (Error e) {
 			stderr.printf ("Error: %s\n", e.message);
 		}
 	}
 
-	private void create_widgets(string? language, string? display_text) {
+	private void create_widgets(string? base_name, string? display_text) {
 		this.orientation = Orientation.HORIZONTAL;
 		this.spacing = 0;
 
@@ -87,16 +87,7 @@ public class SimpleTab : Box {
 		pack_start(close_button,false,true,5);
 		pack_start(separator,false,true,0);
 
-		if (display_text != null) {
-			if (language != null) {
-				_text_view = new SimpleSourceView.with_language(
-					editor,language,display_text);
-			} else {
-				_text_view = 
-					new SimpleSourceView.with_text(editor,display_text);
-			}
-		} else
-			_text_view = new SimpleSourceView(editor);
+		_text_view = new SimpleSourceView(editor,base_name,display_text);		
 		_text_view.drag_n_drop.connect(on_drag_n_drop);
 		text_view.show();
 

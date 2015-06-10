@@ -86,5 +86,11 @@
       <summary>Prefer dark variant</summary>
       <description>Prefer dark variant for GTK+ theme</description>
     </key>
+
+    <key type="b" name="show-welcome">
+      <default>true</default>
+      <summary>Show welcome screen</summary>
+      <description>Whether or not should the editor show the welcome screen on startup</description>
+    </key>
   </schema>
 </schemalist>

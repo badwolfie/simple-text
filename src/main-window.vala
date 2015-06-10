@@ -184,6 +184,10 @@ public class MainWindow : ApplicationWindow {
 		var action_close_tab = new SimpleAction("close_tab", null);
 		action_close_tab.activate.connect(close_tab_cb);
 		add_action(action_close_tab);
+		
+		var action_close_all = new SimpleAction("close_all", null);
+		action_close_all.activate.connect(on_close_all);
+		add_action(action_close_all);
 
 		var action_set_syntax = new SimpleAction("set_syntax", null);
 		action_set_syntax.activate.connect(set_syntax_cb);
@@ -333,7 +337,7 @@ public class MainWindow : ApplicationWindow {
 		var current_page = tab_bar.get_current_page(documents.visible_child);
 		var p_langs = new ProgrammingLanguages();
 
-		string lang_id = p_langs.get_lang_id_from_name(language);
+		string lang_id = p_langs.get_lang_id(language);
 		current_page.text_view.change_language(lang_id);
 	}
 	
@@ -355,13 +359,13 @@ public class MainWindow : ApplicationWindow {
 				tab_bar.get_current_page(documents.visible_child);
 			
 			int page_num = tab_bar.get_page_num(current_page);
-			string file_name = opened_files.nth_data(page_num);
+			string filename = opened_files.nth_data(page_num);
 			
 			string working_dir;
-			if (file_name.contains(untitled))
+			if (filename.contains(untitled))
 				working_dir = Environment.get_home_dir();
 			else {
-				working_dir = Path.get_dirname(file_name);
+				working_dir = Path.get_dirname(filename);
 			}
 			
 			terminal.cursor_blink_mode = CursorBlinkMode.ON;
@@ -430,8 +434,8 @@ public class MainWindow : ApplicationWindow {
 		
 		file_chooser.select_multiple = true;
 		if (file_chooser.run() == ResponseType.ACCEPT) {
-			var file_names = file_chooser.get_filenames();
-			file_names.foreach((entry) => {
+			var filenames = file_chooser.get_filenames();
+			filenames.foreach((entry) => {
 				add_new_tab_from_file((string) entry);
 			});
 			
@@ -443,18 +447,19 @@ public class MainWindow : ApplicationWindow {
 	/**
 	 * Function that adds a new tab from a file
 	 *
-	 * @param file_name string that contains the name of the file to be opened
+	 * @param filename string that contains the name of the file to be opened
 	 * @return void
 	 */
-	private void add_new_tab_from_file(string file_name) {
-		if (file_is_opened(file_name)) {
+	private void add_new_tab_from_file(string filename) {
+		if (file_is_opened(filename)) {
 			check_pages();
 			return;
 		}
 		
 		var tab_label = new SimpleTab.from_file(editor,
-			Path.get_basename(file_name),
-			file_name);
+			Path.get_basename(filename),
+			filename);
+			
 		tab_label.view_drag_n_drop.connect(add_new_tab_from_file);
 		add_new_tab(tab_label);
 		
@@ -462,12 +467,12 @@ public class MainWindow : ApplicationWindow {
 			documents.visible_child);
 		int page_num = tab_bar.get_page_num(current_page);
 
-		headerbar.set_title(file_name);
-		fs_headerbar.set_title(file_name);
-		opened_files.insert(file_name,page_num);
+		headerbar.set_title(filename);
+		fs_headerbar.set_title(filename);
+		opened_files.insert(filename, page_num);
 		
-		status.refresh_statusbar(FileOpeartion.OPEN_FILE,file_name);
-		status.refresh_language(file_name);
+		status.refresh_statusbar(FileOpeartion.OPEN_FILE, filename);
+		status.refresh_language(filename);
 
 		check_pages();
 	}
@@ -508,17 +513,12 @@ public class MainWindow : ApplicationWindow {
 			);
 
 			file_chooser.set_current_folder(Environment.get_home_dir());
-
-			var p_langs = new ProgrammingLanguages();
-			string ext = p_langs.get_lang_ext(status.label.label);
-			
 			var current_page = 
 				tab_bar.get_current_page(documents.visible_child);
 				
 			string filename =
 				opened_files.nth_data(tab_bar.get_page_num(current_page));
-				
-			file_chooser.set_current_name(Path.get_basename(filename) + ext);
+			file_chooser.set_current_name(Path.get_basename(filename));
 
 			switch (file_chooser.run()) {
 				default:
@@ -540,8 +540,8 @@ public class MainWindow : ApplicationWindow {
 			}
 			file_chooser.destroy();
 		} else if (tab_label.tab_title.contains("*")) {
-			string file_name = opened_files.nth_data(page_num);
-			save_file(view,file_name);
+			string filename = opened_files.nth_data(page_num);
+			save_file(view, filename);
 			reset_changes(tab_label);
 		}
 	}
@@ -620,14 +620,18 @@ public class MainWindow : ApplicationWindow {
 	 * @return void
 	 */
 	public void build_code() {
-		save_tab_to_file();
-		status.refresh_statusbar(FileOpeartion.BUILD_FILE,null);
-
 		var current_page = tab_bar.get_current_page(documents.visible_child);
 		int page_num = tab_bar.get_page_num(current_page);
-
-		string file_name = opened_files.nth_data(page_num);
-		string directory = Path.get_dirname(file_name);
+		
+		string filename = opened_files.nth_data(page_num);
+		string directory = Path.get_dirname(filename);
+		
+		save_tab_to_file();
+		
+		var plangs = new ProgrammingLanguages();
+		if (!plangs.is_buildable(Path.get_basename(filename))) return;
+		
+		status.refresh_statusbar(FileOpeartion.BUILD_FILE,null);
 
 		FileOpeartion build_status;
 		Dialog build_dialog;
@@ -686,8 +690,6 @@ public class MainWindow : ApplicationWindow {
 		status.refresh_language(f_name);
 
 		current_page = tab_bar.get_current_page(documents.visible_child);
-		// var p_langs = new ProgrammingLanguages();
-		// headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
 		check_pages();
 	}
 
@@ -710,10 +712,7 @@ public class MainWindow : ApplicationWindow {
 			tab_bar.get_current_page(documents.visible_child);
 		if (confirm_close(current_page))
 			tab_bar.close_page(current_page);
-
 		current_page = tab_bar.get_current_page(documents.visible_child);
-		// var p_langs = new ProgrammingLanguages();
-		// headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
 	}
 	
 	/**
@@ -734,10 +733,13 @@ public class MainWindow : ApplicationWindow {
 		
 		tab_bar.switch_page_next(tab);
 		tab.tab_widget.destroy();
+		
 		tab.destroy();
 		check_pages();
 
-		tab_bar.get_current_page(documents.visible_child).mark_title();
+		var current_doc = tab_bar.get_current_page(documents.visible_child);
+		tab_bar.switch_page(current_doc);
+		current_doc.mark_title();
 	}
 	
 	/**
@@ -838,13 +840,10 @@ public class MainWindow : ApplicationWindow {
 		
 		var current_page = tab_bar.get_current_page(documents.visible_child);
 		int page_num = tab_bar.get_page_num(current_page);
-		string file_name = opened_files.nth_data(page_num);
-		headerbar.set_title(file_name);
-		fs_headerbar.set_title(file_name);
-
-		// var p_langs = new ProgrammingLanguages();
-		// headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
+		string filename = opened_files.nth_data(page_num);
 		
+		headerbar.set_title(filename);
+		fs_headerbar.set_title(filename);		
 		check_pages();
 	}
 	
@@ -877,10 +876,7 @@ public class MainWindow : ApplicationWindow {
 	private void next_tab_cb() {
 		var current_page = tab_bar.get_current_page(documents.visible_child);
 		tab_bar.switch_page_next(current_page);
-
 		current_page = tab_bar.get_current_page(documents.visible_child);
-		// var p_langs = new ProgrammingLanguages();
-		// headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
 	}
 
 	/**
@@ -892,10 +888,7 @@ public class MainWindow : ApplicationWindow {
 	private void prev_tab_cb() {
 		var current_page = tab_bar.get_current_page(documents.visible_child);
 		tab_bar.switch_page_prev(current_page);
-
 		current_page = tab_bar.get_current_page(documents.visible_child);
-		// var p_langs = new ProgrammingLanguages();
-		// headerbar.buildable = p_langs.is_buildable(current_page.tab_title);
 	}	
 
 	/**
@@ -933,6 +926,17 @@ public class MainWindow : ApplicationWindow {
 	}
 
 	/**
+	 * Function called when a "close all" request is made, it checks and closes 
+	 * every opened document before closing its tab
+	 *
+	 * @return void
+	 */
+	private void on_close_all() {
+		while (opened_files.length() != 0) 
+			close_tab_cb();
+	}
+
+	/**
 	 * Function called when a "quit" request is made, it checks and closes every
 	 * opened document before closing the window
 	 *
@@ -940,8 +944,7 @@ public class MainWindow : ApplicationWindow {
 	 */
 	private void quit_cb() {
 		save_workspace();
-		while (opened_files.length() != 0) 
-			close_tab_cb();
+		on_close_all();
 		this.destroy();
 	}
 }

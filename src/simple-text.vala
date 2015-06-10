@@ -64,6 +64,7 @@ public class SimpleText : Gtk.Application {
 		editor.editor_font = settings.get_string("editor-font");
 		editor.color_scheme = settings.get_string("color-scheme");
 		editor.prefer_dark = settings.get_boolean("prefer-dark");
+		editor.show_welcome = settings.get_boolean("show-welcome");
 		
 		add_action_entries(app_entries,this);
 		window = new MainWindow(this,editor);		
@@ -108,6 +109,9 @@ public class SimpleText : Gtk.Application {
 
 		const string[] accels_close = {"<control>W",null};
 		set_accels_for_action("win.close_tab",accels_close);
+		
+		const string[] accels_close_all = {"<control><shift>W",null};
+		set_accels_for_action("win.close_all",accels_close_all);
 
 		const string[] accels_search = {"<control>F",null};
 		set_accels_for_action("win.search_mode",accels_search);
@@ -161,6 +165,7 @@ public class SimpleText : Gtk.Application {
 			settings.set_string("editor-font", editor.editor_font);
 		settings.set_string("color-scheme", editor.color_scheme);
 		settings.set_boolean("prefer-dark", editor.prefer_dark);
+		settings.set_boolean("show-welcome", editor.show_welcome);
 	}
 	
 	private void show_prefs_cb() {
