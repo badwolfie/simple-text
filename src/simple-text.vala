@@ -32,6 +32,9 @@ public class SimpleText : Gtk.Application {
 
 		var conf_dir = File.new_for_path(
 			Environment.get_home_dir() + "/.simple-text");
+			
+		var schemes_dir = File.new_for_path(
+			Environment.get_home_dir() + "/.simple-text/styles");
 
 		var saved_workspace = File.new_for_path(
 			Environment.get_home_dir() + "/.simple-text/saved-workspace");
@@ -39,6 +42,9 @@ public class SimpleText : Gtk.Application {
 		try {
 			if (!conf_dir.query_exists())
 				conf_dir.make_directory();
+				
+			if (!schemes_dir.query_exists())
+				schemes_dir.make_directory();
 				
 			if (!saved_workspace.query_exists())
 				saved_workspace.create(FileCreateFlags.PRIVATE);
