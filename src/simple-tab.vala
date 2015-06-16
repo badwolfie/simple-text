@@ -132,7 +132,8 @@ public class SimpleTab : Box {
 
 	public void mark_title() {
 		title_label.use_markup = true;
-		title_label.label = "<b>" + tab_title + "</b>";
+		title_label.label = "<span underline='single' font_weight='bold'>" + 
+							tab_title + "</span>";
 	}
 
 	public void change_language(string language) {

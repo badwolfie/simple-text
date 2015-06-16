@@ -87,5 +87,8 @@ public class SimpleHeaderBar : HeaderBar {
 			Gdk.ModifierType.CONTROL_MASK,AccelFlags.VISIBLE);
 		/* build.add_accelerator("activate",accels,Gdk.Key.B,
 			Gdk.ModifierType.CONTROL_MASK,AccelFlags.VISIBLE); */
+		menu_b.add_accelerator("activate",accels,Gdk.Key.F10,
+			Gdk.ModifierType.META_MASK,AccelFlags.VISIBLE);
 	}
 }
+
