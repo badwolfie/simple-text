@@ -40,6 +40,7 @@ public class SimpleTabBar : Box {
 		extra_menu = new EventBox();
 		extra_menu.child = extra_menu_img;
 		extra_menu.set_above_child(true);
+		extra_menu.width_request = 20;
 
 		extra_menu.button_press_event.connect((event) => {
 			if (extra_popup.get_visible())
@@ -74,6 +75,8 @@ public class SimpleTabBar : Box {
 			extra_box.pack_start(tab,false,true,7);
 			_extra_tabs.append(tab);
 			tab_extra_num++;
+			
+			extra_menu.set_tooltip_text(_("Hidden tabs: %d").printf(tab_extra_num));
 		}
 		
 		tab.close_clicked.connect(close_page);
@@ -87,10 +90,10 @@ public class SimpleTabBar : Box {
 	}
 
 	public void switch_page(SimpleTab tab) {
-		if (_extra_tabs.index(tab) != -1)
+		/* if (_extra_tabs.index(tab) != -1)
 			extra_popup.show_all();
 		else
-			extra_popup.hide();
+			extra_popup.hide(); */
 
 		stack.set_visible_child(tab.tab_widget);
 		refresh_marked();
@@ -176,12 +179,14 @@ public class SimpleTabBar : Box {
 					add_page(aux_tab,false);
 
 					_extra_tabs.remove(aux_tab);
-					tab_extra_num--;	
+					tab_extra_num--;
 				}
 			} else if (_extra_tabs.index(tab) != -1) {
 				_extra_tabs.remove(tab);
 				tab_extra_num--;
 			}
+			
+			extra_menu.set_tooltip_text(_("Hidden tabs: %d").printf(tab_extra_num));
 		}
 
 		if ((tab_extra_num == 0) && (tab_num <= 5))

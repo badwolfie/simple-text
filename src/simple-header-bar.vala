@@ -7,6 +7,7 @@ public class SimpleHeaderBar : HeaderBar {
 	private Button abrir;
 	private Button guardar;
 	private Button nuevo;
+	private Button leave_fs;
 	// private Button build;
 
 	/* private bool _buildable;
@@ -40,6 +41,9 @@ public class SimpleHeaderBar : HeaderBar {
 		menu_b = new MenuButton();
 		menu_b.set_direction(ArrowType.NONE);
 		
+		var context_menu_b = menu_b.get_style_context();
+		context_menu_b.add_class("image-button");
+		
 		menu_b.menu_model = builder.get_object("window-menu") as MenuModel;
 		menu_b.relief = Gtk.ReliefStyle.NONE;
 		menu_b.popover.width_request = 275;
@@ -57,12 +61,20 @@ public class SimpleHeaderBar : HeaderBar {
 		nuevo = new Button.from_icon_name("tab-new-symbolic",IconSize.MENU);
 		nuevo.set_tooltip_text(_("New file") + " (Ctrl+N)");
 		nuevo.show();
+		
+		var context_nuevo = nuevo.get_style_context();
+		context_nuevo.add_class("image-button");
 
 		/* build = new Button.from_icon_name("media-playback-start-symbolic",
 			IconSize.MENU);
 		build.set_tooltip_text(_("Build using make") + " (Ctrl+B)");
 		buildable = false;
 		build.show(); */
+		
+		leave_fs = new Button.from_icon_name("view-restore-symbolic", 
+												 IconSize.MENU);
+		leave_fs.set_tooltip_text(_("Leave fullscreen mode"));
+		pack_end(leave_fs);
 
 		pack_start(abrir);
 		pack_start(nuevo);
@@ -75,6 +87,7 @@ public class SimpleHeaderBar : HeaderBar {
 		abrir.clicked.connect(parent_window.open_file_cb);
 		guardar.clicked.connect(parent_window.save_tab_to_file);
 		nuevo.clicked.connect(parent_window.new_tab_cb);
+		leave_fs.clicked.connect(parent_window.on_fullscreen);
 		// build.clicked.connect(parent_window.build_code);
 
 		var accels = new AccelGroup();
@@ -89,6 +102,16 @@ public class SimpleHeaderBar : HeaderBar {
 			Gdk.ModifierType.CONTROL_MASK,AccelFlags.VISIBLE); */
 		menu_b.add_accelerator("activate",accels,Gdk.Key.F10,
 			Gdk.ModifierType.META_MASK,AccelFlags.VISIBLE);
+	}
+	
+	public void toggle_fullscreen() {
+		if ((parent_window.get_window ().get_state () & Gdk.WindowState.FULLSCREEN) != 0) {
+			show_close_button = true;
+			leave_fs.hide();
+		} else {
+			show_close_button = false;
+			leave_fs.show_all();
+		}	
 	}
 }
 

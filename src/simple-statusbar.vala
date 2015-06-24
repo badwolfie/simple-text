@@ -98,15 +98,14 @@ public class SimpleStatusbar : Box {
 		}
 	}
 
-	public void refresh_language(string? filename) {
-		if (filename == null)
+	public void refresh_language(string? lang_name) {
+		if (lang_name == null)
 			_label.label = "";
 		else {
 			_label.label = "Plain text";
 			
-			var lang_manager = SourceLanguageManager.get_default();
-			var language = lang_manager.guess_language(filename,null);
-			if (language != null) _label.label = language.name;
+			if (lang_name != null) 
+				_label.label = lang_name;
 		}
 	}
 

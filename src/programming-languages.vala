@@ -56,10 +56,9 @@ public class ProgrammingLanguages {
 		return value;
 	}
 
-	public bool is_buildable(string filename) {
-		var language = lang_manager.guess_language(filename, null);
+	public bool is_buildable(string lang_name) {
 		for (int i = 0; i < buildables.length; i++)
-			if (language.name == buildables.data[i]) return true;
+			if (lang_name == buildables.data[i]) return true;
 		return false;
 	}
 }

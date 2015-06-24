@@ -1,7 +1,7 @@
 using Gtk;
 
 public class SimpleSourceView : SourceView {
-	public signal void drag_n_drop(string file_name);
+	public signal void drag_n_drop(string filename);
 
 	private const int TARGET_TYPE_URI_LIST = 80;
 	private const TargetEntry[] target_list = {
@@ -12,9 +12,12 @@ public class SimpleSourceView : SourceView {
 
 	public SimpleSourceView
 	(TextEditor editor, string? filename, string? display_text) {
+		bool result_uncertain;
+		string content_type = ContentType.guess(filename, null, out result_uncertain);
+		if (result_uncertain) content_type = null;
 
 		var lang_manager = SourceLanguageManager.get_default();
-		var source_lang = lang_manager.guess_language(filename, null);
+		var source_lang = lang_manager.guess_language(filename, content_type);
 		
 		SourceBuffer buff;
 		if (source_lang != null)
@@ -185,5 +188,9 @@ public class SimpleSourceView : SourceView {
 
 		path = path.strip();
 		return path;
+	}
+	
+	public string get_language_name() {
+		return (this.buffer as SourceBuffer).language.name;
 	}
 }

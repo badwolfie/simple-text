@@ -47,7 +47,7 @@ public class SimpleTab : Box {
 		Object();
 		this.editor = editor;
 		this.tab_title = untitled;
-		this.width_request = 300;
+		this.width_request = 150;
 		create_widgets(null,null);
 	}
 
@@ -74,7 +74,7 @@ public class SimpleTab : Box {
 		separator = new Separator(Orientation.VERTICAL);
 		var close_img = new Image.from_icon_name("window-close-symbolic",
 												 IconSize.MENU);
-		title_label.ellipsize = Pango.EllipsizeMode.MIDDLE;
+		title_label.ellipsize = Pango.EllipsizeMode.END;
 		title_label.max_width_chars = 15;
 		
 		close_button = new EventBox();

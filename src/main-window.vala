@@ -152,18 +152,10 @@ public class MainWindow : ApplicationWindow {
 		Gtk.Settings.get_default().set(
 			"gtk-application-prefer-dark-theme",_editor.prefer_dark);
 
+		fs_headerbar = new SimpleHeaderBar(this);
 		headerbar = new SimpleHeaderBar(this);
 		set_titlebar(headerbar);
 		headerbar.show();
-
-		fs_headerbar = new SimpleHeaderBar(this);
-		fs_headerbar.show_close_button = false;
-		var leave_fs = new Button.from_icon_name("view-restore-symbolic", 
-												 IconSize.MENU);
-		leave_fs.set_tooltip_text(_("Leave fullscreen mode"));
-		
-		leave_fs.clicked.connect(on_fullscreen);
-		fs_headerbar.pack_end(leave_fs);
 
 		var action_re_open = new SimpleAction("re_open", null);
 		action_re_open.activate.connect(re_open_cb);
@@ -284,7 +276,8 @@ public class MainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void on_fullscreen() {
+	public void on_fullscreen() {
+		fs_headerbar.toggle_fullscreen();
 		if ((this.get_window ().get_state () & Gdk.WindowState.FULLSCREEN) != 0) {
 			this.unfullscreen ();
 			fs_headerbar.hide();
@@ -313,6 +306,7 @@ public class MainWindow : ApplicationWindow {
 	private void on_page_switched(SimpleTab tab) {
 		int page_num = tab_bar.get_page_num(tab);
 		headerbar.title = opened_files.nth_data(page_num);
+		fs_headerbar.title = opened_files.nth_data(page_num);
 		
 		if (terminal.get_visible()) {
 			terminal.reset(true,true);
@@ -322,8 +316,10 @@ public class MainWindow : ApplicationWindow {
 			visible_doc.get_child().grab_focus();
 		}
 		
+		var current_page = tab_bar.get_current_page(documents.visible_child);
+		var lang_name = current_page.text_view.get_language_name();
 		status.refresh_statusbar(FileOpeartion.NULL_OPERATION,null);
-		status.refresh_language(headerbar.title);
+		status.refresh_language(lang_name);
 	}
 
 	/**
@@ -472,7 +468,7 @@ public class MainWindow : ApplicationWindow {
 		opened_files.insert(filename, page_num);
 		
 		status.refresh_statusbar(FileOpeartion.OPEN_FILE, filename);
-		status.refresh_language(filename);
+		status.refresh_language(current_page.text_view.get_language_name());
 
 		check_pages();
 	}
@@ -629,7 +625,8 @@ public class MainWindow : ApplicationWindow {
 		save_tab_to_file();
 		
 		var plangs = new ProgrammingLanguages();
-		if (!plangs.is_buildable(Path.get_basename(filename))) return;
+		if (!plangs.is_buildable(current_page.text_view.get_language_name())) 
+			return;
 		
 		status.refresh_statusbar(FileOpeartion.BUILD_FILE,null);
 
@@ -687,7 +684,7 @@ public class MainWindow : ApplicationWindow {
 
 		string f_name = opened_files.nth_data(page_num);
 		status.refresh_statusbar(FileOpeartion.OPEN_FILE,f_name);
-		status.refresh_language(f_name);
+		status.refresh_language(current_page.text_view.get_language_name());
 
 		current_page = tab_bar.get_current_page(documents.visible_child);
 		check_pages();
@@ -774,6 +771,7 @@ public class MainWindow : ApplicationWindow {
 			
 			if (opened_files.length() == 0) {
 				headerbar.title = "Simple Text";
+				fs_headerbar.title = "Simple Text";
 			}
 		} else {
 			tab_bar.show();
@@ -792,7 +790,7 @@ public class MainWindow : ApplicationWindow {
 	private bool changes_done(Gdk.EventKey event) {
 		var page = documents.visible_child as ScrolledWindow;
 		var view = page.get_child() as SourceView;
-
+		
 		if (view.buffer.get_modified()) {
 			var tab_label = tab_bar.get_current_page(page);
 
@@ -861,7 +859,7 @@ public class MainWindow : ApplicationWindow {
 			view.buffer.set_modified(false);
 
 			status.refresh_statusbar(FileOpeartion.SAVE_FILE,filename);
-			status.refresh_language(filename);
+			status.refresh_language(filename); 
 		} catch (Error e) {
 			stderr.printf ("Error: %s\n", e.message);
 		}
