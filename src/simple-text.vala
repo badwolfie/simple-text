@@ -49,7 +49,7 @@ public class SimpleText : Gtk.Application {
 			if (!saved_workspace.query_exists())
 				saved_workspace.create(FileCreateFlags.PRIVATE);
 		} catch (Error e) {
-			error("Error loading menu UI: %s",e.message);
+			error("I/O error: %s",e.message);
 		}
 		
 		var editor = new TextEditor();
@@ -70,6 +70,7 @@ public class SimpleText : Gtk.Application {
 		editor.editor_font = settings.get_string("editor-font");
 		editor.color_scheme = settings.get_string("color-scheme");
 		editor.prefer_dark = settings.get_boolean("prefer-dark");
+		editor.save_workspace = settings.get_boolean("save-workspace");
 		editor.show_welcome = settings.get_boolean("show-welcome");
 		
 		add_action_entries(app_entries,this);
@@ -171,6 +172,7 @@ public class SimpleText : Gtk.Application {
 			settings.set_string("editor-font", editor.editor_font);
 		settings.set_string("color-scheme", editor.color_scheme);
 		settings.set_boolean("prefer-dark", editor.prefer_dark);
+		settings.set_boolean("save-workspace", editor.save_workspace);
 		settings.set_boolean("show-welcome", editor.show_welcome);
 	}
 	

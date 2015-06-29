@@ -56,11 +56,17 @@ public class MainWindow : ApplicationWindow {
 	public File[] arg_files {
 		set {
 			_arg_files = value;
-			load_workspace();
+			
+			if ((_editor != null) && _editor.save_workspace)
+				load_workspace();
 
 			if (_arg_files != null) {
-				foreach (var file in _arg_files) 
-					add_new_tab_from_file(file.get_path());
+				foreach (var file in _arg_files) {
+					var file_location = File.new_for_path(file.get_path());
+					
+					if (file_location.query_exists())
+						add_new_tab_from_file(file.get_path());
+				} 
 			}
 		}
 	}
@@ -150,7 +156,7 @@ public class MainWindow : ApplicationWindow {
 	 */
 	private void create_widgets() {
 		Gtk.Settings.get_default().set(
-			"gtk-application-prefer-dark-theme",_editor.prefer_dark);
+			"gtk-application-prefer-dark-theme", _editor.prefer_dark);
 
 		fs_headerbar = new SimpleHeaderBar(this);
 		headerbar = new SimpleHeaderBar(this);
@@ -267,6 +273,10 @@ public class MainWindow : ApplicationWindow {
 		pane.pack1(vbox,false,false);
 		pane.pack2(terminal,true,true);
 		pane.show();
+		
+		
+		if ((_editor != null) && !_editor.save_workspace)
+			new_tab_cb();
 
 		add(pane);
 	}
@@ -680,7 +690,7 @@ public class MainWindow : ApplicationWindow {
 
 		headerbar.set_title(last_file_basename);
 		fs_headerbar.set_title(last_file_basename);
-		opened_files.insert(last_file_basename,page_num);
+		opened_files.insert(last_file_path, page_num);
 
 		string f_name = opened_files.nth_data(page_num);
 		status.refresh_statusbar(FileOpeartion.OPEN_FILE,f_name);
@@ -941,7 +951,8 @@ public class MainWindow : ApplicationWindow {
 	 * @return void
 	 */
 	private void quit_cb() {
-		save_workspace();
+		if ((_editor != null) && _editor.save_workspace)
+			save_workspace();
 		on_close_all();
 		this.destroy();
 	}

@@ -12,6 +12,7 @@ public class PreferencesDialog : Dialog {
 	
 	private CheckButton current_line_check;
 	private CheckButton brackets_check;
+	private CheckButton save_workspace_check;
 	
 	private ComboBox tab_width_combo;
 	private CheckButton insert_spaces_check;
@@ -151,16 +152,39 @@ public class PreferencesDialog : Dialog {
 			editor.insert_spaces = insert_spaces_check.active;
 		});
 		
+		var aux_label_2 = new Label("");
+		aux_label_2.halign = Align.START;
+		
 		auto_indent_check = new CheckButton.with_label(
 			_("Activate auto indent"));
 		auto_indent_check.toggled.connect(() => {
 			editor.auto_indent = auto_indent_check.active;
 		});
 		
+		var workspace_label = new Label("<b>" + _("Workspace") + "</b>");
+		workspace_label.use_markup = true;
+		workspace_label.halign = Align.START;
+		
+		save_workspace_check = new CheckButton.with_label(
+			_("Save current workspace on closing"));
+		save_workspace_check.toggled.connect(() => {
+			editor.save_workspace = save_workspace_check.active;
+		});
+		
+		/* string workspace_path = Environment.get_home_dir() + 
+			"/.simple-text/saved-workspace";
+		var saved_workspace = File.new_for_path(workspace_path);
+		if (!saved_workspace.query_exists())
+			Posix.system("rm -f " + workspace_path); */
+		
 		box_editor.add(indent_label);
 		box_editor.add(hbox_tab_width);
 		box_editor.add(insert_spaces_check);
 		box_editor.add(auto_indent_check);
+		
+		box_editor.add(aux_label_2);
+		box_editor.add(workspace_label);
+		box_editor.add(save_workspace_check);
 
 		
 		var typo_label = new Label("<b>" + _("Typography") + "</b>");
@@ -251,6 +275,11 @@ public class PreferencesDialog : Dialog {
 		auto_indent_check.active = editor.auto_indent;
 		editor.notify["auto-indent"].connect((pspec) => {
 			auto_indent_check.active = editor.auto_indent;
+		});
+		
+		save_workspace_check.active = editor.save_workspace;
+		editor.notify["save-workspace"].connect((pspec) => {
+			save_workspace_check.active = editor.save_workspace;
 		});
 
 		grid_pattern_check.active = editor.show_grid_pattern;

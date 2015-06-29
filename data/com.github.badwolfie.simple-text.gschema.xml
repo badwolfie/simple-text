@@ -87,6 +87,12 @@
       <description>Prefer dark variant for GTK+ theme</description>
     </key>
 
+    <key type="b" name="save-workspace">
+      <default>false</default>
+      <summary>Save workspace upon closing</summary>
+      <description>Whether or not should the editor save the current workspace upon closing and restore it on startup</description>
+    </key>
+
     <key type="b" name="show-welcome">
       <default>true</default>
       <summary>Show welcome screen</summary>

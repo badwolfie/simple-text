@@ -126,6 +126,15 @@ public class TextEditor : Object {
 		}
 	}
 	
+	private bool _save_workspace;
+	public bool save_workspace {
+		get { return _save_workspace; }
+		set {
+			if (_save_workspace != value)
+				_save_workspace = value;
+		}
+	}
+	
 	private bool _show_welcome;
 	public bool show_welcome {
 		get { return _show_welcome; }
