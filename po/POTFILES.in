@@ -3,11 +3,11 @@
 [encoding: UTF-8]
 [type: gettext/glade]data/menu.ui
 data/simple-text.desktop.in
-src/confirm-exit.vala
-src/main-window.vala
-src/simple-header-bar.vala
-src/simple-language-picker.vala
-src/simple-preferences.vala
-src/simple-statusbar.vala
-src/simple-tab.vala
-src/simple-text.vala
+src/st-application.vala
+src/st-header-bar.vala
+src/st-language-picker.vala
+src/st-main-window.vala
+src/st-preferences-dialog.vala
+src/st-statusbar.vala
+src/st-tab-bar.vala
+src/st-tab.vala
