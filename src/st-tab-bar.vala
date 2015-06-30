@@ -51,7 +51,7 @@ public class StTabBar : Box {
 			return true;
 		});
 
-		extra_popup = new Popover(extra_menu);		
+		extra_popup = new Popover(extra_menu_img);		
 		pack_end(extra_menu,false,true,3);
 		extra_popup.width_request = 320;
 		extra_popup.add(extra_box);
@@ -83,17 +83,17 @@ public class StTabBar : Box {
 		tab.tab_clicked.connect(switch_page);
 
 		if (new_page) {
-			switch_page(tab);
+			switch_page(tab, new_page);
 			refresh_marked();
 			tab.mark_title();
 		}
 	}
 
-	public void switch_page(StTab tab) {
-		/* if (_extra_tabs.index(tab) != -1)
+	public void switch_page(StTab tab, bool new_page) {
+		if ((_extra_tabs.index(tab) != -1) && !new_page)
 			extra_popup.show_all();
 		else
-			extra_popup.hide(); */
+			extra_popup.hide();
 
 		stack.set_visible_child(tab.tab_widget);
 		refresh_marked();
@@ -121,46 +121,46 @@ public class StTabBar : Box {
 		return current_tab;
 	}
 
-	public void switch_page_next(StTab current_tab) {
+	public void switch_page_next(StTab current_tab, bool new_page) {
 		if (_tabs.index(current_tab) != -1) {
 			if (current_tab == _tabs.last().data) {
 				if (tab_extra_num > 0)
-					switch_page(_extra_tabs.first().data);
+					switch_page(_extra_tabs.first().data, new_page);
 				else
-					switch_page(_tabs.first().data);
+					switch_page(_tabs.first().data, new_page);
 			} else {
 				var tab = _tabs.nth_data(_tabs.index(current_tab) + 1);
-				switch_page(tab);
+				switch_page(tab, new_page);
 			}
 		} else if (_extra_tabs.index(current_tab) != -1) {
 			if (current_tab == _extra_tabs.last().data)
-				switch_page(_tabs.first().data);
+				switch_page(_tabs.first().data, new_page);
 			else {
 				var tab = _extra_tabs.nth_data(
 					_extra_tabs.index(current_tab) + 1);
-				switch_page(tab);
+				switch_page(tab, new_page);
 			}
 		}
 	}
 
-	public void switch_page_prev(StTab current_tab) {
+	public void switch_page_prev(StTab current_tab, bool new_page) {
 		if (_tabs.index(current_tab) != -1) {
 			if (current_tab == _tabs.first().data) {
 				if (tab_extra_num > 0)
-					switch_page(_extra_tabs.last().data);
+					switch_page(_extra_tabs.last().data, new_page);
 				else
-					switch_page(_tabs.last().data);
+					switch_page(_tabs.last().data, new_page);
 			} else {
 				var tab = _tabs.nth_data(_tabs.index(current_tab) - 1);
-				switch_page(tab);
+				switch_page(tab, new_page);
 			}
 		} else if (_extra_tabs.index(current_tab) != -1) {
 			if (current_tab == _extra_tabs.first().data)
-				switch_page(_tabs.last().data);
+				switch_page(_tabs.last().data, new_page);
 			else {
 				var tab = _extra_tabs.nth_data(
 					_extra_tabs.index(current_tab) - 1);
-				switch_page(tab);
+				switch_page(tab, new_page);
 			}
 		}
 	}

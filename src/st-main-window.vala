@@ -744,14 +744,14 @@ public class StMainWindow : ApplicationWindow {
 			closed_files.append_val(f_name);
 		opened_files.remove(opened_files.nth_data(page_num));
 		
-		tab_bar.switch_page_next(tab);
+		tab_bar.switch_page_next(tab, false);
 		tab.tab_widget.destroy();
 		
 		tab.destroy();
 		check_pages();
 
 		var current_doc = tab_bar.get_current_doc(documents.visible_child);
-		tab_bar.switch_page(current_doc);
+		tab_bar.switch_page(current_doc, false);
 		current_doc.mark_title();
 		
 		var lang_name = current_doc.text_view.get_language_name();
@@ -896,7 +896,7 @@ public class StMainWindow : ApplicationWindow {
 	 */
 	private void next_tab_cb() {
 		var current_doc = tab_bar.get_current_doc(documents.visible_child);
-		tab_bar.switch_page_next(current_doc);
+		tab_bar.switch_page_next(current_doc, false);
 	}
 
 	/**
@@ -907,7 +907,7 @@ public class StMainWindow : ApplicationWindow {
 	 */
 	private void prev_tab_cb() {
 		var current_doc = tab_bar.get_current_doc(documents.visible_child);
-		tab_bar.switch_page_prev(current_doc);
+		tab_bar.switch_page_prev(current_doc, false);
 	}	
 
 	/**
@@ -921,7 +921,7 @@ public class StMainWindow : ApplicationWindow {
 	private bool confirm_close(StTab? tab) {
 		if (tab == null) return false;
 		if (tab.tab_title.contains("*")) {
-			tab_bar.switch_page(tab);
+			tab_bar.switch_page(tab, true);
 
 			var confirmar = new MessageDialog(this,
 				DialogFlags.MODAL, 

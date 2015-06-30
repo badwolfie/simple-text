@@ -6,7 +6,7 @@ public class StTab : Box {
 	private StTextEditor editor;
 
 	public signal void close_clicked (StTab tab);
-	public signal void tab_clicked (StTab tab);
+	public signal void tab_clicked (StTab tab, bool new_page);
 	public signal void tab_focused (StTab tab);
 	private string untitled = _("Untitled file");
 
@@ -23,7 +23,6 @@ public class StTab : Box {
 	private EventBox evt_box;
 	private Label title_label;
 	private EventBox close_button;
-	private Separator separator;
 
 	private ScrolledWindow _tab_widget;
 	public ScrolledWindow tab_widget {
@@ -71,7 +70,6 @@ public class StTab : Box {
 		this.spacing = 0;
 
 		title_label = new Label(tab_title);
-		separator = new Separator(Orientation.VERTICAL);
 		var close_img = new Image.from_icon_name("window-close-symbolic",
 												 IconSize.MENU);
 		title_label.ellipsize = Pango.EllipsizeMode.END;
@@ -88,8 +86,7 @@ public class StTab : Box {
 		evt_box.button_press_event.connect(tab_clicked_action);
 
 		pack_start(evt_box,true,true,0);
-		pack_start(close_button,false,true,5);
-		pack_start(separator,false,true,0);
+		pack_start(close_button,false,true,0);
 
 		_text_view = new StSourceView(editor,base_name,display_text);		
 		_text_view.drag_n_drop.connect(on_drag_n_drop);
@@ -125,7 +122,7 @@ public class StTab : Box {
 	}
 
 	private bool tab_clicked_action(Gdk.EventButton evt) {
-		this.tab_clicked(this);
+		this.tab_clicked(this, false);
 		mark_title();
 		return true;
 	}

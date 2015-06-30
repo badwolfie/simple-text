@@ -3,7 +3,7 @@ using Gtk;
 public class StPreferencesDialog : Dialog {
 	public StTextEditor editor { private get; construct; }
 
-	private StackSwitcher switcher;
+	private StackSidebar switcher;
 	private Stack stack;
 	
 	private CheckButton line_numbers_check;
@@ -27,7 +27,6 @@ public class StPreferencesDialog : Dialog {
 	public StPreferencesDialog(StMainWindow parent, StTextEditor ed) {
 		Object(use_header_bar: (int) true, editor: ed);
 		set_transient_for(parent);
-		border_width = 10;
 	}
 	
 	construct {
@@ -39,23 +38,33 @@ public class StPreferencesDialog : Dialog {
 		
 		var box_typo = new ListBox();
 		box_typo.selection_mode = SelectionMode.NONE;
+		
+		var box_terminal = new ListBox();
+		box_terminal.selection_mode = SelectionMode.NONE;
 	
 		stack = new Stack();
 		stack.set_transition_type(StackTransitionType.SLIDE_LEFT_RIGHT);
 		stack.set_transition_duration(300);
+		stack.border_width = 10;
 		
-		switcher = new StackSwitcher();
+		switcher = new StackSidebar();
 		switcher.set_stack(stack);
 		
+		var separator = new Separator(Orientation.VERTICAL);
+		
 		var header_bar = get_header_bar() as HeaderBar;
-		header_bar.custom_title = switcher;
+		header_bar.title = _("Preferences");
 		
+		get_content_area().orientation = Orientation.HORIZONTAL;
+		get_content_area().pack_start(switcher,true,true,0);
+		get_content_area().pack_start(separator,true,true,0);
 		get_content_area().pack_start(stack,true,true,0);
-		get_content_area().spacing = 10;
+		get_content_area().spacing = 0;
 		
-		stack.add_titled(box_view,"view",_("View"));
-		stack.add_titled(box_editor,"editor",_("Editor"));
-		stack.add_titled(box_typo,"typo",_("Typography and colors"));
+		stack.add_titled(box_view, "view", _("View"));
+		stack.add_titled(box_editor, "editor", _("Editor"));
+		stack.add_titled(box_typo, "typo", _("Typography and colors"));
+		stack.add_titled(box_terminal, "term", _("Embeded terminal"));
 		
 		line_numbers_check = new CheckButton.with_label(
 			_("Show line numbers"));
@@ -216,7 +225,8 @@ public class StPreferencesDialog : Dialog {
 
 		scheme_chooser = new StSourceStylePicker();
 		scheme_chooser.style_selected.connect(on_scheme_selected);
-		scheme_chooser.height_request = 100;
+		scheme_chooser.height_request = 130;
+		scheme_chooser.width_request = 150;
 
 		var frame = new Frame(null);
 		frame.add(scheme_chooser);
@@ -234,6 +244,12 @@ public class StPreferencesDialog : Dialog {
 		box_typo.add(color_scheme_label);
 		box_typo.add(frame);
 		box_typo.add(prefer_dark_check);
+		
+		
+		var aux_label_4 = new Label(
+			"<b><i>Terminal settings comming soon...</i></b>");
+		aux_label_4.use_markup = true;
+		box_terminal.add(aux_label_4);
 		
 		show_all();
 		
