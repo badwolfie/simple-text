@@ -4,10 +4,10 @@ using Vte;
 /**
  * The application main window.
  */
-public class MainWindow : ApplicationWindow {
+public class StMainWindow : ApplicationWindow {
 	/** Variable that stores the application preferences */
-	private TextEditor _editor;
-	public TextEditor editor { get { return _editor; } }
+	private StTextEditor _editor;
+	public StTextEditor editor { get { return _editor; } }
 
 	/** Constant string to create the title of untitled files */
 	private string untitled = _("Untitled file");
@@ -22,19 +22,19 @@ public class MainWindow : ApplicationWindow {
 	private int counter = 0;
 
 	/** Custom headerbar for the window */
-	private SimpleHeaderBar headerbar;
+	private StHeaderBar headerbar;
 	
 	/** Custom headerbar for the window when it's on fullscreen mode */
-	private SimpleHeaderBar fs_headerbar;
+	private StHeaderBar fs_headerbar;
 	
 	/** Custom statusbar for the window */
-	private SimpleStatusbar status;
+	private StStatusbar status;
 	
 	/** Embeded terminal for the window */
 	private Terminal terminal;
 	
 	/** Custom tab bar for the window */
-	private SimpleTabBar tab_bar;
+	private StTabBar tab_bar;
 	
 	/** Stack that stores and shows the opened files */
 	private Stack documents;
@@ -97,6 +97,9 @@ public class MainWindow : ApplicationWindow {
 					if ((file != "") && File.new_for_path(file).query_exists())
 						add_new_tab_from_file(file);
 				}
+
+				if (opened_files.length() == 0)
+					new_tab_cb();
 			}
 		}
 	}
@@ -127,9 +130,9 @@ public class MainWindow : ApplicationWindow {
 	 * Class constructor
 	 *
 	 * @param app Gtk.Application for this
-	 * @param editor TextEditor that stores the application preferences
+	 * @param editor StTextEditor that stores the application preferences
 	 */
-	public MainWindow(Gtk.Application app, TextEditor editor) {
+	public StMainWindow(Gtk.Application app, StTextEditor editor) {
 		Object(application: app);
 		_editor = editor;
 		_editor.notify["prefer-dark"].connect((pspec) => {
@@ -158,8 +161,8 @@ public class MainWindow : ApplicationWindow {
 		Gtk.Settings.get_default().set(
 			"gtk-application-prefer-dark-theme", _editor.prefer_dark);
 
-		fs_headerbar = new SimpleHeaderBar(this);
-		headerbar = new SimpleHeaderBar(this);
+		fs_headerbar = new StHeaderBar(this);
+		headerbar = new StHeaderBar(this);
 		set_titlebar(headerbar);
 		headerbar.show();
 
@@ -245,13 +248,13 @@ public class MainWindow : ApplicationWindow {
 		documents.set_transition_duration(250);
 		documents.show();
 
-		tab_bar = new SimpleTabBar();
+		tab_bar = new StTabBar();
 		tab_bar.set_stack(documents);
 		tab_bar.page_switched.connect(on_page_switched);
 		tab_bar.page_closed.connect(on_page_close);
 		tab_bar.show();
 
-		status = new SimpleStatusbar(this);
+		status = new StStatusbar(this);
 		status.change_syntax_request.connect(change_syntax_cb);
 		status.show();
 
@@ -310,10 +313,10 @@ public class MainWindow : ApplicationWindow {
 	 * Function that gets executed when a page is switched on the Stack, and a 
 	 * signal is sent from it.
 	 *
-	 * @param tab SimpleTab that is now being shown
+	 * @param tab StTab that is now being shown
 	 * @return void
 	 */
-	private void on_page_switched(SimpleTab tab) {
+	private void on_page_switched(StTab tab) {
 		int page_num = tab_bar.get_page_num(tab);
 		headerbar.title = opened_files.nth_data(page_num);
 		fs_headerbar.title = opened_files.nth_data(page_num);
@@ -341,7 +344,7 @@ public class MainWindow : ApplicationWindow {
 	 */
 	private void change_syntax_cb(string language) {
 		var current_page = tab_bar.get_current_page(documents.visible_child);
-		var p_langs = new ProgrammingLanguages();
+		var p_langs = new StProgrammingLanguages();
 
 		string lang_id = p_langs.get_lang_id(language);
 		current_page.text_view.change_language(lang_id);
@@ -462,7 +465,7 @@ public class MainWindow : ApplicationWindow {
 			return;
 		}
 		
-		var tab_label = new SimpleTab.from_file(editor,
+		var tab_label = new StTab.from_file(editor,
 			Path.get_basename(filename),
 			filename);
 			
@@ -608,7 +611,7 @@ public class MainWindow : ApplicationWindow {
 	 */
 	public void new_tab_cb() {
 		opened_files.append("%s %d".printf(untitled,counter + 1));
-		var tab = new SimpleTab(editor);
+		var tab = new StTab(editor);
 		tab.view_drag_n_drop.connect(add_new_tab_from_file);
 		add_new_tab(tab);
 
@@ -634,7 +637,7 @@ public class MainWindow : ApplicationWindow {
 		
 		save_tab_to_file();
 		
-		var plangs = new ProgrammingLanguages();
+		var plangs = new StProgrammingLanguages();
 		if (!plangs.is_buildable(current_page.text_view.get_language_name())) 
 			return;
 		
@@ -678,7 +681,7 @@ public class MainWindow : ApplicationWindow {
 			File.new_for_path(last_file_path).get_basename();
 		closed_files.remove_index(closed_files.length - 1);
 
-		var tab_label = new SimpleTab.from_file(editor,
+		var tab_label = new StTab.from_file(editor,
 			last_file_basename,
 			last_file_path);
 		tab_label.view_drag_n_drop.connect(add_new_tab_from_file);
@@ -715,7 +718,7 @@ public class MainWindow : ApplicationWindow {
 	 * @return void
 	 */
 	private void close_tab_cb() {
-		SimpleTab current_page =
+		StTab current_page =
 			tab_bar.get_current_page(documents.visible_child);
 		if (confirm_close(current_page))
 			tab_bar.close_page(current_page);
@@ -725,11 +728,11 @@ public class MainWindow : ApplicationWindow {
 	/**
 	 * Function called when a tab gets closed
 	 *
-	 * @param tab SimpleTab that has been closed
+	 * @param tab StTab that has been closed
 	 * @param page_num int that contains the page number of the closed tab
 	 * @return void
 	 */
-	private void on_page_close(SimpleTab? tab, int page_num) {
+	private void on_page_close(StTab? tab, int page_num) {
 		string f_name = opened_files.nth_data(page_num);
 		status.refresh_statusbar(FileOpeartion.CLOSE_FILE,f_name);
 
@@ -771,7 +774,7 @@ public class MainWindow : ApplicationWindow {
 	 * Function that checks the number of tabs currently opened, if there are 
 	 * two or more opened the tab bar gets shown, otherwise gets hidden
 	 *
-	 * Also, if no tabs are opened the title is changed to "Simple Text"
+	 * Also, if no tabs are opened the title is changed to "St Text"
 	 *
 	 * @return void
 	 */
@@ -780,8 +783,8 @@ public class MainWindow : ApplicationWindow {
 			tab_bar.hide();
 			
 			if (opened_files.length() == 0) {
-				headerbar.title = "Simple Text";
-				fs_headerbar.title = "Simple Text";
+				headerbar.title = "St Text";
+				fs_headerbar.title = "St Text";
 			}
 		} else {
 			tab_bar.show();
@@ -820,10 +823,10 @@ public class MainWindow : ApplicationWindow {
 	 * Function that removes the '*' character from the tab label after the 
 	 * document is saved
 	 *
-	 * @param tab_label SimpleTab which's label will be restore
+	 * @param tab_label StTab which's label will be restore
 	 * @return void 
 	 */
-	private void reset_changes(SimpleTab tab_label) {
+	private void reset_changes(StTab tab_label) {
 		if (tab_label.tab_title.contains("*")) {
 			tab_label.tab_title = tab_label.tab_title.replace("*","");
 			tab_label.mark_title();
@@ -833,10 +836,10 @@ public class MainWindow : ApplicationWindow {
 	/**
 	 * Function that adds a new tab to the Stack
 	 *
-	 * @param tab_label SimpleTab added to the Stack
+	 * @param tab_label StTab added to the Stack
 	 * @return void
 	 */
-	private void add_new_tab(SimpleTab tab_label) {
+	private void add_new_tab(StTab tab_label) {
 		var tab_title = "tab - %d".printf(counter++);
 		documents.add_titled(
 			tab_label.tab_widget,tab_title,tab_label.tab_title);
@@ -904,16 +907,27 @@ public class MainWindow : ApplicationWindow {
 	 * there's unsaved changes, shows a ConfirmExit dialog and returns the 
 	 * user's choice to save them before closing or not
 	 *
-	 * @param tab SimpleTab that is being checked
+	 * @param tab StTab that is being checked
 	 * @return bool 
 	 */
-	private bool confirm_close(SimpleTab? tab) {
+	private bool confirm_close(StTab? tab) {
 		if (tab == null) return false;
 		if (tab.tab_title.contains("*")) {
 			tab_bar.switch_page(tab);
 
-			var confirmar = new ConfirmExit();
-			confirmar.set_transient_for(this);
+			var confirmar = new MessageDialog(this,
+				DialogFlags.MODAL, 
+				MessageType.QUESTION, 
+				ButtonsType.NONE, 
+				_("Confirm operation")
+			);
+			
+			confirmar.secondary_text = 
+				_("Do you wish to save changes before closing?");
+
+			confirmar.add_button(_("Close without saving"),ResponseType.ACCEPT);		
+			confirmar.add_button(_("Cancel"),ResponseType.CANCEL);
+			confirmar.add_button(_("Save"),ResponseType.APPLY);
 
 			switch (confirmar.run()) {
 				default:

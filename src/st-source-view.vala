@@ -1,6 +1,6 @@
 using Gtk;
 
-public class SimpleSourceView : SourceView {
+public class StSourceView : SourceView {
 	public signal void drag_n_drop(string filename);
 
 	private const int TARGET_TYPE_URI_LIST = 80;
@@ -8,10 +8,10 @@ public class SimpleSourceView : SourceView {
 		{ "text/uri-list", 0, TARGET_TYPE_URI_LIST }
 	};
 
-	private TextEditor editor;
+	private StTextEditor editor;
 
-	public SimpleSourceView
-	(TextEditor editor, string? filename, string? display_text) {
+	public StSourceView
+	(StTextEditor editor, string? filename, string? display_text) {
 		bool result_uncertain;
 		string content_type = ContentType.guess(filename, null, out result_uncertain);
 		if (result_uncertain) content_type = null;

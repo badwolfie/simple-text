@@ -1,4 +1,4 @@
-public class TextEditor : Object {
+public class StTextEditor : Object {
 	private bool _show_line_numbers;
 	public bool show_line_numbers {
 		get { return _show_line_numbers; }

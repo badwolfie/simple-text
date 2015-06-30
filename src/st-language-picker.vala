@@ -1,9 +1,9 @@
 using Gtk;
 
-public class SimpleLanguagePicker : Popover {
+public class StLanguagePicker : Popover {
 	public signal void language_selected(string language);
 
-	private ProgrammingLanguages plangs;
+	private StProgrammingLanguages plangs;
 	private ScrolledWindow scroll;
 	private Box lang_box;
 	private Frame frame;
@@ -11,7 +11,7 @@ public class SimpleLanguagePicker : Popover {
 	private SearchEntry search_entry;
 	private ListBox list_view;
 
-	public SimpleLanguagePicker(Widget parent) {
+	public StLanguagePicker(Widget parent) {
 		Object(relative_to:parent);
 		border_width = 5;
 
@@ -19,7 +19,7 @@ public class SimpleLanguagePicker : Popover {
 	}
 
 	private void create_widgets() {
-		plangs = new ProgrammingLanguages();
+		plangs = new StProgrammingLanguages();
 		
 		list_view = new ListBox();
 		list_view.selection_mode = SelectionMode.SINGLE;

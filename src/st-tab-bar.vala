@@ -1,8 +1,8 @@
 using Gtk;
 
-public class SimpleTabBar : Box {
-	public signal void page_closed(SimpleTab tab, int page_num);
-	public signal void page_switched(SimpleTab tab);
+public class StTabBar : Box {
+	public signal void page_closed(StTab tab, int page_num);
+	public signal void page_switched(StTab tab);
 
 	private int tab_extra_num = 0;
 	public int tab_num = 0;
@@ -12,17 +12,17 @@ public class SimpleTabBar : Box {
 	private EventBox extra_menu;
 	private Popover extra_popup;
 
-	private List<SimpleTab> _extra_tabs;
-	public List<SimpleTab> extra_tabs {
+	private List<StTab> _extra_tabs;
+	public List<StTab> extra_tabs {
 		get { return _extra_tabs; }
 	}
 
-	private List<SimpleTab> _tabs;
-	public List<SimpleTab> tabs {
+	private List<StTab> _tabs;
+	public List<StTab> tabs {
 		get { return _tabs; }
 	}
 
-	public SimpleTabBar() {
+	public StTabBar() {
 		Object();
 		orientation = Orientation.HORIZONTAL;
 		spacing = 0;
@@ -30,8 +30,8 @@ public class SimpleTabBar : Box {
 	}
 
 	private void create_widgets() {
-		_tabs = new List<SimpleTab>();
-		_extra_tabs = new List<SimpleTab>();
+		_tabs = new List<StTab>();
+		_extra_tabs = new List<StTab>();
 		
 		extra_box = new Box(Orientation.VERTICAL,0);
 		var extra_menu_img = new Image.from_icon_name(
@@ -64,7 +64,7 @@ public class SimpleTabBar : Box {
 		this.stack = stack;
 	}
 
-	public void add_page(SimpleTab tab, bool new_page) {
+	public void add_page(StTab tab, bool new_page) {
 		if (tab_num < 5) {
 			if (tab_extra_num == 0) extra_menu.hide();
 			pack_start(tab,true,true,5);
@@ -89,7 +89,7 @@ public class SimpleTabBar : Box {
 		}
 	}
 
-	public void switch_page(SimpleTab tab) {
+	public void switch_page(StTab tab) {
 		/* if (_extra_tabs.index(tab) != -1)
 			extra_popup.show_all();
 		else
@@ -102,8 +102,8 @@ public class SimpleTabBar : Box {
 		page_switched(tab);
 	}
 
-	public SimpleTab? get_current_page(Widget? current_doc) {
-		SimpleTab? current_tab = null;
+	public StTab? get_current_page(Widget? current_doc) {
+		StTab? current_tab = null;
 		if (current_doc != null) {
 			for (int i = 0; i < _tabs.length(); i++) {
 				if (_tabs.nth_data(i).tab_widget == current_doc)
@@ -121,7 +121,7 @@ public class SimpleTabBar : Box {
 		return current_tab;
 	}
 
-	public void switch_page_next(SimpleTab current_tab) {
+	public void switch_page_next(StTab current_tab) {
 		if (_tabs.index(current_tab) != -1) {
 			if (current_tab == _tabs.last().data) {
 				if (tab_extra_num > 0)
@@ -143,7 +143,7 @@ public class SimpleTabBar : Box {
 		}
 	}
 
-	public void switch_page_prev(SimpleTab current_tab) {
+	public void switch_page_prev(StTab current_tab) {
 		if (_tabs.index(current_tab) != -1) {
 			if (current_tab == _tabs.first().data) {
 				if (tab_extra_num > 0)
@@ -165,7 +165,7 @@ public class SimpleTabBar : Box {
 		}
 	}
 
-	public void close_page(SimpleTab? tab) {
+	public void close_page(StTab? tab) {
 		int page_num = -1;
 		if (tab != null) {
 			page_num = get_page_num(tab);
@@ -196,15 +196,15 @@ public class SimpleTabBar : Box {
 
 	private void refresh_marked() {
 		_tabs.foreach((entry) => {
-			(entry as SimpleTab).refresh_title();
+			(entry as StTab).refresh_title();
 		});
 
 		_extra_tabs.foreach((entry) => {
-			(entry as SimpleTab).refresh_title();
+			(entry as StTab).refresh_title();
 		});
 	}
 
-	public int get_page_num(SimpleTab tab) {
+	public int get_page_num(StTab tab) {
 		if (_extra_tabs.index(tab) != -1)
 			return (_extra_tabs.index(tab) + (int)_tabs.length());
 		return _tabs.index(tab);

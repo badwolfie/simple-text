@@ -1,7 +1,7 @@
 using Gtk;
 
-public class PreferencesDialog : Dialog {
-	public TextEditor editor { private get; construct; }
+public class StPreferencesDialog : Dialog {
+	public StTextEditor editor { private get; construct; }
 
 	private StackSwitcher switcher;
 	private Stack stack;
@@ -21,10 +21,10 @@ public class PreferencesDialog : Dialog {
 	
 	private CheckButton default_typo_check;
 	private FontButton font_button;
-	private SimpleSourceStylePicker scheme_chooser;
+	private StSourceStylePicker scheme_chooser;
 	private CheckButton prefer_dark_check;
 
-	public PreferencesDialog(MainWindow parent, TextEditor ed) {
+	public StPreferencesDialog(StMainWindow parent, StTextEditor ed) {
 		Object(use_header_bar: (int) true, editor: ed);
 		set_transient_for(parent);
 		border_width = 10;
@@ -214,7 +214,7 @@ public class PreferencesDialog : Dialog {
 		color_scheme_label.use_markup = true;
 		color_scheme_label.halign = Align.START;
 
-		scheme_chooser = new SimpleSourceStylePicker();
+		scheme_chooser = new StSourceStylePicker();
 		scheme_chooser.style_selected.connect(on_scheme_selected);
 		scheme_chooser.height_request = 100;
 

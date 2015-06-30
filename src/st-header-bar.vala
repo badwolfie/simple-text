@@ -1,27 +1,15 @@
 using Gtk;
 
-public class SimpleHeaderBar : HeaderBar {
-	private MainWindow parent_window;
+public class StHeaderBar : HeaderBar {
+	private StMainWindow parent_window;
 	private MenuButton menu_b;
 	
 	private Button abrir;
 	private Button guardar;
 	private Button nuevo;
 	private Button leave_fs;
-	// private Button build;
 
-	/* private bool _buildable;
-	public bool buildable {
-		get { return _buildable; }
-		set {
-			if (build != null) {
-				_buildable = value;
-				build.sensitive = buildable;
-			}
-		}
-	}*/
-
-	public SimpleHeaderBar(MainWindow parent) {
+	public StHeaderBar(StMainWindow parent) {
 		Object();
 		parent_window = parent;
 		set_show_close_button(true);
@@ -65,12 +53,6 @@ public class SimpleHeaderBar : HeaderBar {
 		var context_nuevo = nuevo.get_style_context();
 		context_nuevo.add_class("image-button");
 
-		/* build = new Button.from_icon_name("media-playback-start-symbolic",
-			IconSize.MENU);
-		build.set_tooltip_text(_("Build using make") + " (Ctrl+B)");
-		buildable = false;
-		build.show(); */
-		
 		leave_fs = new Button.from_icon_name("view-restore-symbolic", 
 												 IconSize.MENU);
 		leave_fs.set_tooltip_text(_("Leave fullscreen mode"));
@@ -79,7 +61,6 @@ public class SimpleHeaderBar : HeaderBar {
 		pack_start(abrir);
 		pack_start(nuevo);
 		pack_end(menu_b);
-		// pack_end(build);
 		pack_end(guardar);
 	}
 
@@ -88,7 +69,6 @@ public class SimpleHeaderBar : HeaderBar {
 		guardar.clicked.connect(parent_window.save_tab_to_file);
 		nuevo.clicked.connect(parent_window.new_tab_cb);
 		leave_fs.clicked.connect(parent_window.on_fullscreen);
-		// build.clicked.connect(parent_window.build_code);
 
 		var accels = new AccelGroup();
 		parent_window.add_accel_group(accels);
@@ -98,14 +78,13 @@ public class SimpleHeaderBar : HeaderBar {
 			Gdk.ModifierType.CONTROL_MASK,AccelFlags.VISIBLE);
 		nuevo.add_accelerator("activate",accels,Gdk.Key.N,
 			Gdk.ModifierType.CONTROL_MASK,AccelFlags.VISIBLE);
-		/* build.add_accelerator("activate",accels,Gdk.Key.B,
-			Gdk.ModifierType.CONTROL_MASK,AccelFlags.VISIBLE); */
 		menu_b.add_accelerator("activate",accels,Gdk.Key.F10,
 			Gdk.ModifierType.META_MASK,AccelFlags.VISIBLE);
 	}
 	
 	public void toggle_fullscreen() {
-		if ((parent_window.get_window ().get_state () & Gdk.WindowState.FULLSCREEN) != 0) {
+		if ((parent_window.get_window ().get_state () & 
+				Gdk.WindowState.FULLSCREEN) != 0) {
 			show_close_button = true;
 			leave_fs.hide();
 		} else {

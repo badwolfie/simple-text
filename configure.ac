@@ -1,7 +1,7 @@
 # configure.ac
 
 AC_INIT([simple-text],[0.9.7])
-AC_CONFIG_SRCDIR([src/simple-text.vala])
+AC_CONFIG_SRCDIR([src])
 AC_CONFIG_HEADERS([config.h])
 
 # AM_INIT_AUTOMAKE([no-dist-gzip dist-bzip2])

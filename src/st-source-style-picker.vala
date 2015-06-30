@@ -1,12 +1,12 @@
 using Gtk;
 
-public class SimpleSourceStylePicker : ScrolledWindow {
+public class StSourceStylePicker : ScrolledWindow {
 	public signal void style_selected(string style_scheme);
 	
 	private const string header = "#include <gtksourceview/gtksource.h>";
 	private ListBox list_view;
 	
-	public SimpleSourceStylePicker() {
+	public StSourceStylePicker() {
 		Object(hadjustment: null, vadjustment :null);
 		set_policy(PolicyType.NEVER,PolicyType.AUTOMATIC);
 		create_widgets();

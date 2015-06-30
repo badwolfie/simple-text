@@ -13,19 +13,18 @@ resources.c: $(top_srcdir)/data/simple-text.gresource.xml $(shell $(GLIB_COMPILE
 	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(top_srcdir)/data/ --generate-source $<
 
 simple_text_SOURCES = \
-	confirm-exit.vala \
-	main-window.vala \
-	programming-languages.vala \
-	simple-header-bar.vala \
-	simple-language-picker.vala \
-	simple-preferences.vala \
-	simple-source-style-picker.vala \
-	simple-source-view.vala \
-	simple-statusbar.vala \
-	simple-tab-bar.vala \
-	simple-tab.vala \
-	simple-text.vala \
-	text-editor.vala \
+	st-application.vala \
+	st-header-bar.vala \
+	st-language-picker.vala \
+	st-main-window.vala \
+	st-preferences-dialog.vala \
+	st-programming-languages.vala \
+	st-source-style-picker.vala \
+	st-source-view.vala \
+	st-statusbar.vala \
+	st-tab-bar.vala \
+	st-tab.vala \
+	st-text-editor.vala \
 	$(BUILT_SOURCES)
 
 simple_text_VALAFLAGS = \

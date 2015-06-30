@@ -1,13 +1,13 @@
 using Gtk;
 
-public class SimpleTab : Box {
+public class StTab : Box {
 	public signal void view_drag_n_drop(string file_name);
 
-	private TextEditor editor;
+	private StTextEditor editor;
 
-	public signal void close_clicked (SimpleTab tab);
-	public signal void tab_clicked (SimpleTab tab);
-	public signal void tab_focused (SimpleTab tab);
+	public signal void close_clicked (StTab tab);
+	public signal void tab_clicked (StTab tab);
+	public signal void tab_focused (StTab tab);
 	private string untitled = _("Untitled file");
 
 	private SourceCompletion _completion;
@@ -15,8 +15,8 @@ public class SimpleTab : Box {
 		get { return _completion; }
 	}
 
-	private SimpleSourceView _text_view;
-	public SimpleSourceView text_view {
+	private StSourceView _text_view;
+	public StSourceView text_view {
 		get { return _text_view; }
 	}
 
@@ -43,7 +43,7 @@ public class SimpleTab : Box {
 		}
 	}
 
-	public SimpleTab(TextEditor editor) {
+	public StTab(StTextEditor editor) {
 		Object();
 		this.editor = editor;
 		this.tab_title = untitled;
@@ -51,8 +51,8 @@ public class SimpleTab : Box {
 		create_widgets(null,null);
 	}
 
-	public SimpleTab.from_file
-	(TextEditor editor, string base_name, string file_path) {
+	public StTab.from_file
+	(StTextEditor editor, string base_name, string file_path) {
 		Object();
 		this.editor = editor;
 		this.tab_title = base_name;
@@ -91,7 +91,7 @@ public class SimpleTab : Box {
 		pack_start(close_button,false,true,5);
 		pack_start(separator,false,true,0);
 
-		_text_view = new SimpleSourceView(editor,base_name,display_text);		
+		_text_view = new StSourceView(editor,base_name,display_text);		
 		_text_view.drag_n_drop.connect(on_drag_n_drop);
 		text_view.show();
 
@@ -133,7 +133,7 @@ public class SimpleTab : Box {
 	public void mark_title() {
 		title_label.use_markup = true;
 		title_label.label = "<span underline='single' font_weight='bold'>" + 
-							tab_title + "</span>";
+			tab_title + "</span>";
 	}
 
 	public void change_language(string language) {

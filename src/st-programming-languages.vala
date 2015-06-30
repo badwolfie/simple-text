@@ -1,11 +1,11 @@
 using Gee;
 using Gtk;
 
-public class ProgrammingLanguages {
+public class StProgrammingLanguages {
 	private Array<string> buildables;
 	SourceLanguageManager lang_manager;
 
-	public ProgrammingLanguages() {
+	public StProgrammingLanguages() {
 		buildables = new Array<string>();
 		lang_manager = SourceLanguageManager.get_default();
 		setup_languages();

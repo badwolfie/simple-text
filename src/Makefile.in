@@ -100,19 +100,17 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am__objects_1 = simple_text-resources.$(OBJEXT)
-am_simple_text_OBJECTS = simple_text-confirm-exit.$(OBJEXT) \
-	simple_text-main-window.$(OBJEXT) \
-	simple_text-programming-languages.$(OBJEXT) \
-	simple_text-simple-header-bar.$(OBJEXT) \
-	simple_text-simple-language-picker.$(OBJEXT) \
-	simple_text-simple-preferences.$(OBJEXT) \
-	simple_text-simple-source-style-picker.$(OBJEXT) \
-	simple_text-simple-source-view.$(OBJEXT) \
-	simple_text-simple-statusbar.$(OBJEXT) \
-	simple_text-simple-tab-bar.$(OBJEXT) \
-	simple_text-simple-tab.$(OBJEXT) \
-	simple_text-simple-text.$(OBJEXT) \
-	simple_text-text-editor.$(OBJEXT) $(am__objects_1)
+am_simple_text_OBJECTS = simple_text-st-application.$(OBJEXT) \
+	simple_text-st-header-bar.$(OBJEXT) \
+	simple_text-st-language-picker.$(OBJEXT) \
+	simple_text-st-main-window.$(OBJEXT) \
+	simple_text-st-preferences-dialog.$(OBJEXT) \
+	simple_text-st-programming-languages.$(OBJEXT) \
+	simple_text-st-source-style-picker.$(OBJEXT) \
+	simple_text-st-source-view.$(OBJEXT) \
+	simple_text-st-statusbar.$(OBJEXT) \
+	simple_text-st-tab-bar.$(OBJEXT) simple_text-st-tab.$(OBJEXT) \
+	simple_text-st-text-editor.$(OBJEXT) $(am__objects_1)
 simple_text_OBJECTS = $(am_simple_text_OBJECTS)
 am__DEPENDENCIES_1 =
 simple_text_DEPENDENCIES = $(am__DEPENDENCIES_1)
@@ -183,11 +181,11 @@ ETAGS = etags
 CTAGS = ctags
 am__DIST_COMMON = $(srcdir)/Makefile.in \
 	$(srcdir)/simple_text_vala.stamp $(top_srcdir)/depcomp \
-	confirm-exit.c main-window.c programming-languages.c \
-	simple-header-bar.c simple-language-picker.c \
-	simple-preferences.c simple-source-style-picker.c \
-	simple-source-view.c simple-statusbar.c simple-tab-bar.c \
-	simple-tab.c simple-text.c text-editor.c
+	st-application.c st-header-bar.c st-language-picker.c \
+	st-main-window.c st-preferences-dialog.c \
+	st-programming-languages.c st-source-style-picker.c \
+	st-source-view.c st-statusbar.c st-tab-bar.c st-tab.c \
+	st-text-editor.c
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 ALL_LINGUAS = @ALL_LINGUAS@
@@ -326,19 +324,18 @@ AM_CPPFLAGS = \
 
 BUILT_SOURCES = resources.c
 simple_text_SOURCES = \
-	confirm-exit.vala \
-	main-window.vala \
-	programming-languages.vala \
-	simple-header-bar.vala \
-	simple-language-picker.vala \
-	simple-preferences.vala \
-	simple-source-style-picker.vala \
-	simple-source-view.vala \
-	simple-statusbar.vala \
-	simple-tab-bar.vala \
-	simple-tab.vala \
-	simple-text.vala \
-	text-editor.vala \
+	st-application.vala \
+	st-header-bar.vala \
+	st-language-picker.vala \
+	st-main-window.vala \
+	st-preferences-dialog.vala \
+	st-programming-languages.vala \
+	st-source-style-picker.vala \
+	st-source-view.vala \
+	st-statusbar.vala \
+	st-tab-bar.vala \
+	st-tab.vala \
+	st-text-editor.vala \
 	$(BUILT_SOURCES)
 
 simple_text_VALAFLAGS = \
@@ -435,20 +432,19 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-confirm-exit.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-main-window.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-programming-languages.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-resources.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-simple-header-bar.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-simple-language-picker.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-simple-preferences.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-simple-source-style-picker.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-simple-source-view.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-simple-statusbar.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-simple-tab-bar.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-simple-tab.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-simple-text.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-text-editor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-st-application.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-st-header-bar.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-st-language-picker.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-st-main-window.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-st-preferences-dialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-st-programming-languages.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-st-source-style-picker.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-st-source-view.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-st-statusbar.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-st-tab-bar.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-st-tab.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple_text-st-text-editor.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -464,187 +460,173 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
-simple_text-confirm-exit.o: confirm-exit.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-confirm-exit.o -MD -MP -MF $(DEPDIR)/simple_text-confirm-exit.Tpo -c -o simple_text-confirm-exit.o `test -f 'confirm-exit.c' || echo '$(srcdir)/'`confirm-exit.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-confirm-exit.Tpo $(DEPDIR)/simple_text-confirm-exit.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='confirm-exit.c' object='simple_text-confirm-exit.o' libtool=no @AMDEPBACKSLASH@
+simple_text-st-application.o: st-application.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-application.o -MD -MP -MF $(DEPDIR)/simple_text-st-application.Tpo -c -o simple_text-st-application.o `test -f 'st-application.c' || echo '$(srcdir)/'`st-application.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-application.Tpo $(DEPDIR)/simple_text-st-application.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-application.c' object='simple_text-st-application.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-confirm-exit.o `test -f 'confirm-exit.c' || echo '$(srcdir)/'`confirm-exit.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-application.o `test -f 'st-application.c' || echo '$(srcdir)/'`st-application.c
 
-simple_text-confirm-exit.obj: confirm-exit.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-confirm-exit.obj -MD -MP -MF $(DEPDIR)/simple_text-confirm-exit.Tpo -c -o simple_text-confirm-exit.obj `if test -f 'confirm-exit.c'; then $(CYGPATH_W) 'confirm-exit.c'; else $(CYGPATH_W) '$(srcdir)/confirm-exit.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-confirm-exit.Tpo $(DEPDIR)/simple_text-confirm-exit.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='confirm-exit.c' object='simple_text-confirm-exit.obj' libtool=no @AMDEPBACKSLASH@
+simple_text-st-application.obj: st-application.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-application.obj -MD -MP -MF $(DEPDIR)/simple_text-st-application.Tpo -c -o simple_text-st-application.obj `if test -f 'st-application.c'; then $(CYGPATH_W) 'st-application.c'; else $(CYGPATH_W) '$(srcdir)/st-application.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-application.Tpo $(DEPDIR)/simple_text-st-application.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-application.c' object='simple_text-st-application.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-confirm-exit.obj `if test -f 'confirm-exit.c'; then $(CYGPATH_W) 'confirm-exit.c'; else $(CYGPATH_W) '$(srcdir)/confirm-exit.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-application.obj `if test -f 'st-application.c'; then $(CYGPATH_W) 'st-application.c'; else $(CYGPATH_W) '$(srcdir)/st-application.c'; fi`
 
-simple_text-main-window.o: main-window.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-main-window.o -MD -MP -MF $(DEPDIR)/simple_text-main-window.Tpo -c -o simple_text-main-window.o `test -f 'main-window.c' || echo '$(srcdir)/'`main-window.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-main-window.Tpo $(DEPDIR)/simple_text-main-window.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='main-window.c' object='simple_text-main-window.o' libtool=no @AMDEPBACKSLASH@
+simple_text-st-header-bar.o: st-header-bar.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-header-bar.o -MD -MP -MF $(DEPDIR)/simple_text-st-header-bar.Tpo -c -o simple_text-st-header-bar.o `test -f 'st-header-bar.c' || echo '$(srcdir)/'`st-header-bar.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-header-bar.Tpo $(DEPDIR)/simple_text-st-header-bar.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-header-bar.c' object='simple_text-st-header-bar.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-main-window.o `test -f 'main-window.c' || echo '$(srcdir)/'`main-window.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-header-bar.o `test -f 'st-header-bar.c' || echo '$(srcdir)/'`st-header-bar.c
 
-simple_text-main-window.obj: main-window.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-main-window.obj -MD -MP -MF $(DEPDIR)/simple_text-main-window.Tpo -c -o simple_text-main-window.obj `if test -f 'main-window.c'; then $(CYGPATH_W) 'main-window.c'; else $(CYGPATH_W) '$(srcdir)/main-window.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-main-window.Tpo $(DEPDIR)/simple_text-main-window.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='main-window.c' object='simple_text-main-window.obj' libtool=no @AMDEPBACKSLASH@
+simple_text-st-header-bar.obj: st-header-bar.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-header-bar.obj -MD -MP -MF $(DEPDIR)/simple_text-st-header-bar.Tpo -c -o simple_text-st-header-bar.obj `if test -f 'st-header-bar.c'; then $(CYGPATH_W) 'st-header-bar.c'; else $(CYGPATH_W) '$(srcdir)/st-header-bar.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-header-bar.Tpo $(DEPDIR)/simple_text-st-header-bar.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-header-bar.c' object='simple_text-st-header-bar.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-main-window.obj `if test -f 'main-window.c'; then $(CYGPATH_W) 'main-window.c'; else $(CYGPATH_W) '$(srcdir)/main-window.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-header-bar.obj `if test -f 'st-header-bar.c'; then $(CYGPATH_W) 'st-header-bar.c'; else $(CYGPATH_W) '$(srcdir)/st-header-bar.c'; fi`
 
-simple_text-programming-languages.o: programming-languages.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-programming-languages.o -MD -MP -MF $(DEPDIR)/simple_text-programming-languages.Tpo -c -o simple_text-programming-languages.o `test -f 'programming-languages.c' || echo '$(srcdir)/'`programming-languages.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-programming-languages.Tpo $(DEPDIR)/simple_text-programming-languages.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='programming-languages.c' object='simple_text-programming-languages.o' libtool=no @AMDEPBACKSLASH@
+simple_text-st-language-picker.o: st-language-picker.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-language-picker.o -MD -MP -MF $(DEPDIR)/simple_text-st-language-picker.Tpo -c -o simple_text-st-language-picker.o `test -f 'st-language-picker.c' || echo '$(srcdir)/'`st-language-picker.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-language-picker.Tpo $(DEPDIR)/simple_text-st-language-picker.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-language-picker.c' object='simple_text-st-language-picker.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-programming-languages.o `test -f 'programming-languages.c' || echo '$(srcdir)/'`programming-languages.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-language-picker.o `test -f 'st-language-picker.c' || echo '$(srcdir)/'`st-language-picker.c
 
-simple_text-programming-languages.obj: programming-languages.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-programming-languages.obj -MD -MP -MF $(DEPDIR)/simple_text-programming-languages.Tpo -c -o simple_text-programming-languages.obj `if test -f 'programming-languages.c'; then $(CYGPATH_W) 'programming-languages.c'; else $(CYGPATH_W) '$(srcdir)/programming-languages.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-programming-languages.Tpo $(DEPDIR)/simple_text-programming-languages.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='programming-languages.c' object='simple_text-programming-languages.obj' libtool=no @AMDEPBACKSLASH@
+simple_text-st-language-picker.obj: st-language-picker.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-language-picker.obj -MD -MP -MF $(DEPDIR)/simple_text-st-language-picker.Tpo -c -o simple_text-st-language-picker.obj `if test -f 'st-language-picker.c'; then $(CYGPATH_W) 'st-language-picker.c'; else $(CYGPATH_W) '$(srcdir)/st-language-picker.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-language-picker.Tpo $(DEPDIR)/simple_text-st-language-picker.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-language-picker.c' object='simple_text-st-language-picker.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-programming-languages.obj `if test -f 'programming-languages.c'; then $(CYGPATH_W) 'programming-languages.c'; else $(CYGPATH_W) '$(srcdir)/programming-languages.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-language-picker.obj `if test -f 'st-language-picker.c'; then $(CYGPATH_W) 'st-language-picker.c'; else $(CYGPATH_W) '$(srcdir)/st-language-picker.c'; fi`
 
-simple_text-simple-header-bar.o: simple-header-bar.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-simple-header-bar.o -MD -MP -MF $(DEPDIR)/simple_text-simple-header-bar.Tpo -c -o simple_text-simple-header-bar.o `test -f 'simple-header-bar.c' || echo '$(srcdir)/'`simple-header-bar.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-simple-header-bar.Tpo $(DEPDIR)/simple_text-simple-header-bar.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='simple-header-bar.c' object='simple_text-simple-header-bar.o' libtool=no @AMDEPBACKSLASH@
+simple_text-st-main-window.o: st-main-window.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-main-window.o -MD -MP -MF $(DEPDIR)/simple_text-st-main-window.Tpo -c -o simple_text-st-main-window.o `test -f 'st-main-window.c' || echo '$(srcdir)/'`st-main-window.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-main-window.Tpo $(DEPDIR)/simple_text-st-main-window.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-main-window.c' object='simple_text-st-main-window.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-simple-header-bar.o `test -f 'simple-header-bar.c' || echo '$(srcdir)/'`simple-header-bar.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-main-window.o `test -f 'st-main-window.c' || echo '$(srcdir)/'`st-main-window.c
 
-simple_text-simple-header-bar.obj: simple-header-bar.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-simple-header-bar.obj -MD -MP -MF $(DEPDIR)/simple_text-simple-header-bar.Tpo -c -o simple_text-simple-header-bar.obj `if test -f 'simple-header-bar.c'; then $(CYGPATH_W) 'simple-header-bar.c'; else $(CYGPATH_W) '$(srcdir)/simple-header-bar.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-simple-header-bar.Tpo $(DEPDIR)/simple_text-simple-header-bar.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='simple-header-bar.c' object='simple_text-simple-header-bar.obj' libtool=no @AMDEPBACKSLASH@
+simple_text-st-main-window.obj: st-main-window.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-main-window.obj -MD -MP -MF $(DEPDIR)/simple_text-st-main-window.Tpo -c -o simple_text-st-main-window.obj `if test -f 'st-main-window.c'; then $(CYGPATH_W) 'st-main-window.c'; else $(CYGPATH_W) '$(srcdir)/st-main-window.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-main-window.Tpo $(DEPDIR)/simple_text-st-main-window.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-main-window.c' object='simple_text-st-main-window.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-simple-header-bar.obj `if test -f 'simple-header-bar.c'; then $(CYGPATH_W) 'simple-header-bar.c'; else $(CYGPATH_W) '$(srcdir)/simple-header-bar.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-main-window.obj `if test -f 'st-main-window.c'; then $(CYGPATH_W) 'st-main-window.c'; else $(CYGPATH_W) '$(srcdir)/st-main-window.c'; fi`
 
-simple_text-simple-language-picker.o: simple-language-picker.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-simple-language-picker.o -MD -MP -MF $(DEPDIR)/simple_text-simple-language-picker.Tpo -c -o simple_text-simple-language-picker.o `test -f 'simple-language-picker.c' || echo '$(srcdir)/'`simple-language-picker.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-simple-language-picker.Tpo $(DEPDIR)/simple_text-simple-language-picker.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='simple-language-picker.c' object='simple_text-simple-language-picker.o' libtool=no @AMDEPBACKSLASH@
+simple_text-st-preferences-dialog.o: st-preferences-dialog.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-preferences-dialog.o -MD -MP -MF $(DEPDIR)/simple_text-st-preferences-dialog.Tpo -c -o simple_text-st-preferences-dialog.o `test -f 'st-preferences-dialog.c' || echo '$(srcdir)/'`st-preferences-dialog.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-preferences-dialog.Tpo $(DEPDIR)/simple_text-st-preferences-dialog.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-preferences-dialog.c' object='simple_text-st-preferences-dialog.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-simple-language-picker.o `test -f 'simple-language-picker.c' || echo '$(srcdir)/'`simple-language-picker.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-preferences-dialog.o `test -f 'st-preferences-dialog.c' || echo '$(srcdir)/'`st-preferences-dialog.c
 
-simple_text-simple-language-picker.obj: simple-language-picker.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-simple-language-picker.obj -MD -MP -MF $(DEPDIR)/simple_text-simple-language-picker.Tpo -c -o simple_text-simple-language-picker.obj `if test -f 'simple-language-picker.c'; then $(CYGPATH_W) 'simple-language-picker.c'; else $(CYGPATH_W) '$(srcdir)/simple-language-picker.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-simple-language-picker.Tpo $(DEPDIR)/simple_text-simple-language-picker.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='simple-language-picker.c' object='simple_text-simple-language-picker.obj' libtool=no @AMDEPBACKSLASH@
+simple_text-st-preferences-dialog.obj: st-preferences-dialog.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-preferences-dialog.obj -MD -MP -MF $(DEPDIR)/simple_text-st-preferences-dialog.Tpo -c -o simple_text-st-preferences-dialog.obj `if test -f 'st-preferences-dialog.c'; then $(CYGPATH_W) 'st-preferences-dialog.c'; else $(CYGPATH_W) '$(srcdir)/st-preferences-dialog.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-preferences-dialog.Tpo $(DEPDIR)/simple_text-st-preferences-dialog.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-preferences-dialog.c' object='simple_text-st-preferences-dialog.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-simple-language-picker.obj `if test -f 'simple-language-picker.c'; then $(CYGPATH_W) 'simple-language-picker.c'; else $(CYGPATH_W) '$(srcdir)/simple-language-picker.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-preferences-dialog.obj `if test -f 'st-preferences-dialog.c'; then $(CYGPATH_W) 'st-preferences-dialog.c'; else $(CYGPATH_W) '$(srcdir)/st-preferences-dialog.c'; fi`
 
-simple_text-simple-preferences.o: simple-preferences.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-simple-preferences.o -MD -MP -MF $(DEPDIR)/simple_text-simple-preferences.Tpo -c -o simple_text-simple-preferences.o `test -f 'simple-preferences.c' || echo '$(srcdir)/'`simple-preferences.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-simple-preferences.Tpo $(DEPDIR)/simple_text-simple-preferences.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='simple-preferences.c' object='simple_text-simple-preferences.o' libtool=no @AMDEPBACKSLASH@
+simple_text-st-programming-languages.o: st-programming-languages.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-programming-languages.o -MD -MP -MF $(DEPDIR)/simple_text-st-programming-languages.Tpo -c -o simple_text-st-programming-languages.o `test -f 'st-programming-languages.c' || echo '$(srcdir)/'`st-programming-languages.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-programming-languages.Tpo $(DEPDIR)/simple_text-st-programming-languages.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-programming-languages.c' object='simple_text-st-programming-languages.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-simple-preferences.o `test -f 'simple-preferences.c' || echo '$(srcdir)/'`simple-preferences.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-programming-languages.o `test -f 'st-programming-languages.c' || echo '$(srcdir)/'`st-programming-languages.c
 
-simple_text-simple-preferences.obj: simple-preferences.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-simple-preferences.obj -MD -MP -MF $(DEPDIR)/simple_text-simple-preferences.Tpo -c -o simple_text-simple-preferences.obj `if test -f 'simple-preferences.c'; then $(CYGPATH_W) 'simple-preferences.c'; else $(CYGPATH_W) '$(srcdir)/simple-preferences.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-simple-preferences.Tpo $(DEPDIR)/simple_text-simple-preferences.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='simple-preferences.c' object='simple_text-simple-preferences.obj' libtool=no @AMDEPBACKSLASH@
+simple_text-st-programming-languages.obj: st-programming-languages.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-programming-languages.obj -MD -MP -MF $(DEPDIR)/simple_text-st-programming-languages.Tpo -c -o simple_text-st-programming-languages.obj `if test -f 'st-programming-languages.c'; then $(CYGPATH_W) 'st-programming-languages.c'; else $(CYGPATH_W) '$(srcdir)/st-programming-languages.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-programming-languages.Tpo $(DEPDIR)/simple_text-st-programming-languages.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-programming-languages.c' object='simple_text-st-programming-languages.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-simple-preferences.obj `if test -f 'simple-preferences.c'; then $(CYGPATH_W) 'simple-preferences.c'; else $(CYGPATH_W) '$(srcdir)/simple-preferences.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-programming-languages.obj `if test -f 'st-programming-languages.c'; then $(CYGPATH_W) 'st-programming-languages.c'; else $(CYGPATH_W) '$(srcdir)/st-programming-languages.c'; fi`
 
-simple_text-simple-source-style-picker.o: simple-source-style-picker.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-simple-source-style-picker.o -MD -MP -MF $(DEPDIR)/simple_text-simple-source-style-picker.Tpo -c -o simple_text-simple-source-style-picker.o `test -f 'simple-source-style-picker.c' || echo '$(srcdir)/'`simple-source-style-picker.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-simple-source-style-picker.Tpo $(DEPDIR)/simple_text-simple-source-style-picker.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='simple-source-style-picker.c' object='simple_text-simple-source-style-picker.o' libtool=no @AMDEPBACKSLASH@
+simple_text-st-source-style-picker.o: st-source-style-picker.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-source-style-picker.o -MD -MP -MF $(DEPDIR)/simple_text-st-source-style-picker.Tpo -c -o simple_text-st-source-style-picker.o `test -f 'st-source-style-picker.c' || echo '$(srcdir)/'`st-source-style-picker.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-source-style-picker.Tpo $(DEPDIR)/simple_text-st-source-style-picker.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-source-style-picker.c' object='simple_text-st-source-style-picker.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-simple-source-style-picker.o `test -f 'simple-source-style-picker.c' || echo '$(srcdir)/'`simple-source-style-picker.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-source-style-picker.o `test -f 'st-source-style-picker.c' || echo '$(srcdir)/'`st-source-style-picker.c
 
-simple_text-simple-source-style-picker.obj: simple-source-style-picker.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-simple-source-style-picker.obj -MD -MP -MF $(DEPDIR)/simple_text-simple-source-style-picker.Tpo -c -o simple_text-simple-source-style-picker.obj `if test -f 'simple-source-style-picker.c'; then $(CYGPATH_W) 'simple-source-style-picker.c'; else $(CYGPATH_W) '$(srcdir)/simple-source-style-picker.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-simple-source-style-picker.Tpo $(DEPDIR)/simple_text-simple-source-style-picker.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='simple-source-style-picker.c' object='simple_text-simple-source-style-picker.obj' libtool=no @AMDEPBACKSLASH@
+simple_text-st-source-style-picker.obj: st-source-style-picker.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-source-style-picker.obj -MD -MP -MF $(DEPDIR)/simple_text-st-source-style-picker.Tpo -c -o simple_text-st-source-style-picker.obj `if test -f 'st-source-style-picker.c'; then $(CYGPATH_W) 'st-source-style-picker.c'; else $(CYGPATH_W) '$(srcdir)/st-source-style-picker.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-source-style-picker.Tpo $(DEPDIR)/simple_text-st-source-style-picker.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-source-style-picker.c' object='simple_text-st-source-style-picker.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-simple-source-style-picker.obj `if test -f 'simple-source-style-picker.c'; then $(CYGPATH_W) 'simple-source-style-picker.c'; else $(CYGPATH_W) '$(srcdir)/simple-source-style-picker.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-source-style-picker.obj `if test -f 'st-source-style-picker.c'; then $(CYGPATH_W) 'st-source-style-picker.c'; else $(CYGPATH_W) '$(srcdir)/st-source-style-picker.c'; fi`
 
-simple_text-simple-source-view.o: simple-source-view.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-simple-source-view.o -MD -MP -MF $(DEPDIR)/simple_text-simple-source-view.Tpo -c -o simple_text-simple-source-view.o `test -f 'simple-source-view.c' || echo '$(srcdir)/'`simple-source-view.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-simple-source-view.Tpo $(DEPDIR)/simple_text-simple-source-view.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='simple-source-view.c' object='simple_text-simple-source-view.o' libtool=no @AMDEPBACKSLASH@
+simple_text-st-source-view.o: st-source-view.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-source-view.o -MD -MP -MF $(DEPDIR)/simple_text-st-source-view.Tpo -c -o simple_text-st-source-view.o `test -f 'st-source-view.c' || echo '$(srcdir)/'`st-source-view.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-source-view.Tpo $(DEPDIR)/simple_text-st-source-view.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-source-view.c' object='simple_text-st-source-view.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-simple-source-view.o `test -f 'simple-source-view.c' || echo '$(srcdir)/'`simple-source-view.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-source-view.o `test -f 'st-source-view.c' || echo '$(srcdir)/'`st-source-view.c
 
-simple_text-simple-source-view.obj: simple-source-view.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-simple-source-view.obj -MD -MP -MF $(DEPDIR)/simple_text-simple-source-view.Tpo -c -o simple_text-simple-source-view.obj `if test -f 'simple-source-view.c'; then $(CYGPATH_W) 'simple-source-view.c'; else $(CYGPATH_W) '$(srcdir)/simple-source-view.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-simple-source-view.Tpo $(DEPDIR)/simple_text-simple-source-view.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='simple-source-view.c' object='simple_text-simple-source-view.obj' libtool=no @AMDEPBACKSLASH@
+simple_text-st-source-view.obj: st-source-view.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-source-view.obj -MD -MP -MF $(DEPDIR)/simple_text-st-source-view.Tpo -c -o simple_text-st-source-view.obj `if test -f 'st-source-view.c'; then $(CYGPATH_W) 'st-source-view.c'; else $(CYGPATH_W) '$(srcdir)/st-source-view.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-source-view.Tpo $(DEPDIR)/simple_text-st-source-view.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-source-view.c' object='simple_text-st-source-view.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-simple-source-view.obj `if test -f 'simple-source-view.c'; then $(CYGPATH_W) 'simple-source-view.c'; else $(CYGPATH_W) '$(srcdir)/simple-source-view.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-source-view.obj `if test -f 'st-source-view.c'; then $(CYGPATH_W) 'st-source-view.c'; else $(CYGPATH_W) '$(srcdir)/st-source-view.c'; fi`
 
-simple_text-simple-statusbar.o: simple-statusbar.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-simple-statusbar.o -MD -MP -MF $(DEPDIR)/simple_text-simple-statusbar.Tpo -c -o simple_text-simple-statusbar.o `test -f 'simple-statusbar.c' || echo '$(srcdir)/'`simple-statusbar.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-simple-statusbar.Tpo $(DEPDIR)/simple_text-simple-statusbar.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='simple-statusbar.c' object='simple_text-simple-statusbar.o' libtool=no @AMDEPBACKSLASH@
+simple_text-st-statusbar.o: st-statusbar.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-statusbar.o -MD -MP -MF $(DEPDIR)/simple_text-st-statusbar.Tpo -c -o simple_text-st-statusbar.o `test -f 'st-statusbar.c' || echo '$(srcdir)/'`st-statusbar.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-statusbar.Tpo $(DEPDIR)/simple_text-st-statusbar.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-statusbar.c' object='simple_text-st-statusbar.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-simple-statusbar.o `test -f 'simple-statusbar.c' || echo '$(srcdir)/'`simple-statusbar.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-statusbar.o `test -f 'st-statusbar.c' || echo '$(srcdir)/'`st-statusbar.c
 
-simple_text-simple-statusbar.obj: simple-statusbar.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-simple-statusbar.obj -MD -MP -MF $(DEPDIR)/simple_text-simple-statusbar.Tpo -c -o simple_text-simple-statusbar.obj `if test -f 'simple-statusbar.c'; then $(CYGPATH_W) 'simple-statusbar.c'; else $(CYGPATH_W) '$(srcdir)/simple-statusbar.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-simple-statusbar.Tpo $(DEPDIR)/simple_text-simple-statusbar.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='simple-statusbar.c' object='simple_text-simple-statusbar.obj' libtool=no @AMDEPBACKSLASH@
+simple_text-st-statusbar.obj: st-statusbar.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-statusbar.obj -MD -MP -MF $(DEPDIR)/simple_text-st-statusbar.Tpo -c -o simple_text-st-statusbar.obj `if test -f 'st-statusbar.c'; then $(CYGPATH_W) 'st-statusbar.c'; else $(CYGPATH_W) '$(srcdir)/st-statusbar.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-statusbar.Tpo $(DEPDIR)/simple_text-st-statusbar.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-statusbar.c' object='simple_text-st-statusbar.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-simple-statusbar.obj `if test -f 'simple-statusbar.c'; then $(CYGPATH_W) 'simple-statusbar.c'; else $(CYGPATH_W) '$(srcdir)/simple-statusbar.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-statusbar.obj `if test -f 'st-statusbar.c'; then $(CYGPATH_W) 'st-statusbar.c'; else $(CYGPATH_W) '$(srcdir)/st-statusbar.c'; fi`
 
-simple_text-simple-tab-bar.o: simple-tab-bar.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-simple-tab-bar.o -MD -MP -MF $(DEPDIR)/simple_text-simple-tab-bar.Tpo -c -o simple_text-simple-tab-bar.o `test -f 'simple-tab-bar.c' || echo '$(srcdir)/'`simple-tab-bar.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-simple-tab-bar.Tpo $(DEPDIR)/simple_text-simple-tab-bar.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='simple-tab-bar.c' object='simple_text-simple-tab-bar.o' libtool=no @AMDEPBACKSLASH@
+simple_text-st-tab-bar.o: st-tab-bar.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-tab-bar.o -MD -MP -MF $(DEPDIR)/simple_text-st-tab-bar.Tpo -c -o simple_text-st-tab-bar.o `test -f 'st-tab-bar.c' || echo '$(srcdir)/'`st-tab-bar.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-tab-bar.Tpo $(DEPDIR)/simple_text-st-tab-bar.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-tab-bar.c' object='simple_text-st-tab-bar.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-simple-tab-bar.o `test -f 'simple-tab-bar.c' || echo '$(srcdir)/'`simple-tab-bar.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-tab-bar.o `test -f 'st-tab-bar.c' || echo '$(srcdir)/'`st-tab-bar.c
 
-simple_text-simple-tab-bar.obj: simple-tab-bar.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-simple-tab-bar.obj -MD -MP -MF $(DEPDIR)/simple_text-simple-tab-bar.Tpo -c -o simple_text-simple-tab-bar.obj `if test -f 'simple-tab-bar.c'; then $(CYGPATH_W) 'simple-tab-bar.c'; else $(CYGPATH_W) '$(srcdir)/simple-tab-bar.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-simple-tab-bar.Tpo $(DEPDIR)/simple_text-simple-tab-bar.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='simple-tab-bar.c' object='simple_text-simple-tab-bar.obj' libtool=no @AMDEPBACKSLASH@
+simple_text-st-tab-bar.obj: st-tab-bar.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-tab-bar.obj -MD -MP -MF $(DEPDIR)/simple_text-st-tab-bar.Tpo -c -o simple_text-st-tab-bar.obj `if test -f 'st-tab-bar.c'; then $(CYGPATH_W) 'st-tab-bar.c'; else $(CYGPATH_W) '$(srcdir)/st-tab-bar.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-tab-bar.Tpo $(DEPDIR)/simple_text-st-tab-bar.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-tab-bar.c' object='simple_text-st-tab-bar.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-simple-tab-bar.obj `if test -f 'simple-tab-bar.c'; then $(CYGPATH_W) 'simple-tab-bar.c'; else $(CYGPATH_W) '$(srcdir)/simple-tab-bar.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-tab-bar.obj `if test -f 'st-tab-bar.c'; then $(CYGPATH_W) 'st-tab-bar.c'; else $(CYGPATH_W) '$(srcdir)/st-tab-bar.c'; fi`
 
-simple_text-simple-tab.o: simple-tab.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-simple-tab.o -MD -MP -MF $(DEPDIR)/simple_text-simple-tab.Tpo -c -o simple_text-simple-tab.o `test -f 'simple-tab.c' || echo '$(srcdir)/'`simple-tab.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-simple-tab.Tpo $(DEPDIR)/simple_text-simple-tab.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='simple-tab.c' object='simple_text-simple-tab.o' libtool=no @AMDEPBACKSLASH@
+simple_text-st-tab.o: st-tab.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-tab.o -MD -MP -MF $(DEPDIR)/simple_text-st-tab.Tpo -c -o simple_text-st-tab.o `test -f 'st-tab.c' || echo '$(srcdir)/'`st-tab.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-tab.Tpo $(DEPDIR)/simple_text-st-tab.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-tab.c' object='simple_text-st-tab.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-simple-tab.o `test -f 'simple-tab.c' || echo '$(srcdir)/'`simple-tab.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-tab.o `test -f 'st-tab.c' || echo '$(srcdir)/'`st-tab.c
 
-simple_text-simple-tab.obj: simple-tab.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-simple-tab.obj -MD -MP -MF $(DEPDIR)/simple_text-simple-tab.Tpo -c -o simple_text-simple-tab.obj `if test -f 'simple-tab.c'; then $(CYGPATH_W) 'simple-tab.c'; else $(CYGPATH_W) '$(srcdir)/simple-tab.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-simple-tab.Tpo $(DEPDIR)/simple_text-simple-tab.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='simple-tab.c' object='simple_text-simple-tab.obj' libtool=no @AMDEPBACKSLASH@
+simple_text-st-tab.obj: st-tab.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-tab.obj -MD -MP -MF $(DEPDIR)/simple_text-st-tab.Tpo -c -o simple_text-st-tab.obj `if test -f 'st-tab.c'; then $(CYGPATH_W) 'st-tab.c'; else $(CYGPATH_W) '$(srcdir)/st-tab.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-tab.Tpo $(DEPDIR)/simple_text-st-tab.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-tab.c' object='simple_text-st-tab.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-simple-tab.obj `if test -f 'simple-tab.c'; then $(CYGPATH_W) 'simple-tab.c'; else $(CYGPATH_W) '$(srcdir)/simple-tab.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-tab.obj `if test -f 'st-tab.c'; then $(CYGPATH_W) 'st-tab.c'; else $(CYGPATH_W) '$(srcdir)/st-tab.c'; fi`
 
-simple_text-simple-text.o: simple-text.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-simple-text.o -MD -MP -MF $(DEPDIR)/simple_text-simple-text.Tpo -c -o simple_text-simple-text.o `test -f 'simple-text.c' || echo '$(srcdir)/'`simple-text.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-simple-text.Tpo $(DEPDIR)/simple_text-simple-text.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='simple-text.c' object='simple_text-simple-text.o' libtool=no @AMDEPBACKSLASH@
+simple_text-st-text-editor.o: st-text-editor.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-text-editor.o -MD -MP -MF $(DEPDIR)/simple_text-st-text-editor.Tpo -c -o simple_text-st-text-editor.o `test -f 'st-text-editor.c' || echo '$(srcdir)/'`st-text-editor.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-text-editor.Tpo $(DEPDIR)/simple_text-st-text-editor.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-text-editor.c' object='simple_text-st-text-editor.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-simple-text.o `test -f 'simple-text.c' || echo '$(srcdir)/'`simple-text.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-text-editor.o `test -f 'st-text-editor.c' || echo '$(srcdir)/'`st-text-editor.c
 
-simple_text-simple-text.obj: simple-text.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-simple-text.obj -MD -MP -MF $(DEPDIR)/simple_text-simple-text.Tpo -c -o simple_text-simple-text.obj `if test -f 'simple-text.c'; then $(CYGPATH_W) 'simple-text.c'; else $(CYGPATH_W) '$(srcdir)/simple-text.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-simple-text.Tpo $(DEPDIR)/simple_text-simple-text.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='simple-text.c' object='simple_text-simple-text.obj' libtool=no @AMDEPBACKSLASH@
+simple_text-st-text-editor.obj: st-text-editor.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-st-text-editor.obj -MD -MP -MF $(DEPDIR)/simple_text-st-text-editor.Tpo -c -o simple_text-st-text-editor.obj `if test -f 'st-text-editor.c'; then $(CYGPATH_W) 'st-text-editor.c'; else $(CYGPATH_W) '$(srcdir)/st-text-editor.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-st-text-editor.Tpo $(DEPDIR)/simple_text-st-text-editor.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='st-text-editor.c' object='simple_text-st-text-editor.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-simple-text.obj `if test -f 'simple-text.c'; then $(CYGPATH_W) 'simple-text.c'; else $(CYGPATH_W) '$(srcdir)/simple-text.c'; fi`
-
-simple_text-text-editor.o: text-editor.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-text-editor.o -MD -MP -MF $(DEPDIR)/simple_text-text-editor.Tpo -c -o simple_text-text-editor.o `test -f 'text-editor.c' || echo '$(srcdir)/'`text-editor.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-text-editor.Tpo $(DEPDIR)/simple_text-text-editor.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='text-editor.c' object='simple_text-text-editor.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-text-editor.o `test -f 'text-editor.c' || echo '$(srcdir)/'`text-editor.c
-
-simple_text-text-editor.obj: text-editor.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-text-editor.obj -MD -MP -MF $(DEPDIR)/simple_text-text-editor.Tpo -c -o simple_text-text-editor.obj `if test -f 'text-editor.c'; then $(CYGPATH_W) 'text-editor.c'; else $(CYGPATH_W) '$(srcdir)/text-editor.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple_text-text-editor.Tpo $(DEPDIR)/simple_text-text-editor.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='text-editor.c' object='simple_text-text-editor.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-text-editor.obj `if test -f 'text-editor.c'; then $(CYGPATH_W) 'text-editor.c'; else $(CYGPATH_W) '$(srcdir)/text-editor.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-st-text-editor.obj `if test -f 'st-text-editor.c'; then $(CYGPATH_W) 'st-text-editor.c'; else $(CYGPATH_W) '$(srcdir)/st-text-editor.c'; fi`
 
 simple_text-resources.o: resources.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -MT simple_text-resources.o -MD -MP -MF $(DEPDIR)/simple_text-resources.Tpo -c -o simple_text-resources.o `test -f 'resources.c' || echo '$(srcdir)/'`resources.c
@@ -659,74 +641,69 @@ simple_text-resources.obj: resources.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='resources.c' object='simple_text-resources.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_text_CFLAGS) $(CFLAGS) -c -o simple_text-resources.obj `if test -f 'resources.c'; then $(CYGPATH_W) 'resources.c'; else $(CYGPATH_W) '$(srcdir)/resources.c'; fi`
-$(srcdir)/confirm-exit.c: $(srcdir)/simple_text_vala.stamp
+$(srcdir)/st-application.c: $(srcdir)/simple_text_vala.stamp
 	@if test -f $@; then :; else rm -f $(srcdir)/simple_text_vala.stamp; fi
 	@if test -f $@; then :; else \
 	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/simple_text_vala.stamp; \
 	fi
-$(srcdir)/main-window.c: $(srcdir)/simple_text_vala.stamp
+$(srcdir)/st-header-bar.c: $(srcdir)/simple_text_vala.stamp
 	@if test -f $@; then :; else rm -f $(srcdir)/simple_text_vala.stamp; fi
 	@if test -f $@; then :; else \
 	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/simple_text_vala.stamp; \
 	fi
-$(srcdir)/programming-languages.c: $(srcdir)/simple_text_vala.stamp
+$(srcdir)/st-language-picker.c: $(srcdir)/simple_text_vala.stamp
 	@if test -f $@; then :; else rm -f $(srcdir)/simple_text_vala.stamp; fi
 	@if test -f $@; then :; else \
 	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/simple_text_vala.stamp; \
 	fi
-$(srcdir)/simple-header-bar.c: $(srcdir)/simple_text_vala.stamp
+$(srcdir)/st-main-window.c: $(srcdir)/simple_text_vala.stamp
 	@if test -f $@; then :; else rm -f $(srcdir)/simple_text_vala.stamp; fi
 	@if test -f $@; then :; else \
 	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/simple_text_vala.stamp; \
 	fi
-$(srcdir)/simple-language-picker.c: $(srcdir)/simple_text_vala.stamp
+$(srcdir)/st-preferences-dialog.c: $(srcdir)/simple_text_vala.stamp
 	@if test -f $@; then :; else rm -f $(srcdir)/simple_text_vala.stamp; fi
 	@if test -f $@; then :; else \
 	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/simple_text_vala.stamp; \
 	fi
-$(srcdir)/simple-preferences.c: $(srcdir)/simple_text_vala.stamp
+$(srcdir)/st-programming-languages.c: $(srcdir)/simple_text_vala.stamp
 	@if test -f $@; then :; else rm -f $(srcdir)/simple_text_vala.stamp; fi
 	@if test -f $@; then :; else \
 	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/simple_text_vala.stamp; \
 	fi
-$(srcdir)/simple-source-style-picker.c: $(srcdir)/simple_text_vala.stamp
+$(srcdir)/st-source-style-picker.c: $(srcdir)/simple_text_vala.stamp
 	@if test -f $@; then :; else rm -f $(srcdir)/simple_text_vala.stamp; fi
 	@if test -f $@; then :; else \
 	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/simple_text_vala.stamp; \
 	fi
-$(srcdir)/simple-source-view.c: $(srcdir)/simple_text_vala.stamp
+$(srcdir)/st-source-view.c: $(srcdir)/simple_text_vala.stamp
 	@if test -f $@; then :; else rm -f $(srcdir)/simple_text_vala.stamp; fi
 	@if test -f $@; then :; else \
 	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/simple_text_vala.stamp; \
 	fi
-$(srcdir)/simple-statusbar.c: $(srcdir)/simple_text_vala.stamp
+$(srcdir)/st-statusbar.c: $(srcdir)/simple_text_vala.stamp
 	@if test -f $@; then :; else rm -f $(srcdir)/simple_text_vala.stamp; fi
 	@if test -f $@; then :; else \
 	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/simple_text_vala.stamp; \
 	fi
-$(srcdir)/simple-tab-bar.c: $(srcdir)/simple_text_vala.stamp
+$(srcdir)/st-tab-bar.c: $(srcdir)/simple_text_vala.stamp
 	@if test -f $@; then :; else rm -f $(srcdir)/simple_text_vala.stamp; fi
 	@if test -f $@; then :; else \
 	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/simple_text_vala.stamp; \
 	fi
-$(srcdir)/simple-tab.c: $(srcdir)/simple_text_vala.stamp
+$(srcdir)/st-tab.c: $(srcdir)/simple_text_vala.stamp
 	@if test -f $@; then :; else rm -f $(srcdir)/simple_text_vala.stamp; fi
 	@if test -f $@; then :; else \
 	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/simple_text_vala.stamp; \
 	fi
-$(srcdir)/simple-text.c: $(srcdir)/simple_text_vala.stamp
+$(srcdir)/st-text-editor.c: $(srcdir)/simple_text_vala.stamp
 	@if test -f $@; then :; else rm -f $(srcdir)/simple_text_vala.stamp; fi
 	@if test -f $@; then :; else \
 	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/simple_text_vala.stamp; \
 	fi
-$(srcdir)/text-editor.c: $(srcdir)/simple_text_vala.stamp
-	@if test -f $@; then :; else rm -f $(srcdir)/simple_text_vala.stamp; fi
-	@if test -f $@; then :; else \
-	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/simple_text_vala.stamp; \
-	fi
-$(srcdir)/simple_text_vala.stamp: confirm-exit.vala main-window.vala programming-languages.vala simple-header-bar.vala simple-language-picker.vala simple-preferences.vala simple-source-style-picker.vala simple-source-view.vala simple-statusbar.vala simple-tab-bar.vala simple-tab.vala simple-text.vala text-editor.vala
+$(srcdir)/simple_text_vala.stamp: st-application.vala st-header-bar.vala st-language-picker.vala st-main-window.vala st-preferences-dialog.vala st-programming-languages.vala st-source-style-picker.vala st-source-view.vala st-statusbar.vala st-tab-bar.vala st-tab.vala st-text-editor.vala
 	$(AM_V_at)rm -f $@ && echo stamp > $@-t
-	$(AM_V_VALAC)$(am__cd) $(srcdir) && $(VALAC) $(simple_text_VALAFLAGS) $(VALAFLAGS) -C confirm-exit.vala main-window.vala programming-languages.vala simple-header-bar.vala simple-language-picker.vala simple-preferences.vala simple-source-style-picker.vala simple-source-view.vala simple-statusbar.vala simple-tab-bar.vala simple-tab.vala simple-text.vala text-editor.vala
+	$(AM_V_VALAC)$(am__cd) $(srcdir) && $(VALAC) $(simple_text_VALAFLAGS) $(VALAFLAGS) -C st-application.vala st-header-bar.vala st-language-picker.vala st-main-window.vala st-preferences-dialog.vala st-programming-languages.vala st-source-style-picker.vala st-source-view.vala st-statusbar.vala st-tab-bar.vala st-tab.vala st-text-editor.vala
 	$(AM_V_at)mv -f $@-t $@
 
 ID: $(am__tagged_files)
@@ -850,33 +827,31 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-	-rm -f $(srcdir)/confirm-exit.c
-	-rm -f $(srcdir)/main-window.c
-	-rm -f $(srcdir)/programming-languages.c
-	-rm -f $(srcdir)/simple-header-bar.c
-	-rm -f $(srcdir)/simple-language-picker.c
-	-rm -f $(srcdir)/simple-preferences.c
-	-rm -f $(srcdir)/simple-source-style-picker.c
-	-rm -f $(srcdir)/simple-source-view.c
-	-rm -f $(srcdir)/simple-statusbar.c
-	-rm -f $(srcdir)/simple-tab-bar.c
-	-rm -f $(srcdir)/simple-tab.c
-	-rm -f $(srcdir)/simple-text.c
 	-rm -f $(srcdir)/simple_text_vala.stamp
-	-rm -f $(srcdir)/text-editor.c
-	-rm -f confirm-exit.c
-	-rm -f main-window.c
-	-rm -f programming-languages.c
-	-rm -f simple-header-bar.c
-	-rm -f simple-language-picker.c
-	-rm -f simple-preferences.c
-	-rm -f simple-source-style-picker.c
-	-rm -f simple-source-view.c
-	-rm -f simple-statusbar.c
-	-rm -f simple-tab-bar.c
-	-rm -f simple-tab.c
-	-rm -f simple-text.c
-	-rm -f text-editor.c
+	-rm -f $(srcdir)/st-application.c
+	-rm -f $(srcdir)/st-header-bar.c
+	-rm -f $(srcdir)/st-language-picker.c
+	-rm -f $(srcdir)/st-main-window.c
+	-rm -f $(srcdir)/st-preferences-dialog.c
+	-rm -f $(srcdir)/st-programming-languages.c
+	-rm -f $(srcdir)/st-source-style-picker.c
+	-rm -f $(srcdir)/st-source-view.c
+	-rm -f $(srcdir)/st-statusbar.c
+	-rm -f $(srcdir)/st-tab-bar.c
+	-rm -f $(srcdir)/st-tab.c
+	-rm -f $(srcdir)/st-text-editor.c
+	-rm -f st-application.c
+	-rm -f st-header-bar.c
+	-rm -f st-language-picker.c
+	-rm -f st-main-window.c
+	-rm -f st-preferences-dialog.c
+	-rm -f st-programming-languages.c
+	-rm -f st-source-style-picker.c
+	-rm -f st-source-view.c
+	-rm -f st-statusbar.c
+	-rm -f st-tab-bar.c
+	-rm -f st-tab.c
+	-rm -f st-text-editor.c
 	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-am
 

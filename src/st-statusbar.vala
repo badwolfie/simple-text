@@ -12,11 +12,11 @@ public enum FileOpeartion {
 	BUILD_FAIL
 }
 
-public class SimpleStatusbar : Box {
+public class StStatusbar : Box {
 	public signal void change_syntax_request(string language);
 
-	private SimpleLanguagePicker lang_picker;
-	private MainWindow parent_window;
+	private StLanguagePicker lang_picker;
+	private StMainWindow parent_window;
 	private EventBox evt_box;
 	private Label _label;
 	public Label label {
@@ -26,7 +26,7 @@ public class SimpleStatusbar : Box {
 	private Statusbar status;
 	private uint context_id;
 
-	public SimpleStatusbar(MainWindow parent) {
+	public StStatusbar(StMainWindow parent) {
 		Object();
 		parent_window = parent;
 		create_widgets();
@@ -49,7 +49,7 @@ public class SimpleStatusbar : Box {
 		evt_box.button_press_event.connect(on_label_pressed);
 		evt_box.show();
 
-		lang_picker = new SimpleLanguagePicker(_label);
+		lang_picker = new StLanguagePicker(_label);
 		lang_picker.language_selected.connect(change_syntax);
 
 		this.pack_start(status,false,true,0);

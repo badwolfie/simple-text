@@ -1,17 +1,17 @@
 using Gtk;
 
-public class SimpleText : Gtk.Application {
+public class StApplication : Gtk.Application {
 	private const string APP_NAME = "Simple Text";
-	private const string APP_VERSION = "0.9.8";
+	private const string APP_VERSION = "0.9.9";
 
 	private GLib.Settings settings;
-	private PreferencesDialog preferences_dialog;
-	private MainWindow window;
+	private StPreferencesDialog preferences_dialog;
+	private StMainWindow window;
 
 	private const OptionEntry[] option_entries = {
 		{ "version", 'v', 0, 
-		  OptionArg.NONE, null, 
-		  ("Show release version"), null },
+			OptionArg.NONE, null, 
+			("Show release version"), null },
 		{ null }
 	};
 
@@ -21,7 +21,7 @@ public class SimpleText : Gtk.Application {
         { "quit", quit_cb, null, null, null },
     };
 
-	public SimpleText() {
+	public StApplication() {
 		Object(application_id: "badwolfie.simple-text.app",
 			   flags: ApplicationFlags.HANDLES_OPEN);
 		add_main_option_entries(option_entries);
@@ -52,7 +52,7 @@ public class SimpleText : Gtk.Application {
 			error("I/O error: %s",e.message);
 		}
 		
-		var editor = new TextEditor();
+		var editor = new StTextEditor();
 		settings = new GLib.Settings("com.github.badwolfie.simple-text");
 		
 		editor.show_line_numbers = settings.get_boolean("show-line-numbers");
@@ -74,7 +74,7 @@ public class SimpleText : Gtk.Application {
 		editor.show_welcome = settings.get_boolean("show-welcome");
 		
 		add_action_entries(app_entries,this);
-		window = new MainWindow(this,editor);		
+		window = new StMainWindow(this,editor);		
 
 		var builder = new Gtk.Builder();
 		try {
@@ -178,7 +178,7 @@ public class SimpleText : Gtk.Application {
 	
 	private void show_prefs_cb() {
 		if (preferences_dialog == null) 
-			preferences_dialog = new PreferencesDialog(window,window.editor);
+			preferences_dialog = new StPreferencesDialog(window,window.editor);
 		preferences_dialog.present();
 	}
 
@@ -243,7 +243,7 @@ along with Simple Text. If not, see <http://www.gnu.org/licenses/>.""";
         Intl.textdomain(GETTEXT_PACKAGE);
         
 		Gtk.Window.set_default_icon_name ("text-editor");
-		var app = new SimpleText();
+		var app = new StApplication();
 
 		return app.run(args);
 	}
