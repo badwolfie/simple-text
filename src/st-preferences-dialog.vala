@@ -43,7 +43,7 @@ public class StPreferencesDialog : Dialog {
 		box_terminal.selection_mode = SelectionMode.NONE;
 	
 		stack = new Stack();
-		stack.set_transition_type(StackTransitionType.SLIDE_LEFT_RIGHT);
+		stack.set_transition_type(StackTransitionType.SLIDE_UP_DOWN);
 		stack.set_transition_duration(300);
 		stack.border_width = 10;
 		
