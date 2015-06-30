@@ -104,13 +104,13 @@
 		          <item>
 		            <attribute name="label" translatable="yes">Next tab</attribute>
 		            <attribute name="action">win.next_tab</attribute>
-		            <attribute name="accel">&lt;Primary&gt;Tab</attribute>
+		            <attribute name="accel">&lt;Primary&gt;Page_Down</attribute>
 		          </item>
 
 		          <item>
 		            <attribute name="label" translatable="yes">Previous tab</attribute>
 		            <attribute name="action">win.prev_tab</attribute>
-		            <attribute name="accel">&lt;Primary&gt;&lt;Shift&gt;Tab</attribute>
+		            <attribute name="accel">&lt;Primary&gt;Page_Up</attribute>
 		          </item>
           </section>
 

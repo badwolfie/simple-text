@@ -100,12 +100,9 @@ public class StStatusbar : Box {
 
 	public void refresh_language(string? lang_name) {
 		if (lang_name == null)
-			_label.label = "";
-		else {
 			_label.label = "Plain text";
-			
-			if (lang_name != null) 
-				_label.label = lang_name;
+		else {
+			_label.label = lang_name;
 		}
 	}
 

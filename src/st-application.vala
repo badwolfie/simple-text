@@ -108,10 +108,10 @@ public class StApplication : Gtk.Application {
 		const string[] accels_show_terminal = {"<control><shift>C",null};
 		set_accels_for_action("win.toggle_terminal",accels_show_terminal);
 
-		const string[] accels_next_tab = {"<control>Tab",null};
+		const string[] accels_next_tab = {"<control>Page_Down",null};
 		set_accels_for_action("win.next_tab",accels_next_tab);
 
-		const string[] accels_prev_tab = {"<control><shift>Tab",null};
+		const string[] accels_prev_tab = {"<control>Page_Up",null};
 		set_accels_for_action("win.prev_tab",accels_prev_tab);
 
 		const string[] accels_close = {"<control>W",null};

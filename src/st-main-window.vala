@@ -329,8 +329,8 @@ public class StMainWindow : ApplicationWindow {
 			visible_doc.get_child().grab_focus();
 		}
 		
-		var current_page = tab_bar.get_current_page(documents.visible_child);
-		var lang_name = current_page.text_view.get_language_name();
+		var current_doc = tab_bar.get_current_doc(documents.visible_child);
+		var lang_name = current_doc.text_view.get_language_name();
 		status.refresh_statusbar(FileOpeartion.NULL_OPERATION,null);
 		status.refresh_language(lang_name);
 	}
@@ -343,11 +343,11 @@ public class StMainWindow : ApplicationWindow {
 	 * @return void
 	 */
 	private void change_syntax_cb(string language) {
-		var current_page = tab_bar.get_current_page(documents.visible_child);
+		var current_doc = tab_bar.get_current_doc(documents.visible_child);
 		var p_langs = new StProgrammingLanguages();
 
 		string lang_id = p_langs.get_lang_id(language);
-		current_page.text_view.change_language(lang_id);
+		current_doc.text_view.change_language(lang_id);
 	}
 	
 	/**
@@ -364,10 +364,10 @@ public class StMainWindow : ApplicationWindow {
 			var visible_doc = documents.visible_child as ScrolledWindow;
 			visible_doc.get_child().grab_focus();
 		} else {
-			var current_page = 
-				tab_bar.get_current_page(documents.visible_child);
+			var current_doc = 
+				tab_bar.get_current_doc(documents.visible_child);
 			
-			int page_num = tab_bar.get_page_num(current_page);
+			int page_num = tab_bar.get_page_num(current_doc);
 			string filename = opened_files.nth_data(page_num);
 			
 			string working_dir;
@@ -430,10 +430,10 @@ public class StMainWindow : ApplicationWindow {
 		);
 
 		if (documents.visible_child != null) {
-			var current_page = 
-				tab_bar.get_current_page(documents.visible_child);
+			var current_doc = 
+				tab_bar.get_current_doc(documents.visible_child);
 			string filename =
-				opened_files.nth_data(tab_bar.get_page_num(current_page));
+				opened_files.nth_data(tab_bar.get_page_num(current_doc));
 
 			if (filename.contains(untitled))
 				file_chooser.set_current_folder(Environment.get_home_dir());
@@ -472,16 +472,17 @@ public class StMainWindow : ApplicationWindow {
 		tab_label.view_drag_n_drop.connect(add_new_tab_from_file);
 		add_new_tab(tab_label);
 		
-		var current_page = tab_bar.get_current_page(
+		var current_doc = tab_bar.get_current_doc(
 			documents.visible_child);
-		int page_num = tab_bar.get_page_num(current_page);
+		int page_num = tab_bar.get_page_num(current_doc);
 
 		headerbar.set_title(filename);
 		fs_headerbar.set_title(filename);
 		opened_files.insert(filename, page_num);
 		
+		var lang_name = current_doc.text_view.get_language_name();
 		status.refresh_statusbar(FileOpeartion.OPEN_FILE, filename);
-		status.refresh_language(current_page.text_view.get_language_name());
+		status.refresh_language(lang_name);
 
 		check_pages();
 	}
@@ -506,12 +507,12 @@ public class StMainWindow : ApplicationWindow {
 	 * @return void
 	 */
 	public void save_tab_to_file() {
-		var current_doc = documents.visible_child as ScrolledWindow;
-		if (current_doc == null) return ;
+		var current_tab = documents.visible_child as ScrolledWindow;
+		if (current_tab == null) return ;
 
-		var view = current_doc.get_child() as SourceView;
-		var tab_label = tab_bar.get_current_page(current_doc);
-		int page_num = tab_bar.get_page_num(tab_label);
+		var view = current_tab.get_child() as SourceView;
+		var current_doc = tab_bar.get_current_doc(current_tab);
+		int page_num = tab_bar.get_page_num(current_doc);
 
 		if (headerbar.title.contains(untitled)) {
 			if (view.buffer.text == "") return;
@@ -522,36 +523,34 @@ public class StMainWindow : ApplicationWindow {
 			);
 
 			file_chooser.set_current_folder(Environment.get_home_dir());
-			var current_page = 
-				tab_bar.get_current_page(documents.visible_child);
-				
 			string filename =
-				opened_files.nth_data(tab_bar.get_page_num(current_page));
+				opened_files.nth_data(tab_bar.get_page_num(current_doc));
 			file_chooser.set_current_name(Path.get_basename(filename));
 
 			switch (file_chooser.run()) {
 				default:
 					break;
 				case ResponseType.ACCEPT:
-					tab_label.tab_title = 
+					current_doc.tab_title = 
 						file_chooser.get_file().get_basename();
 					headerbar.set_title(file_chooser.get_filename());
 					fs_headerbar.set_title(file_chooser.get_filename());
 					save_file(view,file_chooser.get_filename());
-					tab_label.mark_title();
+					current_doc.mark_title();
 					
 					opened_files.remove(opened_files.nth_data(page_num));
 					opened_files.insert(file_chooser.get_filename(),page_num);
 
-					status.refresh_language(file_chooser.get_filename());
-					reset_changes(tab_label);
+					var lang_name = current_doc.text_view.get_language_name();
+					status.refresh_language(lang_name);
+					reset_changes(current_doc);
 					break;
 			}
 			file_chooser.destroy();
-		} else if (tab_label.tab_title.contains("*")) {
+		} else if (current_doc.tab_title.contains("*")) {
 			string filename = opened_files.nth_data(page_num);
 			save_file(view, filename);
-			reset_changes(tab_label);
+			reset_changes(current_doc);
 		}
 	}
 	
@@ -563,11 +562,11 @@ public class StMainWindow : ApplicationWindow {
 	private void save_as_cb() {
 		if (documents.visible_child == null) return ;
 
-		var current_page = tab_bar.get_current_page(documents.visible_child);
+		var current_doc = tab_bar.get_current_doc(documents.visible_child);
 		string filename = 
-			opened_files.nth_data(tab_bar.get_page_num(current_page));
-		int page_num = tab_bar.get_page_num(current_page);
-		var view = current_page.text_view as SourceView;
+			opened_files.nth_data(tab_bar.get_page_num(current_doc));
+		int page_num = tab_bar.get_page_num(current_doc);
+		var view = current_doc.text_view as SourceView;
 
 		if ((filename.contains(untitled)) && (view.buffer.text == "")) return;
 
@@ -585,17 +584,18 @@ public class StMainWindow : ApplicationWindow {
 
 		switch (file_chooser.run()) {
 			case ResponseType.ACCEPT:
-				current_page.tab_title = file_chooser.get_file().get_basename();
+				current_doc.tab_title = file_chooser.get_file().get_basename();
 				headerbar.set_title(file_chooser.get_filename());
 				fs_headerbar.set_title(file_chooser.get_filename());
 				save_file(view,file_chooser.get_filename());
-				current_page.mark_title();
+				current_doc.mark_title();
 
 				opened_files.remove(opened_files.nth_data(page_num));
 				opened_files.insert(file_chooser.get_filename(),page_num);
 
-				status.refresh_language(file_chooser.get_filename());
-				reset_changes(current_page);
+				var lang_name = current_doc.text_view.get_language_name();
+				status.refresh_language(lang_name);
+				reset_changes(current_doc);
 				break;
 			default:
 				break;
@@ -614,9 +614,12 @@ public class StMainWindow : ApplicationWindow {
 		var tab = new StTab(editor);
 		tab.view_drag_n_drop.connect(add_new_tab_from_file);
 		add_new_tab(tab);
-
+	
+		var current_doc = tab_bar.get_current_doc(documents.visible_child);
+		var lang_name = current_doc.text_view.get_language_name();
+		
 		status.refresh_statusbar(FileOpeartion.NEW_FILE,null);
-		status.refresh_language(untitled);
+		status.refresh_language(lang_name);
 	}
 
 	/**
@@ -629,8 +632,8 @@ public class StMainWindow : ApplicationWindow {
 	 * @return void
 	 */
 	public void build_code() {
-		var current_page = tab_bar.get_current_page(documents.visible_child);
-		int page_num = tab_bar.get_page_num(current_page);
+		var current_doc = tab_bar.get_current_doc(documents.visible_child);
+		int page_num = tab_bar.get_page_num(current_doc);
 		
 		string filename = opened_files.nth_data(page_num);
 		string directory = Path.get_dirname(filename);
@@ -638,7 +641,7 @@ public class StMainWindow : ApplicationWindow {
 		save_tab_to_file();
 		
 		var plangs = new StProgrammingLanguages();
-		if (!plangs.is_buildable(current_page.text_view.get_language_name())) 
+		if (!plangs.is_buildable(current_doc.text_view.get_language_name())) 
 			return;
 		
 		status.refresh_statusbar(FileOpeartion.BUILD_FILE,null);
@@ -687,19 +690,20 @@ public class StMainWindow : ApplicationWindow {
 		tab_label.view_drag_n_drop.connect(add_new_tab_from_file);
 		add_new_tab(tab_label);
 		
-		var current_page = tab_bar.get_current_page(
+		var current_doc = tab_bar.get_current_doc(
 			documents.visible_child);
-		int page_num = tab_bar.get_page_num(current_page);
+		int page_num = tab_bar.get_page_num(current_doc);
 
 		headerbar.set_title(last_file_basename);
 		fs_headerbar.set_title(last_file_basename);
 		opened_files.insert(last_file_path, page_num);
 
 		string f_name = opened_files.nth_data(page_num);
+		var lang_name = current_doc.text_view.get_language_name();
 		status.refresh_statusbar(FileOpeartion.OPEN_FILE,f_name);
-		status.refresh_language(current_page.text_view.get_language_name());
+		status.refresh_language(lang_name);
 
-		current_page = tab_bar.get_current_page(documents.visible_child);
+		current_doc = tab_bar.get_current_doc(documents.visible_child);
 		check_pages();
 	}
 
@@ -718,11 +722,11 @@ public class StMainWindow : ApplicationWindow {
 	 * @return void
 	 */
 	private void close_tab_cb() {
-		StTab current_page =
-			tab_bar.get_current_page(documents.visible_child);
-		if (confirm_close(current_page))
-			tab_bar.close_page(current_page);
-		current_page = tab_bar.get_current_page(documents.visible_child);
+		var current_doc =
+			tab_bar.get_current_doc(documents.visible_child);
+			
+		if (confirm_close(current_doc))
+			tab_bar.close_page(current_doc);
 	}
 	
 	/**
@@ -739,7 +743,6 @@ public class StMainWindow : ApplicationWindow {
 		if (!f_name.contains(untitled))
 			closed_files.append_val(f_name);
 		opened_files.remove(opened_files.nth_data(page_num));
-		status.refresh_language(opened_files.nth_data(page_num));
 		
 		tab_bar.switch_page_next(tab);
 		tab.tab_widget.destroy();
@@ -747,9 +750,12 @@ public class StMainWindow : ApplicationWindow {
 		tab.destroy();
 		check_pages();
 
-		var current_doc = tab_bar.get_current_page(documents.visible_child);
+		var current_doc = tab_bar.get_current_doc(documents.visible_child);
 		tab_bar.switch_page(current_doc);
 		current_doc.mark_title();
+		
+		var lang_name = current_doc.text_view.get_language_name();
+		status.refresh_language(lang_name);
 	}
 	
 	/**
@@ -805,11 +811,11 @@ public class StMainWindow : ApplicationWindow {
 		var view = page.get_child() as SourceView;
 		
 		if (view.buffer.get_modified()) {
-			var tab_label = tab_bar.get_current_page(page);
+			var current_doc = tab_bar.get_current_doc(page);
 
-			if (!tab_label.tab_title.contains("*")){
-				tab_label.tab_title = "*" + tab_label.tab_title;
-				tab_label.mark_title();
+			if (!current_doc.tab_title.contains("*")){
+				current_doc.tab_title = "*" + current_doc.tab_title;
+				current_doc.mark_title();
 			}
 
 			status.refresh_statusbar(FileOpeartion.EDIT_FILE,null);
@@ -849,8 +855,8 @@ public class StMainWindow : ApplicationWindow {
 			(tab_label.tab_widget as ScrolledWindow).get_child() as SourceView;
 		view.key_release_event.connect(changes_done);
 		
-		var current_page = tab_bar.get_current_page(documents.visible_child);
-		int page_num = tab_bar.get_page_num(current_page);
+		var current_doc = tab_bar.get_current_doc(documents.visible_child);
+		int page_num = tab_bar.get_page_num(current_doc);
 		string filename = opened_files.nth_data(page_num);
 		
 		headerbar.set_title(filename);
@@ -870,9 +876,13 @@ public class StMainWindow : ApplicationWindow {
 		try {
 			FileUtils.set_contents(filename,view.buffer.text);
 			view.buffer.set_modified(false);
-
+			
+			var current_doc = 
+				tab_bar.get_current_doc(documents.visible_child);
+			var lang_name = current_doc.text_view.get_language_name();
+			
 			status.refresh_statusbar(FileOpeartion.SAVE_FILE,filename);
-			status.refresh_language(filename); 
+			status.refresh_language(lang_name); 
 		} catch (Error e) {
 			stderr.printf ("Error: %s\n", e.message);
 		}
@@ -885,9 +895,8 @@ public class StMainWindow : ApplicationWindow {
 	 * @return void
 	 */
 	private void next_tab_cb() {
-		var current_page = tab_bar.get_current_page(documents.visible_child);
-		tab_bar.switch_page_next(current_page);
-		current_page = tab_bar.get_current_page(documents.visible_child);
+		var current_doc = tab_bar.get_current_doc(documents.visible_child);
+		tab_bar.switch_page_next(current_doc);
 	}
 
 	/**
@@ -897,9 +906,8 @@ public class StMainWindow : ApplicationWindow {
 	 * @return void
 	 */
 	private void prev_tab_cb() {
-		var current_page = tab_bar.get_current_page(documents.visible_child);
-		tab_bar.switch_page_prev(current_page);
-		current_page = tab_bar.get_current_page(documents.visible_child);
+		var current_doc = tab_bar.get_current_doc(documents.visible_child);
+		tab_bar.switch_page_prev(current_doc);
 	}	
 
 	/**

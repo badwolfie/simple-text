@@ -35,7 +35,7 @@ public class StTabBar : Box {
 		
 		extra_box = new Box(Orientation.VERTICAL,0);
 		var extra_menu_img = new Image.from_icon_name(
-			"view-more-symbolic",IconSize.MENU);
+			"view-list-symbolic",IconSize.MENU);
 
 		extra_menu = new EventBox();
 		extra_menu.child = extra_menu_img;
@@ -102,7 +102,7 @@ public class StTabBar : Box {
 		page_switched(tab);
 	}
 
-	public StTab? get_current_page(Widget? current_doc) {
+	public StTab? get_current_doc(Widget? current_doc) {
 		StTab? current_tab = null;
 		if (current_doc != null) {
 			for (int i = 0; i < _tabs.length(); i++) {
