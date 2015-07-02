@@ -220,7 +220,7 @@ along with Simple Text. If not, see <http://www.gnu.org/licenses/>.""";
 		about_dialog.website = ("https://github.com/BadWolfie/simple-text");
 		about_dialog.website_label = _("Web page");
 		about_dialog.license = license;
-		about_dialog.logo_icon_name = ("text-editor");
+		about_dialog.logo_icon_name = ("simple-text");
 		// about_dialog.documenters = documenters;
 		about_dialog.authors = authors;
 		about_dialog.translator_credits = translator_credits;
@@ -242,7 +242,7 @@ along with Simple Text. If not, see <http://www.gnu.org/licenses/>.""";
         Intl.bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
         Intl.textdomain(GETTEXT_PACKAGE);
         
-		Gtk.Window.set_default_icon_name ("text-editor");
+		Gtk.Window.set_default_icon_name ("simple-text");
 		var app = new StApplication();
 
 		return app.run(args);

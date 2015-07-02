@@ -1,3 +1,5 @@
+SUBDIRS = icons
+
 gsettings_SCHEMAS = com.github.badwolfie.simple-text.gschema.xml
 @GSETTINGS_RULES@
 

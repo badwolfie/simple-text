@@ -6137,7 +6137,7 @@ $as_echo "$LINGUAS" >&6; }
 	< $srcdir/po/POTFILES.in > po/POTFILES
 
 
-ac_config_files="$ac_config_files Makefile po/Makefile.in data/Makefile src/Makefile vapi/Makefile"
+ac_config_files="$ac_config_files Makefile po/Makefile.in data/Makefile data/icons/Makefile data/icons/48x48/Makefile data/icons/256x256/Makefile data/icons/scalable/Makefile src/Makefile vapi/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -6879,6 +6879,10 @@ do
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "po/Makefile.in") CONFIG_FILES="$CONFIG_FILES po/Makefile.in" ;;
     "data/Makefile") CONFIG_FILES="$CONFIG_FILES data/Makefile" ;;
+    "data/icons/Makefile") CONFIG_FILES="$CONFIG_FILES data/icons/Makefile" ;;
+    "data/icons/48x48/Makefile") CONFIG_FILES="$CONFIG_FILES data/icons/48x48/Makefile" ;;
+    "data/icons/256x256/Makefile") CONFIG_FILES="$CONFIG_FILES data/icons/256x256/Makefile" ;;
+    "data/icons/scalable/Makefile") CONFIG_FILES="$CONFIG_FILES data/icons/scalable/Makefile" ;;
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
     "vapi/Makefile") CONFIG_FILES="$CONFIG_FILES vapi/Makefile" ;;
     "po/stamp-it") CONFIG_COMMANDS="$CONFIG_COMMANDS po/stamp-it" ;;
