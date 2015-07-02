@@ -1,6 +1,6 @@
 # configure.ac
 
-AC_INIT([simple-text],[0.9.7])
+AC_INIT([simple-text],[0.9.5])
 AC_CONFIG_SRCDIR([src])
 AC_CONFIG_HEADERS([config.h])
 
@@ -23,7 +23,7 @@ AM_PROG_VALAC([0.24])
 AC_PROG_INSTALL
 IT_PROG_INTLTOOL([0.50.1])
 
-pkg_modules="gtk+-3.0 >= 3.10.0 gtksourceview-3.0 >= 3.16.1 gee-0.8 >= 0.18.0 vte-2.91 >= 0.40.0"
+pkg_modules="gtk+-3.0 >= 3.16.0 gtksourceview-3.0 >= 3.16.1 gee-0.8 >= 0.18.0 vte-2.91 >= 0.40.0"
 simple_text_PACKAGES="--pkg gtk+-3.0 --pkg gtksourceview-3.0 --pkg gee-0.8 --pkg vte-2.91 --pkg posix --target-glib 2.32"
 PKG_CHECK_MODULES(simple_text, [$pkg_modules])
 AC_SUBST(simple_text_CFLAGS)
@@ -38,12 +38,12 @@ AM_GLIB_GNU_GETTEXT
 
 AC_CONFIG_FILES([
 	Makefile
-	po/Makefile.in
 	data/Makefile
 	data/icons/Makefile
 	data/icons/48x48/Makefile
 	data/icons/256x256/Makefile
 	data/icons/scalable/Makefile
+	po/Makefile.in
 	src/Makefile
 	vapi/Makefile
 ])
