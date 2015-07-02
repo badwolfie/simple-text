@@ -40,6 +40,10 @@ public class StSourceView : SourceView {
 		connect_signals();
 		set_properties();
 		
+		this.show_completion.connect(() => {
+			this.completion.show();
+		});
+		
 		buff.set_modified(false);
 	}
 
