@@ -73,7 +73,8 @@ public class StTab : Box {
 		var close_img = new Image.from_icon_name("window-close-symbolic",
 												 IconSize.MENU);
 		title_label.ellipsize = Pango.EllipsizeMode.END;
-		title_label.max_width_chars = 15;
+		title_label.max_width_chars = 10;
+		title_label.width_chars = 10;
 		
 		close_button = new EventBox();
 		close_button.child = close_img;

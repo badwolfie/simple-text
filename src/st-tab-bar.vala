@@ -11,6 +11,7 @@ public class StTabBar : Box {
 	private Box extra_box;
 	private EventBox extra_menu;
 	private Popover extra_popup;
+	private Label extra_label;
 
 	private List<StTab> _extra_tabs;
 	public List<StTab> extra_tabs {
@@ -38,7 +39,6 @@ public class StTabBar : Box {
 			"view-list-symbolic",IconSize.MENU);
 
 		extra_menu = new EventBox();
-		extra_menu.child = extra_menu_img;
 		extra_menu.set_above_child(true);
 		extra_menu.width_request = 20;
 
@@ -50,6 +50,14 @@ public class StTabBar : Box {
 
 			return true;
 		});
+		
+		extra_label = new Label("<b>0 </b>");
+		extra_label.use_markup = true;
+		
+		var box = new Box(Orientation.HORIZONTAL, 3);
+		box.pack_start(extra_menu_img, true, true, 0);
+		box.pack_start(extra_label, true, true, 0);
+		extra_menu.child = box;
 
 		extra_popup = new Popover(extra_menu_img);		
 		pack_end(extra_menu,false,true,3);
@@ -76,7 +84,23 @@ public class StTabBar : Box {
 			_extra_tabs.append(tab);
 			tab_extra_num++;
 			
-			extra_menu.set_tooltip_text(_("Hidden tabs: %d").printf(tab_extra_num));
+			extra_menu.set_tooltip_text(
+				_("Hidden tabs: %d").printf(tab_extra_num));
+			
+			int label_timeout = 0;
+			GLib.Timeout.add(250, () => {
+				switch (label_timeout) {
+					case 0:
+						extra_label.label = "<b>+1 </b>";
+						break;
+					case 1:
+						extra_label.label = "<b>%d </b>".printf(tab_extra_num);
+						return false;
+				}
+				
+				label_timeout++;
+				return true;
+			});
 		}
 		
 		tab.close_clicked.connect(close_page);
@@ -186,7 +210,23 @@ public class StTabBar : Box {
 				tab_extra_num--;
 			}
 			
-			extra_menu.set_tooltip_text(_("Hidden tabs: %d").printf(tab_extra_num));
+			extra_menu.set_tooltip_text(
+				_("Hidden tabs: %d").printf(tab_extra_num));
+			
+			int label_timeout = 0;
+			GLib.Timeout.add(250, () => {
+				switch (label_timeout) {
+					case 0:
+						extra_label.label = "<b>-1 </b>";
+						break;
+					case 1:
+						extra_label.label = "<b>%d </b>".printf(tab_extra_num);
+						return false;
+				}
+				
+				label_timeout++;
+				return true;
+			});
 		}
 
 		if ((tab_extra_num == 0) && (tab_num <= 5))
