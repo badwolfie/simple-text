@@ -10,6 +10,8 @@ Check the [releases page](https://github.com/badwolfie/simple-text/releases) for
 
 ![About](screenshots/about.png)
 
+## Installation
+
 Dependencies (package names may vary depending on your distribution):
 * gtk3 >= 3.16
 * gtksourceview3
@@ -20,14 +22,15 @@ Dependencies (package names may vary depending on your distribution):
 * vala
 
 Also, the GNU autotools (autoconf, automake, ...)  
-For compiling:
+Then, simply:
 ```
+	$ git clone https://github.com/badwolfie/simple-text.git
+	$ cd simple-text
 	$ ./autogen.sh
 	$ ./configure
 	$ make
+	# make install
 ```
-
-For installing: `# make install`  
 
 ## Screenshots
 #### Main view
