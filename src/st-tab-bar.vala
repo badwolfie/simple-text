@@ -51,7 +51,7 @@ public class StTabBar : Box {
 			return true;
 		});
 		
-		extra_label = new Label("<b>0 </b>");
+		extra_label = new Label("");
 		extra_label.use_markup = true;
 		
 		var box = new Box(Orientation.HORIZONTAL, 3);

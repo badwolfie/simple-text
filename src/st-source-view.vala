@@ -1,7 +1,12 @@
 using Gtk;
 
 public class StSourceView : SourceView {
-	public signal void drag_n_drop(string filename);
+	public signal void drag_n_drop (string filename);
+	
+	private SourceSearchSettings _search_settings;
+	public SourceSearchSettings search_settings {
+		get { return _search_settings; }
+	}
 
 	private const int TARGET_TYPE_URI_LIST = 80;
 	private const TargetEntry[] target_list = {
@@ -10,10 +15,13 @@ public class StSourceView : SourceView {
 
 	private StTextEditor editor;
 
-	public StSourceView
+	public StSourceView 
 	(StTextEditor editor, string? filename, string? display_text) {
 		bool result_uncertain;
-		string content_type = ContentType.guess(filename, null, out result_uncertain);
+		string content_type = ContentType.guess(
+			filename, null, out result_uncertain
+		);
+		
 		if (result_uncertain) content_type = null;
 
 		var lang_manager = SourceLanguageManager.get_default();
@@ -40,14 +48,14 @@ public class StSourceView : SourceView {
 		connect_signals();
 		set_properties();
 		
-		this.show_completion.connect(() => {
+		/* this.show_completion.connect(() => {
 			this.completion.show();
-		});
+		}); */
 		
 		buff.set_modified(false);
 	}
 
-	private void set_properties() {
+	private void set_properties () {
 		show_line_numbers = editor.show_line_numbers;
 		show_right_margin = editor.show_right_margin;
 		right_margin_position = editor.right_margin_at;
@@ -78,9 +86,16 @@ public class StSourceView : SourceView {
 		);
 
 		drag_data_received.connect(on_drag_data_received);
+		
+		_search_settings = new SourceSearchSettings();
+		_search_settings.at_word_boundaries = false;
+		_search_settings.case_sensitive = false;
+		_search_settings.regex_enabled = false;
+		_search_settings.search_text = null;
+		_search_settings.wrap_around = true;
 	}
 
-	public void change_language(string language) {
+	public void change_language (string language) {
 		var lang_manager = SourceLanguageManager.get_default();
 		var source_lang = lang_manager.get_language(language);
 		var buff = new SourceBuffer.with_language(source_lang);
@@ -102,7 +117,7 @@ public class StSourceView : SourceView {
 		buff.set_modified(false);
 	}
 
-	private void connect_signals() {
+	private void connect_signals () {
 		editor.notify["show-line-numbers"].connect((pspec) => {
 			show_line_numbers = editor.show_line_numbers;
 		});
@@ -166,7 +181,7 @@ public class StSourceView : SourceView {
 		});
 	}
 
-	private void on_drag_data_received(Widget widget, Gdk.DragContext context, 
+	private void on_drag_data_received (Widget widget, Gdk.DragContext context, 
 									   int x, int y, 
 									   SelectionData selection_data, 
 									   uint target_type, uint time) {
@@ -181,7 +196,7 @@ public class StSourceView : SourceView {
 		}
 	}
 
-	private string get_file_path_from_uri(string uri) {
+	private string get_file_path_from_uri (string uri) {
 		string path = "";
 
 		if (uri.has_prefix("file://")) {
@@ -194,7 +209,11 @@ public class StSourceView : SourceView {
 		return path;
 	}
 	
-	public string get_language_name() {
+	public string get_language_name () {
 		return (this.buffer as SourceBuffer).language.name;
+	}
+	
+	public SourceBuffer get_source_buffer () {
+		return (this.buffer as SourceBuffer);
 	}
 }

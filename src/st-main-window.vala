@@ -39,17 +39,20 @@ public class StMainWindow : ApplicationWindow {
 	/** Stack that stores and shows the opened files */
 	private Stack documents;
 
-	/** SearchEntry for the window (dummy only, for now...) */
+	/** SearchEntry for the window */
 	private SearchEntry search_entry;
 	
 	/** SearchBar for showing the SearchEntry and buttons to interact with it */
 	private SearchBar search_bar;
 	
-	/** Button that interacts with the SearchEntry finds previous occurrency*/
+	/** Button that interacts with the SearchEntry finds previous occurrency */
 	private Button previous_search;
 	
-	/** Button that interacts with the SearchEntry finds next occurrency*/
+	/** Button that interacts with the SearchEntry finds next occurrency */
 	private Button next_search;
+	
+	/** SourceSearchContext that takes care of the occurrency searching */
+	private SourceSearchContext search_context;
 	
 	/** Array of files to be opened from the command line option */
 	private File[] _arg_files = null;
@@ -77,7 +80,7 @@ public class StMainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void load_workspace() {
+	private void load_workspace () {
 		string workspace = null;
 
 		try {
@@ -110,7 +113,7 @@ public class StMainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void save_workspace() {
+	private void save_workspace () {
 		string workspace = "";
 		opened_files.foreach((entry) => {
 			if (entry.contains("/"))
@@ -132,7 +135,7 @@ public class StMainWindow : ApplicationWindow {
 	 * @param app Gtk.Application for this
 	 * @param editor StTextEditor that stores the application preferences
 	 */
-	public StMainWindow(Gtk.Application app, StTextEditor editor) {
+	public StMainWindow (Gtk.Application app, StTextEditor editor) {
 		Object(application: app);
 		_editor = editor;
 		_editor.notify["prefer-dark"].connect((pspec) => {
@@ -157,7 +160,7 @@ public class StMainWindow : ApplicationWindow {
 	 * 
 	 * @return void
 	 */
-	private void create_widgets() {
+	private void create_widgets () {
 		Gtk.Settings.get_default().set(
 			"gtk-application-prefer-dark-theme", _editor.prefer_dark);
 
@@ -289,7 +292,7 @@ public class StMainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	public void on_fullscreen() {
+	public void on_fullscreen () {
 		fs_headerbar.toggle_fullscreen();
 		if ((this.get_window ().get_state () & Gdk.WindowState.FULLSCREEN) != 0) {
 			this.unfullscreen ();
@@ -307,7 +310,7 @@ public class StMainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void on_reload() {}
+	private void on_reload () {}
 
 	/**
 	 * Function that gets executed when a page is switched on the Stack, and a 
@@ -316,7 +319,7 @@ public class StMainWindow : ApplicationWindow {
 	 * @param tab StTab that is now being shown
 	 * @return void
 	 */
-	private void on_page_switched(StTab tab) {
+	private void on_page_switched (StTab tab) {
 		int page_num = tab_bar.get_page_num(tab);
 		headerbar.title = opened_files.nth_data(page_num);
 		fs_headerbar.title = opened_files.nth_data(page_num);
@@ -342,7 +345,7 @@ public class StMainWindow : ApplicationWindow {
 	 * @param language string containing the requested language
 	 * @return void
 	 */
-	private void change_syntax_cb(string language) {
+	private void change_syntax_cb (string language) {
 		var current_doc = tab_bar.get_current_doc(documents.visible_child);
 		var p_langs = new StProgrammingLanguages();
 
@@ -356,7 +359,7 @@ public class StMainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void on_show_terminal() {
+	private void on_show_terminal () {
 		if (terminal.get_visible()) {
 			terminal.reset(true,true);
 			terminal.hide();
@@ -413,7 +416,7 @@ public class StMainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void set_syntax_cb() {
+	private void set_syntax_cb () {
 		status.toggle_picker();
 	}
 	
@@ -422,7 +425,7 @@ public class StMainWindow : ApplicationWindow {
 	 * 
 	 * @return void
 	 */
-	public void open_file_cb() {
+	public void open_file_cb () {
 		var file_chooser = new FileChooserDialog(_("Open File"), this,
 			FileChooserAction.OPEN,
 			_("Cancel"), ResponseType.CANCEL,
@@ -459,7 +462,7 @@ public class StMainWindow : ApplicationWindow {
 	 * @param filename string that contains the name of the file to be opened
 	 * @return void
 	 */
-	private void add_new_tab_from_file(string filename) {
+	private void add_new_tab_from_file (string filename) {
 		if (file_is_opened(filename)) {
 			check_pages();
 			return;
@@ -493,7 +496,7 @@ public class StMainWindow : ApplicationWindow {
 	 * @param needle string that contains the name of the file to be checked
 	 * @return bool
 	 */
-	private bool file_is_opened(string needle) {
+	private bool file_is_opened (string needle) {
 		for (int i = 0; i < opened_files.length(); i++) {
 			if (needle == opened_files.nth_data(i)) return true;
 		}
@@ -506,7 +509,7 @@ public class StMainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	public void save_tab_to_file() {
+	public void save_tab_to_file () {
 		var current_tab = documents.visible_child as ScrolledWindow;
 		if (current_tab == null) return ;
 
@@ -559,7 +562,7 @@ public class StMainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void save_as_cb() {
+	private void save_as_cb () {
 		if (documents.visible_child == null) return ;
 
 		var current_doc = tab_bar.get_current_doc(documents.visible_child);
@@ -609,7 +612,7 @@ public class StMainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	public void new_tab_cb() {
+	public void new_tab_cb () {
 		opened_files.append("%s %d".printf(untitled,counter + 1));
 		var tab = new StTab(editor);
 		tab.view_drag_n_drop.connect(add_new_tab_from_file);
@@ -631,7 +634,7 @@ public class StMainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	public void build_code() {
+	public void build_code () {
 		var current_doc = tab_bar.get_current_doc(documents.visible_child);
 		int page_num = tab_bar.get_page_num(current_doc);
 		
@@ -676,7 +679,7 @@ public class StMainWindow : ApplicationWindow {
 	 *
 	 * @return void 
 	 */
-	private void re_open_cb() {
+	private void re_open_cb () {
 		if (closed_files.length == 0) return;
 
 		string last_file_path = closed_files.data[closed_files.length - 1];
@@ -713,7 +716,19 @@ public class StMainWindow : ApplicationWindow {
 	 * @return void
 	 */
 	private void search_mode_cb() {
-		search_bar.search_mode_enabled = !search_bar.search_mode_enabled;
+		if (!search_bar.search_mode_enabled) {
+			search_bar.search_mode_enabled = true;
+			var current_doc = tab_bar.get_current_doc(documents.visible_child);
+			
+			search_context = new SourceSearchContext(
+				current_doc.text_view.get_source_buffer(), 
+				current_doc.text_view.search_settings
+			);
+			
+			search_context.highlight = true;
+		} else {
+			search_bar.search_mode_enabled = false;
+		}
 	}
 
 	/**
@@ -759,21 +774,63 @@ public class StMainWindow : ApplicationWindow {
 	}
 	
 	/**
-	 * Dummy function
+	 * Function that makes a forward search on the current document.
 	 *
 	 * @return void
 	 */
-	private void search_stuff_next() {
-		stdout.printf("Next\n");
+	private void search_stuff_next () {
+		var current_view = 
+			tab_bar.get_current_doc(documents.visible_child).text_view;
+		current_view.search_settings.search_text = search_entry.text;
+			
+		TextIter iter;
+		current_view.buffer.get_iter_at_offset(out iter, 
+			current_view.buffer.cursor_position + 1);
+		
+		TextIter start_next, end_next;
+		bool found = search_context.forward(iter, out start_next, out end_next);
+		var search_entry_context = search_entry.get_style_context();
+		
+		if (found) {
+			if (search_entry_context.has_class("error"))
+				search_entry_context.remove_class("error");
+			
+			current_view.buffer.select_range(start_next, end_next);
+		} else {
+			if (search_entry.text != "")
+				search_entry_context.add_class("error");
+			current_view.buffer.place_cursor(iter);
+		}
 	}
 	
 	/**
-	 * Dummy function
+	 * Function that makes a backward search on the current document.
 	 *
 	 * @return void
 	 */
-	private void search_stuff_prev() {
-		stdout.printf("Previous\n");
+	private void search_stuff_prev () {
+		var current_view = 
+			tab_bar.get_current_doc(documents.visible_child).text_view;
+		current_view.search_settings.search_text = search_entry.text;
+			
+		TextIter iter;
+		current_view.buffer.get_iter_at_offset(out iter, 
+			current_view.buffer.cursor_position);
+		
+		TextIter start_next, end_next;
+		bool found = search_context.backward(iter, out start_next, out end_next);
+		var search_entry_context = search_entry.get_style_context();
+		
+		if (found) {
+			if (search_entry_context.has_class("error"))
+				search_entry_context.remove_class("error");
+			
+			current_view.buffer.select_range(start_next, end_next);
+		} else {
+			if (search_entry.text != "")
+				search_entry_context.add_class("error");
+			current_view.buffer.place_cursor(iter);
+		}
 	}
 
 	/**
@@ -784,7 +841,7 @@ public class StMainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void check_pages() {
+	private void check_pages () {
 		if (opened_files.length() < 2) {
 			tab_bar.hide();
 			
@@ -806,7 +863,7 @@ public class StMainWindow : ApplicationWindow {
 	 * @param event Gdk.EventKey that triggered this function
 	 * @return bool
 	 */
-	private bool changes_done(Gdk.EventKey event) {
+	private bool changes_done (Gdk.EventKey event) {
 		var page = documents.visible_child as ScrolledWindow;
 		var view = page.get_child() as SourceView;
 		
@@ -832,7 +889,7 @@ public class StMainWindow : ApplicationWindow {
 	 * @param tab_label StTab which's label will be restore
 	 * @return void 
 	 */
-	private void reset_changes(StTab tab_label) {
+	private void reset_changes (StTab tab_label) {
 		if (tab_label.tab_title.contains("*")) {
 			tab_label.tab_title = tab_label.tab_title.replace("*","");
 			tab_label.mark_title();
@@ -845,7 +902,7 @@ public class StMainWindow : ApplicationWindow {
 	 * @param tab_label StTab added to the Stack
 	 * @return void
 	 */
-	private void add_new_tab(StTab tab_label) {
+	private void add_new_tab (StTab tab_label) {
 		var tab_title = "tab - %d".printf(counter++);
 		documents.add_titled(
 			tab_label.tab_widget,tab_title,tab_label.tab_title);
@@ -872,7 +929,7 @@ public class StMainWindow : ApplicationWindow {
 	 * view's content will be saved
 	 * @return void
 	 */
-	private void save_file(SourceView view, string filename) {
+	private void save_file (SourceView view, string filename) {
 		try {
 			FileUtils.set_contents(filename,view.buffer.text);
 			view.buffer.set_modified(false);
@@ -894,7 +951,7 @@ public class StMainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void next_tab_cb() {
+	private void next_tab_cb () {
 		var current_doc = tab_bar.get_current_doc(documents.visible_child);
 		tab_bar.switch_page_next(current_doc, false);
 	}
@@ -905,7 +962,7 @@ public class StMainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void prev_tab_cb() {
+	private void prev_tab_cb () {
 		var current_doc = tab_bar.get_current_doc(documents.visible_child);
 		tab_bar.switch_page_prev(current_doc, false);
 	}	
@@ -918,7 +975,7 @@ public class StMainWindow : ApplicationWindow {
 	 * @param tab StTab that is being checked
 	 * @return bool 
 	 */
-	private bool confirm_close(StTab? tab) {
+	private bool confirm_close (StTab? tab) {
 		if (tab == null) return false;
 		if (tab.tab_title.contains("*")) {
 			tab_bar.switch_page(tab, true);
@@ -961,7 +1018,7 @@ public class StMainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void on_close_all() {
+	private void on_close_all () {
 		while (opened_files.length() != 0) 
 			close_tab_cb();
 	}
@@ -972,7 +1029,7 @@ public class StMainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void quit_cb() {
+	private void quit_cb () {
 		if ((_editor != null) && _editor.save_workspace)
 			save_workspace();
 		on_close_all();
