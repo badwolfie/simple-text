@@ -2,6 +2,7 @@ using Gtk;
 
 public class StSourceView : SourceView {
 	public signal void drag_n_drop (string filename);
+	private bool insert_matching_braces;
 	
 	private SourceSearchSettings _search_settings;
 	public SourceSearchSettings search_settings {
@@ -62,6 +63,7 @@ public class StSourceView : SourceView {
 		highlight_current_line = editor.highlight_current_line;
 		(buffer as SourceBuffer).highlight_matching_brackets = 
 			editor.highlight_brackets;
+		insert_matching_braces = editor.insert_braces;
 		
 		tab_width = editor.tab_width;
 		insert_spaces_instead_of_tabs = editor.insert_spaces;
@@ -84,8 +86,6 @@ public class StSourceView : SourceView {
 			target_list,
 			Gdk.DragAction.COPY
 		);
-
-		drag_data_received.connect(on_drag_data_received);
 		
 		_search_settings = new SourceSearchSettings();
 		_search_settings.at_word_boundaries = false;
@@ -93,6 +93,9 @@ public class StSourceView : SourceView {
 		_search_settings.regex_enabled = false;
 		_search_settings.search_text = null;
 		_search_settings.wrap_around = true;
+		
+		drag_data_received.connect(on_drag_data_received);
+		buffer.insert_text.connect_after(brace_insert);
 	}
 
 	public void change_language (string language) {
@@ -179,6 +182,10 @@ public class StSourceView : SourceView {
 			var source_scheme = scheme_manager.get_scheme(editor.color_scheme);
 			(this.buffer as SourceBuffer).style_scheme = source_scheme;
 		});
+		
+		editor.notify["insert-braces"].connect((pspec) => {
+			insert_matching_braces = editor.insert_braces;
+		});
 	}
 
 	private void on_drag_data_received (Widget widget, Gdk.DragContext context, 
@@ -216,4 +223,33 @@ public class StSourceView : SourceView {
 	public SourceBuffer get_source_buffer () {
 		return (this.buffer as SourceBuffer);
 	}
+	
+	private void brace_insert (ref TextIter location, string text, int len) {
+		bool is_open_brace = true;
+		// bool is_close_brace = false;
+		string insert = "";
+		
+		switch (text[len - 1]) {
+			case '{':
+				insert = "}";
+				break;
+			case '[':
+				insert = "]";
+				break;
+			case '(':
+				insert = ")";
+				break;
+			default:
+				is_open_brace = false;
+				break;
+		}
+		
+		TextIter iter;
+		if (is_open_brace && insert_matching_braces) {
+			buffer.insert(ref location, insert, insert.length);
+			buffer.get_iter_at_offset(out iter, buffer.cursor_position - 1);
+			buffer.place_cursor(iter);
+		}
+	}
 }
+

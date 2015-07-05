@@ -93,6 +93,12 @@
       <description>Whether or not should the editor save the current workspace upon closing and restore it on startup</description>
     </key>
 
+    <key type="b" name="insert-braces">
+      <default>false</default>
+      <summary>Insert matching braces</summary>
+      <description>Whether or not should the editor insert the matching brace/bracket/parenthesis on writting</description>
+    </key>
+
     <key type="b" name="show-welcome">
       <default>true</default>
       <summary>Show welcome screen</summary>

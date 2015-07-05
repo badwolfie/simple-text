@@ -863,23 +863,17 @@ public class StMainWindow : ApplicationWindow {
 	 * @param event Gdk.EventKey that triggered this function
 	 * @return bool
 	 */
-	private bool changes_done (Gdk.EventKey event) {
+	private void changes_done () {
 		var page = documents.visible_child as ScrolledWindow;
-		var view = page.get_child() as SourceView;
 		
-		if (view.buffer.get_modified()) {
-			var current_doc = tab_bar.get_current_doc(page);
+		var current_doc = tab_bar.get_current_doc(page);
 
-			if (!current_doc.tab_title.contains("*")){
-				current_doc.tab_title = "*" + current_doc.tab_title;
-				current_doc.mark_title();
-			}
-
-			status.refresh_statusbar(FileOpeartion.EDIT_FILE,null);
-			return false;
+		if (!current_doc.tab_title.contains("*")){
+			current_doc.tab_title = "*" + current_doc.tab_title;
+			current_doc.mark_title();
 		}
-		
-		return true;
+
+		status.refresh_statusbar(FileOpeartion.EDIT_FILE, null);
 	}
 
 	/**
@@ -910,7 +904,7 @@ public class StMainWindow : ApplicationWindow {
 
 		var view = 
 			(tab_label.tab_widget as ScrolledWindow).get_child() as SourceView;
-		view.key_release_event.connect(changes_done);
+		view.buffer.changed.connect(changes_done);
 		
 		var current_doc = tab_bar.get_current_doc(documents.visible_child);
 		int page_num = tab_bar.get_page_num(current_doc);
@@ -1036,3 +1030,4 @@ public class StMainWindow : ApplicationWindow {
 		this.destroy();
 	}
 }
+

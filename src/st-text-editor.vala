@@ -143,5 +143,14 @@ public class StTextEditor : Object {
 				_show_welcome = value;
 		}
 	}
+	
+	private bool _insert_braces;
+	public bool insert_braces {
+		get { return _insert_braces; }
+		set {
+			if (_insert_braces != value)
+				_insert_braces = value;
+		}
+	}
 }
 

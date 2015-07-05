@@ -2,7 +2,7 @@ using Gtk;
 
 public class StApplication : Gtk.Application {
 	private const string APP_NAME = "Simple Text";
-	private const string APP_VERSION = "0.10.0";
+	private const string APP_VERSION = "0.10.1";
 
 	private GLib.Settings settings;
 	private StPreferencesDialog preferences_dialog;
@@ -72,6 +72,7 @@ public class StApplication : Gtk.Application {
 		editor.prefer_dark = settings.get_boolean("prefer-dark");
 		editor.save_workspace = settings.get_boolean("save-workspace");
 		editor.show_welcome = settings.get_boolean("show-welcome");
+		editor.insert_braces = settings.get_boolean("insert-braces");
 		
 		add_action_entries(app_entries,this);
 		window = new StMainWindow(this,editor);		
@@ -174,6 +175,7 @@ public class StApplication : Gtk.Application {
 		settings.set_boolean("prefer-dark", editor.prefer_dark);
 		settings.set_boolean("save-workspace", editor.save_workspace);
 		settings.set_boolean("show-welcome", editor.show_welcome);
+		settings.set_boolean("insert-braces", editor.insert_braces);
 	}
 	
 	private void show_prefs_cb() {

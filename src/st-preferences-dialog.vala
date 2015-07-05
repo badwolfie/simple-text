@@ -17,6 +17,7 @@ public class StPreferencesDialog : Dialog {
 	private ComboBox tab_width_combo;
 	private CheckButton insert_spaces_check;
 	private CheckButton auto_indent_check;
+	private CheckButton insert_braces_check;
 	private CheckButton grid_pattern_check;
 	
 	private CheckButton default_typo_check;
@@ -170,6 +171,12 @@ public class StPreferencesDialog : Dialog {
 			editor.auto_indent = auto_indent_check.active;
 		});
 		
+		insert_braces_check = new CheckButton.with_label(
+			_("Insert matching brackets"));
+		insert_braces_check.toggled.connect(() => {
+			editor.insert_braces = insert_braces_check.active;
+		});
+		
 		var workspace_label = new Label("<b>" + _("Workspace") + "</b>");
 		workspace_label.use_markup = true;
 		workspace_label.halign = Align.START;
@@ -190,6 +197,7 @@ public class StPreferencesDialog : Dialog {
 		box_editor.add(hbox_tab_width);
 		box_editor.add(insert_spaces_check);
 		box_editor.add(auto_indent_check);
+		box_editor.add(insert_braces_check);
 		
 		box_editor.add(aux_label_2);
 		box_editor.add(workspace_label);
@@ -291,6 +299,11 @@ public class StPreferencesDialog : Dialog {
 		auto_indent_check.active = editor.auto_indent;
 		editor.notify["auto-indent"].connect((pspec) => {
 			auto_indent_check.active = editor.auto_indent;
+		});
+		
+		insert_braces_check.active = editor.insert_braces;
+		editor.notify["insert-braces"].connect((pspec) => {
+			insert_braces_check.active = editor.insert_braces;
 		});
 		
 		save_workspace_check.active = editor.save_workspace;
