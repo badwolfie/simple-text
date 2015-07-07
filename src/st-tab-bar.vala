@@ -208,25 +208,25 @@ public class StTabBar : Box {
 			} else if (_extra_tabs.index(tab) != -1) {
 				_extra_tabs.remove(tab);
 				tab_extra_num--;
-			}
-			
-			extra_menu.set_tooltip_text(
-				_("Hidden tabs: %d").printf(tab_extra_num));
-			
-			int label_timeout = 0;
-			GLib.Timeout.add(250, () => {
-				switch (label_timeout) {
-					case 0:
-						extra_label.label = "<b>-1 </b>";
-						break;
-					case 1:
-						extra_label.label = "<b>%d </b>".printf(tab_extra_num);
-						return false;
-				}
 				
-				label_timeout++;
-				return true;
-			});
+				extra_menu.set_tooltip_text(
+					_("Hidden tabs: %d").printf(tab_extra_num));
+			
+				int label_timeout = 0;
+				GLib.Timeout.add(250, () => {
+					switch (label_timeout) {
+						case 0:
+							extra_label.label = "<b>-1 </b>";
+							break;
+						case 1:
+							extra_label.label = "<b>%d </b>".printf(tab_extra_num);
+							return false;
+					}
+				
+					label_timeout++;
+					return true;
+				});
+			}
 		}
 
 		if ((tab_extra_num == 0) && (tab_num <= 5))

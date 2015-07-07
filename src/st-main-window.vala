@@ -837,7 +837,7 @@ public class StMainWindow : ApplicationWindow {
 	 * Function that checks the number of tabs currently opened, if there are 
 	 * two or more opened the tab bar gets shown, otherwise gets hidden
 	 *
-	 * Also, if no tabs are opened the title is changed to "St Text"
+	 * Also, if no tabs are opened the title is changed to "Simple Text"
 	 *
 	 * @return void
 	 */
@@ -846,8 +846,8 @@ public class StMainWindow : ApplicationWindow {
 			tab_bar.hide();
 			
 			if (opened_files.length() == 0) {
-				headerbar.title = "St Text";
-				fs_headerbar.title = "St Text";
+				headerbar.title = "Simple Text";
+				fs_headerbar.title = "Simple Text";
 			}
 		} else {
 			tab_bar.show();

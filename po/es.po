@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: POEditor.com\n"
 
-#: ../data/menu.ui.h:1 ../src/st-preferences-dialog.vala:56
+#: ../data/menu.ui.h:1 ../src/st-preferences-dialog.vala:57
 msgid "Preferences"
 msgstr "Preferencias"
 
-#: ../data/menu.ui.h:2 ../src/st-application.vala:216
+#: ../data/menu.ui.h:2 ../src/st-application.vala:218
 msgid "About"
 msgstr "Acerca de"
 
@@ -30,7 +30,7 @@ msgstr "Acerca de"
 msgid "Quit"
 msgstr "Salir"
 
-#: ../src/st-header-bar.vala:41 ../src/st-main-window.vala:429
+#: ../src/st-header-bar.vala:41 ../src/st-main-window.vala:432
 msgid "Open"
 msgstr "Abrir"
 
@@ -46,8 +46,8 @@ msgstr "Nuevo archivo"
 msgid "Untitled file"
 msgstr "Archivo sin nombre"
 
-#: ../src/st-header-bar.vala:45 ../src/st-main-window.vala:522
-#: ../src/st-main-window.vala:576 ../src/st-main-window.vala:938
+#: ../src/st-header-bar.vala:45 ../src/st-main-window.vala:525
+#: ../src/st-main-window.vala:579 ../src/st-main-window.vala:989
 msgid "Save"
 msgstr "Guardar"
 
@@ -55,8 +55,8 @@ msgstr "Guardar"
 msgid "Save file"
 msgstr "Guardad archivo"
 
-#: ../src/st-main-window.vala:428 ../src/st-main-window.vala:521
-#: ../src/st-main-window.vala:575 ../src/st-main-window.vala:937
+#: ../src/st-main-window.vala:431 ../src/st-main-window.vala:524
+#: ../src/st-main-window.vala:578 ../src/st-main-window.vala:988
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -80,75 +80,75 @@ msgstr "Cerrar pestaña actual"
 msgid "Reopen last tab"
 msgstr "Re-abrir última pestaña"
 
-#: ../src/st-application.vala:221
+#: ../src/st-application.vala:223
 msgid "Web page"
 msgstr "Página web"
 
-#: ../src/st-application.vala:229
+#: ../src/st-application.vala:231
 msgid "Contributors"
 msgstr "Contribuidores"
 
-#: ../data/menu.ui.h:11 ../src/st-preferences-dialog.vala:64
+#: ../data/menu.ui.h:11 ../src/st-preferences-dialog.vala:65
 msgid "View"
 msgstr "Ver"
 
-#: ../src/st-preferences-dialog.vala:70
+#: ../src/st-preferences-dialog.vala:71
 msgid "Show line numbers"
 msgstr "Mostrar números de línea"
 
-#: ../src/st-preferences-dialog.vala:76
+#: ../src/st-preferences-dialog.vala:77
 msgid "Show right margin on column:"
 msgstr "Mostrar margen derecho en la columna:"
 
-#: ../src/st-preferences-dialog.vala:112
+#: ../src/st-preferences-dialog.vala:113
 msgid "Show grid pattern"
 msgstr "Mostrar patrón de cuadrícula"
 
-#: ../src/st-preferences-dialog.vala:95
+#: ../src/st-preferences-dialog.vala:96
 msgid "Highlighting"
 msgstr "Resaltado"
 
-#: ../src/st-preferences-dialog.vala:100
+#: ../src/st-preferences-dialog.vala:101
 msgid "Highlight current line"
 msgstr "Resaltar la línea actual"
 
-#: ../src/st-preferences-dialog.vala:106
+#: ../src/st-preferences-dialog.vala:107
 msgid "Highlight matching brackets"
 msgstr "Resaltar parejas de corchetes"
 
-#: ../src/st-preferences-dialog.vala:65
+#: ../src/st-preferences-dialog.vala:66
 msgid "Editor"
 msgstr "Editor"
 
-#: ../src/st-preferences-dialog.vala:131
+#: ../src/st-preferences-dialog.vala:132
 msgid "Tab width:"
 msgstr "Anchura del tabulador"
 
-#: ../src/st-preferences-dialog.vala:159
+#: ../src/st-preferences-dialog.vala:160
 msgid "Indent using spaces"
 msgstr "Insertar espacios en lugar de tabuladores"
 
-#: ../src/st-preferences-dialog.vala:168
+#: ../src/st-preferences-dialog.vala:169
 msgid "Activate auto indent"
 msgstr "Activar sangría automática"
 
-#: ../src/st-preferences-dialog.vala:66
+#: ../src/st-preferences-dialog.vala:67
 msgid "Typography and colors"
 msgstr "Tipografías y colores"
 
-#: ../src/st-preferences-dialog.vala:199
+#: ../src/st-preferences-dialog.vala:207
 msgid "Typography"
 msgstr "Tipografía"
 
-#: ../src/st-preferences-dialog.vala:204
+#: ../src/st-preferences-dialog.vala:212
 msgid "Use default typography"
 msgstr "Usar tipografía por defecto"
 
-#: ../src/st-preferences-dialog.vala:222
+#: ../src/st-preferences-dialog.vala:230
 msgid "Color Scheme"
 msgstr "Esquema de color"
 
-#: ../src/st-preferences-dialog.vala:235
+#: ../src/st-preferences-dialog.vala:243
 msgid "Use dark theme variant"
 msgstr "Usar variante oscura del tema"
 
@@ -156,43 +156,43 @@ msgstr "Usar variante oscura del tema"
 msgid "Text Editor"
 msgstr "Editor de textos"
 
-#: ../src/st-main-window.vala:934
+#: ../src/st-main-window.vala:985
 msgid "Do you wish to save changes before closing?"
 msgstr "¿Desea guardad los cambios antes de cerrar?"
 
-#: ../src/st-main-window.vala:930
+#: ../src/st-main-window.vala:981
 msgid "Confirm operation"
 msgstr "Confirmar operación"
 
-#: ../src/st-main-window.vala:936
+#: ../src/st-main-window.vala:987
 msgid "Close without saving"
 msgstr "Cerrar sin guardar"
 
-#: ../src/st-main-window.vala:218
+#: ../src/st-main-window.vala:221
 msgid "Enter your search..."
 msgstr "Introduzca su búsqueda..."
 
-#: ../src/st-main-window.vala:426
+#: ../src/st-main-window.vala:429
 msgid "Open File"
 msgstr "Abrir ar"
 
-#: ../src/st-main-window.vala:519 ../src/st-main-window.vala:573
+#: ../src/st-main-window.vala:522 ../src/st-main-window.vala:576
 msgid "Save File"
 msgstr "Guardad archivo"
 
-#: ../src/st-main-window.vala:655
+#: ../src/st-main-window.vala:658
 msgid "Build successful!"
 msgstr "¡Compilación exitosa!"
 
-#: ../src/st-main-window.vala:658
+#: ../src/st-main-window.vala:661
 msgid "An error has occurred!"
 msgstr "¡Ha ocurrido un error!"
 
-#: ../src/st-main-window.vala:663
+#: ../src/st-main-window.vala:666
 msgid "Build system"
 msgstr "Sistema de compilación"
 
-#: ../src/st-main-window.vala:664
+#: ../src/st-main-window.vala:667
 msgid "Accept"
 msgstr "Aceptar"
 
@@ -200,7 +200,7 @@ msgstr "Aceptar"
 msgid "Search highlight mode..."
 msgstr "Buscar modo de resaltado..."
 
-#: ../src/st-application.vala:196
+#: ../src/st-application.vala:198
 msgid "translator-credits"
 msgstr "Ian Hernández"
 
@@ -208,7 +208,7 @@ msgstr "Ian Hernández"
 msgid "Search..."
 msgstr "Buscar..."
 
-#: ../src/st-preferences-dialog.vala:127
+#: ../src/st-preferences-dialog.vala:128
 msgid "Indentation"
 msgstr "Tabulación"
 
@@ -220,7 +220,7 @@ msgstr "Simple Text"
 msgid "text;editor;development;programming;"
 msgstr "texto;editor;desarrollo;programación"
 
-#: ../data/simple-text.desktop.in.h:3 ../src/st-application.vala:219
+#: ../data/simple-text.desktop.in.h:3 ../src/st-application.vala:221
 msgid "A not so simple text and code editor written in Vala"
 msgstr "Un editor de texto y código, no tan simple, escrito en Vala."
 
@@ -288,19 +288,23 @@ msgstr "Cerrar todo"
 msgid "Leave fullscreen mode"
 msgstr "Salir del modo a pantalla completa"
 
-#: ../src/st-preferences-dialog.vala:67
+#: ../src/st-preferences-dialog.vala:68
 msgid "Embeded terminal"
 msgstr "Terminal embebida"
 
-#: ../src/st-preferences-dialog.vala:173
+#: ../src/st-preferences-dialog.vala:180
 msgid "Workspace"
 msgstr "Espacio de trabajo"
 
-#: ../src/st-preferences-dialog.vala:178
+#: ../src/st-preferences-dialog.vala:185
 msgid "Save current workspace on closing"
 msgstr "Guardar el espacio de trabajo actual"
 
-#: ../src/st-tab-bar.vala:79 ../src/st-tab-bar.vala:189
+#: ../src/st-tab-bar.vala:88 ../src/st-tab-bar.vala:213
 msgid "Hidden tabs: %d"
 msgstr "Pestañas ocultas: %d"
+
+#: ../src/st-preferences-dialog.vala:175
+msgid "Insert matching brackets"
+msgstr "Insertar parejas de corchetes"
 

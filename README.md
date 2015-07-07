@@ -51,6 +51,9 @@ Then, simply:
 #### Edit preferences
 ![Edit preferences](screenshots/editing-prefs.png)
 
+#### Text searching
+![Text searching](screenshots/searching.png)
+
 #### Color schemes
 ![Color schemes](screenshots/color-schemes.png)
 
