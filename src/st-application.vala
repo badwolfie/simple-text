@@ -2,7 +2,7 @@ using Gtk;
 
 public class StApplication : Gtk.Application {
 	private const string APP_NAME = "Simple Text";
-	private const string APP_VERSION = "0.10.1";
+	private const string APP_VERSION = "0.11.0";
 
 	private GLib.Settings settings;
 	private StPreferencesDialog preferences_dialog;

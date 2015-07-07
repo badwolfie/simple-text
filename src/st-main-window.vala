@@ -151,8 +151,8 @@ public class StMainWindow : ApplicationWindow {
 		border_width = 0;
 		maximize();
 		
+		destroy.connect(quit_cb);
 		create_widgets();
-		this.destroy.connect(quit_cb);
 	}
 
 	/**
@@ -1000,7 +1000,6 @@ public class StMainWindow : ApplicationWindow {
 		if ((_editor != null) && _editor.save_workspace)
 			save_workspace();
 		on_close_all();
-		this.destroy();
 	}
 }
 

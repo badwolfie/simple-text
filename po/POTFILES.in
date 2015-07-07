@@ -8,6 +8,8 @@ src/st-header-bar.vala
 src/st-language-picker.vala
 src/st-main-window.vala
 src/st-preferences-dialog.vala
+src/st-source-view.c
 src/st-statusbar.vala
 src/st-tab-bar.vala
 src/st-tab.vala
+

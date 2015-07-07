@@ -12,7 +12,8 @@ public class StSourceView : SourceView {
 	public SourceSearchSettings search_settings {
 		get { return _search_settings; }
 	}
-
+	
+	private SourceCompletionWords word_completion;
 	private SourceFile _source_file;
 	public SourceFile source_file {
 		get { return _source_file; }
@@ -33,8 +34,27 @@ public class StSourceView : SourceView {
 		this.editor = editor;
 		
 		_source_file = new SourceFile();
-		if (filename != null)
+		if (filename != null) {
 			source_file.location = File.new_for_path(filename);
+			word_completion = new SourceCompletionWords(
+				_("Document words"), 
+				null
+			);
+			
+			word_completion.activation = 
+				SourceCompletionActivation.USER_REQUESTED | 
+				SourceCompletionActivation.INTERACTIVE;
+			word_completion.interactive_delay = 25;
+			
+			try {
+				completion.add_provider(word_completion);
+				completion.auto_complete_delay = 200;
+				completion.show_headers = false;
+				completion.show_icons = false;
+			} catch (Error e) {
+				stderr.printf("%s\n", e.message);
+			}
+		}
 
 		load_view_format();
 		connect_signals();
@@ -62,7 +82,7 @@ public class StSourceView : SourceView {
 
 	private void load_file () { 
 		if (source_file.location != null) {
-			file_loader.load_async(Priority.DEFAULT, null, null);
+			file_loader.load_async(Priority.HIGH, null, null);
 			
 			bool result_uncertain;
 			string content_type = ContentType.guess(
@@ -84,7 +104,7 @@ public class StSourceView : SourceView {
 	}
 
 	public void save_file (File? target) {
-		if ((source_file.location == null) && (target != null)) {
+		if (target != null) {
 			_source_file.location = target;
 
 			bool result_uncertain;
@@ -103,7 +123,7 @@ public class StSourceView : SourceView {
 			(buffer as SourceBuffer).language = source_lang;
 		}
 
-		file_saver.save_async(Priority.DEFAULT, null, null);
+		file_saver.save_async(Priority.HIGH, null, null);
 		buffer.set_modified(false);
 		file_saved();
 	}
@@ -228,6 +248,7 @@ public class StSourceView : SourceView {
 	}
 
 	private void on_buffer_changes () {
+		word_completion.register(buffer);
 		buffer_modified(buffer.get_modified());
 	}
 
