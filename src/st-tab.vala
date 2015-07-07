@@ -1,7 +1,7 @@
 using Gtk;
 
 public class StTab : Box {
-	public signal void view_drag_n_drop(string file_name);
+	public signal void view_drag_n_drop(string filename);
 
 	private StTextEditor editor;
 
@@ -42,30 +42,29 @@ public class StTab : Box {
 		}
 	}
 
+	private Label modified_buffer;
+	public bool modified {
+		get { return modified_buffer.get_visible(); }
+		set { modified_buffer.set_visible(value); }
+	}
+
 	public StTab(StTextEditor editor) {
 		Object();
 		this.editor = editor;
 		this.tab_title = untitled;
 		this.width_request = 150;
-		create_widgets(null,null);
+		create_widgets(null);
 	}
 
 	public StTab.from_file
-	(StTextEditor editor, string base_name, string file_path) {
+	(StTextEditor editor, string basename, string filename) {
 		Object();
 		this.editor = editor;
-		this.tab_title = base_name;
-
-		try {
-			string text;
-			FileUtils.get_contents(file_path, out text);
-			create_widgets(base_name, text);
-		} catch (Error e) {
-			stderr.printf ("Error: %s\n", e.message);
-		}
+		this.tab_title = basename;
+		create_widgets(filename);
 	}
 
-	private void create_widgets(string? base_name, string? display_text) {
+	private void create_widgets(string? filename) {
 		this.orientation = Orientation.HORIZONTAL;
 		this.spacing = 0;
 
@@ -73,8 +72,9 @@ public class StTab : Box {
 		var close_img = new Image.from_icon_name("window-close-symbolic",
 			IconSize.MENU);
 		title_label.ellipsize = Pango.EllipsizeMode.END;
-		title_label.max_width_chars = 10;
-		title_label.width_chars = 10;
+		title_label.max_width_chars = 20;
+		// title_label.width_chars = 20;
+		title_label.show();
 		
 		close_button = new EventBox();
 		close_button.child = close_img;
@@ -82,14 +82,13 @@ public class StTab : Box {
 		close_button.button_press_event.connect(button_clicked);
 		
 		evt_box = new EventBox();
-		evt_box.child = title_label;
 		evt_box.set_above_child(true);
 		evt_box.button_press_event.connect(tab_clicked_action);
 
 		pack_start(evt_box,true,true,0);
 		pack_start(close_button,false,true,0);
 
-		_text_view = new StSourceView(editor,base_name,display_text);		
+		_text_view = new StSourceView(editor, filename);		
 		_text_view.drag_n_drop.connect(on_drag_n_drop);
 		text_view.show();
 
@@ -103,11 +102,23 @@ public class StTab : Box {
 		tab_widget.add(text_view);
 		tab_widget.show();
 
+		var hbox = new Box(Orientation.HORIZONTAL,0);
+		hbox.show();
 		show_all();
+
+		modified_buffer = new Label("<b> \xe2\x80\xa2</b>");
+		modified_buffer.use_markup = true;
+		modified_buffer.hide();
+
+		hbox.pack_start(title_label,false,true,0);
+		hbox.pack_start(modified_buffer,false,true,0);
+		title_label.halign = Align.CENTER;
+		hbox.halign = Align.CENTER;
+		evt_box.child = hbox;
 	}
 
-	private void on_drag_n_drop(string file_name) {
-		view_drag_n_drop(file_name);
+	private void on_drag_n_drop(string filename) {
+		view_drag_n_drop(filename);
 	}
 
 	public void refresh_title() {

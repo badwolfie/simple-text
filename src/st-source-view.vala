@@ -1,13 +1,25 @@
 using Gtk;
 
 public class StSourceView : SourceView {
+	public signal void buffer_modified (bool modified);
 	public signal void drag_n_drop (string filename);
+
+	public signal void file_saved ();
+	public signal void file_loaded ();
 	private bool insert_matching_braces;
 	
 	private SourceSearchSettings _search_settings;
 	public SourceSearchSettings search_settings {
 		get { return _search_settings; }
 	}
+
+	private SourceFile _source_file;
+	public SourceFile source_file {
+		get { return _source_file; }
+	}
+
+	private SourceFileSaver file_saver;
+	private SourceFileLoader file_loader;
 
 	private const int TARGET_TYPE_URI_LIST = 80;
 	private const TargetEntry[] target_list = {
@@ -16,44 +28,84 @@ public class StSourceView : SourceView {
 
 	private StTextEditor editor;
 
-	public StSourceView 
-	(StTextEditor editor, string? filename, string? display_text) {
-		bool result_uncertain;
-		string content_type = ContentType.guess(
-			filename, null, out result_uncertain
-		);
+	public StSourceView (StTextEditor editor, string? filename) {
+		Object();
+		this.editor = editor;
 		
-		if (result_uncertain) content_type = null;
+		_source_file = new SourceFile();
+		if (filename != null)
+			source_file.location = File.new_for_path(filename);
 
-		var lang_manager = SourceLanguageManager.get_default();
-		var source_lang = lang_manager.guess_language(filename, content_type);
-		
-		SourceBuffer buff;
-		if (source_lang != null)
-			buff = new SourceBuffer.with_language(source_lang);
-		else
-			buff = new SourceBuffer(null);
+		load_view_format();
+		connect_signals();
+		set_properties();
+	}
+
+	private void load_view_format () {
+		file_loader = new SourceFileLoader(
+			buffer as SourceBuffer, 
+			this.source_file
+		);
+
+		file_saver = new SourceFileSaver(
+			buffer as SourceBuffer, 
+			this.source_file
+		);
 
 		var scheme_manager = SourceStyleSchemeManager.get_default();
 		var source_scheme = scheme_manager.get_scheme(editor.color_scheme);
 
-		buff.style_scheme = source_scheme;
-		buff.highlight_syntax = true;
-		
-		buff.begin_not_undoable_action();
-		buff.text = (display_text == null)? "": display_text;
-		buff.end_not_undoable_action();
+		(buffer as SourceBuffer).style_scheme = source_scheme;
+		(buffer as SourceBuffer).highlight_syntax = true;
+		load_file();
+	}
 
-		Object(buffer: buff);
-		this.editor = editor;
-		connect_signals();
-		set_properties();
-		
-		/* this.show_completion.connect(() => {
-			this.completion.show();
-		}); */
-		
-		buff.set_modified(false);
+	private void load_file () { 
+		if (source_file.location != null) {
+			file_loader.load_async(Priority.DEFAULT, null, null);
+			
+			bool result_uncertain;
+			string content_type = ContentType.guess(
+				source_file.location.get_path(), 
+				this.buffer.text.data, 
+				out result_uncertain
+			);
+			
+			if (result_uncertain) content_type = null;
+			var lang_manager = SourceLanguageManager.get_default();
+			var source_lang = lang_manager.guess_language(
+				source_file.location.get_path(), content_type
+			);
+
+			(buffer as SourceBuffer).language = source_lang;
+			buffer.set_modified(false);
+			file_loaded();
+		}
+	}
+
+	public void save_file (File? target) {
+		if ((source_file.location == null) && (target != null)) {
+			_source_file.location = target;
+
+			bool result_uncertain;
+			string content_type = ContentType.guess(
+				source_file.location.get_path(), 
+				this.buffer.text.data, 
+				out result_uncertain
+			);
+			
+			if (result_uncertain) content_type = null;
+			var lang_manager = SourceLanguageManager.get_default();
+			var source_lang = lang_manager.guess_language(
+				source_file.location.get_path(), content_type
+			);
+
+			(buffer as SourceBuffer).language = source_lang;
+		}
+
+		file_saver.save_async(Priority.DEFAULT, null, null);
+		buffer.set_modified(false);
+		file_saved();
 	}
 
 	private void set_properties () {
@@ -101,23 +153,8 @@ public class StSourceView : SourceView {
 	public void change_language (string language) {
 		var lang_manager = SourceLanguageManager.get_default();
 		var source_lang = lang_manager.get_language(language);
-		var buff = new SourceBuffer.with_language(source_lang);
-
-		var scheme_manager = SourceStyleSchemeManager.get_default();
-		var source_scheme = scheme_manager.get_scheme(editor.color_scheme);
-
-		buff.highlight_matching_brackets = editor.highlight_brackets;
-		buff.style_scheme = source_scheme;
-		buff.highlight_syntax = true;
-
-		buff.begin_not_undoable_action();
-		buff.text = this.buffer.text;
-		buff.end_not_undoable_action();
-		this.buffer = buff;
-
-		set_properties();
-
-		buff.set_modified(false);
+		(buffer as SourceBuffer).language = source_lang;
+		buffer.set_modified(false);
 	}
 
 	private void connect_signals () {
@@ -186,12 +223,18 @@ public class StSourceView : SourceView {
 		editor.notify["insert-braces"].connect((pspec) => {
 			insert_matching_braces = editor.insert_braces;
 		});
+
+		buffer.modified_changed.connect(on_buffer_changes);
+	}
+
+	private void on_buffer_changes () {
+		buffer_modified(buffer.get_modified());
 	}
 
 	private void on_drag_data_received (Widget widget, Gdk.DragContext context, 
-									   int x, int y, 
-									   SelectionData selection_data, 
-									   uint target_type, uint time) {
+			int x, int y, 
+			SelectionData selection_data, 
+			uint target_type, uint time) {
 		if (target_type == TARGET_TYPE_URI_LIST) {
 			var uri_list = ((string) selection_data.get_data()).strip();
 
@@ -217,7 +260,10 @@ public class StSourceView : SourceView {
 	}
 	
 	public string get_language_name () {
-		return (this.buffer as SourceBuffer).language.name;
+		string language = null;
+		if ((this.buffer as SourceBuffer).language != null)
+			language = (this.buffer as SourceBuffer).language.name;
+		return language;
 	}
 	
 	public SourceBuffer get_source_buffer () {

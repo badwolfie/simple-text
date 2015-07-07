@@ -310,7 +310,10 @@ public class StMainWindow : ApplicationWindow {
 	 *
 	 * @return void
 	 */
-	private void on_reload () {}
+	private void on_reload () {
+		// var current_doc = tab_bar.get_current_doc(documents.visible_child);
+		// current_doc.text_view.load_file();
+	}
 
 	/**
 	 * Function that gets executed when a page is switched on the Stack, and a 
@@ -470,7 +473,8 @@ public class StMainWindow : ApplicationWindow {
 		
 		var tab_label = new StTab.from_file(editor,
 			Path.get_basename(filename),
-			filename);
+			filename
+		);
 			
 		tab_label.view_drag_n_drop.connect(add_new_tab_from_file);
 		add_new_tab(tab_label);
@@ -484,7 +488,6 @@ public class StMainWindow : ApplicationWindow {
 		opened_files.insert(filename, page_num);
 		
 		var lang_name = current_doc.text_view.get_language_name();
-		status.refresh_statusbar(FileOpeartion.OPEN_FILE, filename);
 		status.refresh_language(lang_name);
 
 		check_pages();
@@ -513,12 +516,11 @@ public class StMainWindow : ApplicationWindow {
 		var current_tab = documents.visible_child as ScrolledWindow;
 		if (current_tab == null) return ;
 
-		var view = current_tab.get_child() as SourceView;
 		var current_doc = tab_bar.get_current_doc(current_tab);
 		int page_num = tab_bar.get_page_num(current_doc);
 
 		if (headerbar.title.contains(untitled)) {
-			if (view.buffer.text == "") return;
+			if (current_doc.text_view.buffer.text == "") return;
 			var file_chooser = new FileChooserDialog(_("Save File"), this,
 				FileChooserAction.SAVE,
 				_("Cancel"), ResponseType.CANCEL,
@@ -526,9 +528,7 @@ public class StMainWindow : ApplicationWindow {
 			);
 
 			file_chooser.set_current_folder(Environment.get_home_dir());
-			string filename =
-				opened_files.nth_data(tab_bar.get_page_num(current_doc));
-			file_chooser.set_current_name(Path.get_basename(filename));
+			file_chooser.set_current_name(headerbar.title);
 
 			switch (file_chooser.run()) {
 				default:
@@ -538,7 +538,7 @@ public class StMainWindow : ApplicationWindow {
 						file_chooser.get_file().get_basename();
 					headerbar.set_title(file_chooser.get_filename());
 					fs_headerbar.set_title(file_chooser.get_filename());
-					save_file(view,file_chooser.get_filename());
+					current_doc.text_view.save_file(file_chooser.get_file());
 					current_doc.mark_title();
 					
 					opened_files.remove(opened_files.nth_data(page_num));
@@ -546,14 +546,12 @@ public class StMainWindow : ApplicationWindow {
 
 					var lang_name = current_doc.text_view.get_language_name();
 					status.refresh_language(lang_name);
-					reset_changes(current_doc);
 					break;
 			}
+
 			file_chooser.destroy();
-		} else if (current_doc.tab_title.contains("*")) {
-			string filename = opened_files.nth_data(page_num);
-			save_file(view, filename);
-			reset_changes(current_doc);
+		} else if (current_doc.modified) {
+			current_doc.text_view.save_file(null);
 		}
 	}
 	
@@ -569,9 +567,11 @@ public class StMainWindow : ApplicationWindow {
 		string filename = 
 			opened_files.nth_data(tab_bar.get_page_num(current_doc));
 		int page_num = tab_bar.get_page_num(current_doc);
-		var view = current_doc.text_view as SourceView;
 
-		if ((filename.contains(untitled)) && (view.buffer.text == "")) return;
+		if (
+			(filename.contains(untitled)) && 
+			(current_doc.text_view.buffer.text == "")
+		) return;
 
 		var file_chooser = new FileChooserDialog(_("Save File"), this,
 			FileChooserAction.SAVE,
@@ -590,7 +590,7 @@ public class StMainWindow : ApplicationWindow {
 				current_doc.tab_title = file_chooser.get_file().get_basename();
 				headerbar.set_title(file_chooser.get_filename());
 				fs_headerbar.set_title(file_chooser.get_filename());
-				save_file(view,file_chooser.get_filename());
+				current_doc.text_view.save_file(file_chooser.get_file());
 				current_doc.mark_title();
 
 				opened_files.remove(opened_files.nth_data(page_num));
@@ -598,7 +598,6 @@ public class StMainWindow : ApplicationWindow {
 
 				var lang_name = current_doc.text_view.get_language_name();
 				status.refresh_language(lang_name);
-				reset_changes(current_doc);
 				break;
 			default:
 				break;
@@ -701,9 +700,7 @@ public class StMainWindow : ApplicationWindow {
 		fs_headerbar.set_title(last_file_basename);
 		opened_files.insert(last_file_path, page_num);
 
-		string f_name = opened_files.nth_data(page_num);
 		var lang_name = current_doc.text_view.get_language_name();
-		status.refresh_statusbar(FileOpeartion.OPEN_FILE,f_name);
 		status.refresh_language(lang_name);
 
 		current_doc = tab_bar.get_current_doc(documents.visible_child);
@@ -863,31 +860,20 @@ public class StMainWindow : ApplicationWindow {
 	 * @param event Gdk.EventKey that triggered this function
 	 * @return bool
 	 */
-	private void changes_done () {
-		var page = documents.visible_child as ScrolledWindow;
+	private void changes_done (bool modified) {
+		var current_doc = tab_bar.get_current_doc(documents.visible_child);
+
+		if (modified) {
+			if (!current_doc.modified) {
+				status.refresh_statusbar(FileOpeartion.EDIT_FILE, null);
+				current_doc.modified = true;
+			}
+		} else {
+			if (current_doc.modified) {
+				current_doc.modified = false;
+			}
+		}
 		
-		var current_doc = tab_bar.get_current_doc(page);
-
-		if (!current_doc.tab_title.contains("*")){
-			current_doc.tab_title = "*" + current_doc.tab_title;
-			current_doc.mark_title();
-		}
-
-		status.refresh_statusbar(FileOpeartion.EDIT_FILE, null);
-	}
-
-	/**
-	 * Function that removes the '*' character from the tab label after the 
-	 * document is saved
-	 *
-	 * @param tab_label StTab which's label will be restore
-	 * @return void 
-	 */
-	private void reset_changes (StTab tab_label) {
-		if (tab_label.tab_title.contains("*")) {
-			tab_label.tab_title = tab_label.tab_title.replace("*","");
-			tab_label.mark_title();
-		}
 	}
 	
 	/**
@@ -902,9 +888,20 @@ public class StMainWindow : ApplicationWindow {
 			tab_label.tab_widget,tab_title,tab_label.tab_title);
 		tab_bar.add_page(tab_label,true);
 
-		var view = 
-			(tab_label.tab_widget as ScrolledWindow).get_child() as SourceView;
-		view.buffer.changed.connect(changes_done);
+		tab_label.text_view.buffer_modified.connect(changes_done);
+		tab_label.text_view.file_loaded.connect(() => {
+			status.refresh_statusbar(
+				FileOpeartion.OPEN_FILE, 
+				tab_label.text_view.source_file.location.get_path()
+			);
+		});
+
+		tab_label.text_view.file_saved.connect(() => {
+			status.refresh_statusbar(
+				FileOpeartion.SAVE_FILE, 
+				tab_label.text_view.source_file.location.get_path()
+			);
+		});
 		
 		var current_doc = tab_bar.get_current_doc(documents.visible_child);
 		int page_num = tab_bar.get_page_num(current_doc);
@@ -913,30 +910,6 @@ public class StMainWindow : ApplicationWindow {
 		headerbar.set_title(filename);
 		fs_headerbar.set_title(filename);		
 		check_pages();
-	}
-	
-	/**
-	 * Function that saves the content of a document to a file
-	 * 
-	 * @param view SourceView which's content will be saved
-	 * @param filename string that contains the path for the file where the 
-	 * view's content will be saved
-	 * @return void
-	 */
-	private void save_file (SourceView view, string filename) {
-		try {
-			FileUtils.set_contents(filename,view.buffer.text);
-			view.buffer.set_modified(false);
-			
-			var current_doc = 
-				tab_bar.get_current_doc(documents.visible_child);
-			var lang_name = current_doc.text_view.get_language_name();
-			
-			status.refresh_statusbar(FileOpeartion.SAVE_FILE,filename);
-			status.refresh_language(lang_name); 
-		} catch (Error e) {
-			stderr.printf ("Error: %s\n", e.message);
-		}
 	}
 
 	/**
@@ -971,7 +944,7 @@ public class StMainWindow : ApplicationWindow {
 	 */
 	private bool confirm_close (StTab? tab) {
 		if (tab == null) return false;
-		if (tab.tab_title.contains("*")) {
+		if (tab.modified) {
 			tab_bar.switch_page(tab, true);
 
 			var confirmar = new MessageDialog(this,
