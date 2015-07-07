@@ -20,7 +20,7 @@ simple_text_SOURCES = \
 	st-preferences-dialog.vala \
 	st-programming-languages.vala \
 	st-source-style-picker.vala \
-	st-source-view.vala \
+	st-source-view.c \
 	st-statusbar.vala \
 	st-tab-bar.vala \
 	st-tab.vala \
