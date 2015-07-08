@@ -30,7 +30,7 @@ msgstr "Acerca de"
 msgid "Quit"
 msgstr "Salir"
 
-#: ../src/st-header-bar.vala:41 ../src/st-main-window.vala:432
+#: ../src/st-header-bar.vala:41 ../src/st-main-window.vala:435
 msgid "Open"
 msgstr "Abrir"
 
@@ -46,8 +46,8 @@ msgstr "Nuevo archivo"
 msgid "Untitled file"
 msgstr "Archivo sin nombre"
 
-#: ../src/st-header-bar.vala:45 ../src/st-main-window.vala:525
-#: ../src/st-main-window.vala:579 ../src/st-main-window.vala:989
+#: ../src/st-header-bar.vala:45 ../src/st-main-window.vala:527
+#: ../src/st-main-window.vala:579 ../src/st-main-window.vala:962
 msgid "Save"
 msgstr "Guardar"
 
@@ -55,8 +55,8 @@ msgstr "Guardar"
 msgid "Save file"
 msgstr "Guardad archivo"
 
-#: ../src/st-main-window.vala:431 ../src/st-main-window.vala:524
-#: ../src/st-main-window.vala:578 ../src/st-main-window.vala:988
+#: ../src/st-main-window.vala:434 ../src/st-main-window.vala:526
+#: ../src/st-main-window.vala:578 ../src/st-main-window.vala:961
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -156,15 +156,15 @@ msgstr "Usar variante oscura del tema"
 msgid "Text Editor"
 msgstr "Editor de textos"
 
-#: ../src/st-main-window.vala:985
+#: ../src/st-main-window.vala:958
 msgid "Do you wish to save changes before closing?"
 msgstr "¿Desea guardad los cambios antes de cerrar?"
 
-#: ../src/st-main-window.vala:981
+#: ../src/st-main-window.vala:954
 msgid "Confirm operation"
 msgstr "Confirmar operación"
 
-#: ../src/st-main-window.vala:987
+#: ../src/st-main-window.vala:960
 msgid "Close without saving"
 msgstr "Cerrar sin guardar"
 
@@ -172,27 +172,27 @@ msgstr "Cerrar sin guardar"
 msgid "Enter your search..."
 msgstr "Introduzca su búsqueda..."
 
-#: ../src/st-main-window.vala:429
+#: ../src/st-main-window.vala:432
 msgid "Open File"
 msgstr "Abrir ar"
 
-#: ../src/st-main-window.vala:522 ../src/st-main-window.vala:576
+#: ../src/st-main-window.vala:524 ../src/st-main-window.vala:576
 msgid "Save File"
 msgstr "Guardad archivo"
 
-#: ../src/st-main-window.vala:658
+#: ../src/st-main-window.vala:657
 msgid "Build successful!"
 msgstr "¡Compilación exitosa!"
 
-#: ../src/st-main-window.vala:661
+#: ../src/st-main-window.vala:660
 msgid "An error has occurred!"
 msgstr "¡Ha ocurrido un error!"
 
-#: ../src/st-main-window.vala:666
+#: ../src/st-main-window.vala:665
 msgid "Build system"
 msgstr "Sistema de compilación"
 
-#: ../src/st-main-window.vala:667
+#: ../src/st-main-window.vala:666
 msgid "Accept"
 msgstr "Aceptar"
 
@@ -307,4 +307,8 @@ msgstr "Pestañas ocultas: %d"
 #: ../src/st-preferences-dialog.vala:175
 msgid "Insert matching brackets"
 msgstr "Insertar parejas de corchetes"
+
+#: ../src/st-source-view.c:180
+msgid "Document words"
+msgstr "Palabras del documento"
 

@@ -13,7 +13,7 @@ public class StSourceView : SourceView {
 		get { return _search_settings; }
 	}
 	
-	private SourceCompletionWords word_completion;
+	// private SourceCompletionWords word_completion;
 	private SourceFile _source_file;
 	public SourceFile source_file {
 		get { return _source_file; }
@@ -36,7 +36,7 @@ public class StSourceView : SourceView {
 		_source_file = new SourceFile();
 		if (filename != null) {
 			source_file.location = File.new_for_path(filename);
-			word_completion = new SourceCompletionWords(
+			/* word_completion = new SourceCompletionWords(
 				_("Document words"), 
 				null
 			);
@@ -53,7 +53,7 @@ public class StSourceView : SourceView {
 				completion.show_icons = false;
 			} catch (Error e) {
 				stderr.printf("%s\n", e.message);
-			}
+			} */
 		}
 
 		load_view_format();
@@ -248,7 +248,7 @@ public class StSourceView : SourceView {
 	}
 
 	private void on_buffer_changes () {
-		word_completion.register(buffer);
+		// word_completion.register(buffer);
 		buffer_modified(buffer.get_modified());
 	}
 
