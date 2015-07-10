@@ -221,7 +221,11 @@ public class StMainWindow : ApplicationWindow {
 		search_entry.placeholder_text = _("Enter your search...");
 		search_entry.set_width_chars(60);
 
-		search_entry.search_changed.connect(search_stuff_next);
+		search_entry.search_changed.connect(() => {
+			var current_view = 
+				tab_bar.get_current_doc(documents.visible_child).text_view;
+			current_view.search_settings.search_text = search_entry.text;
+		});
 		search_entry.activate.connect(search_stuff_next);
 		search_entry.show();
 
@@ -778,8 +782,7 @@ public class StMainWindow : ApplicationWindow {
 	private void search_stuff_next () {
 		var current_view = 
 			tab_bar.get_current_doc(documents.visible_child).text_view;
-		current_view.search_settings.search_text = search_entry.text;
-			
+	
 		TextIter iter;
 		current_view.buffer.get_iter_at_offset(out iter, 
 			current_view.buffer.cursor_position + 1);
@@ -809,8 +812,7 @@ public class StMainWindow : ApplicationWindow {
 	private void search_stuff_prev () {
 		var current_view = 
 			tab_bar.get_current_doc(documents.visible_child).text_view;
-		current_view.search_settings.search_text = search_entry.text;
-			
+				
 		TextIter iter;
 		current_view.buffer.get_iter_at_offset(out iter, 
 			current_view.buffer.cursor_position);
