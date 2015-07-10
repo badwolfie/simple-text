@@ -793,6 +793,7 @@ public class StMainWindow : ApplicationWindow {
 				search_entry_context.remove_class("error");
 			
 			current_view.buffer.select_range(start_next, end_next);
+			current_view.scroll_to_iter(start_next, 0.25, true, 0.5, 0.5);
 		} else {
 			if (search_entry.text != "")
 				search_entry_context.add_class("error");
@@ -823,6 +824,7 @@ public class StMainWindow : ApplicationWindow {
 				search_entry_context.remove_class("error");
 			
 			current_view.buffer.select_range(start_next, end_next);
+			current_view.scroll_to_iter(start_next, 0.25, true, 0.5, 0.5);
 		} else {
 			if (search_entry.text != "")
 				search_entry_context.add_class("error");
