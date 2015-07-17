@@ -1,8 +1,9 @@
 # Simple Text (beta)
 
-***This project is now obsolete due to an error in vala compiler that prevents us from continuing the development. For further upgrades and updates please refer to the [new and rebranded package](https://github.com/badwolfie/quetzal)***
-
 [![Join the chat at https://gitter.im/BadWolfie/simple-text](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/BadWolfie/simple-text?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)  
+
+***This project is now freezed due to an error in vala compiler that prevents us from continuing the development.***  
+***For further upgrades and updates please refer to the [new and rebranded project](https://github.com/badwolfie/quetzal).***
 
 Simple Text is a text and code editor written in the Vala programming language using the GTK+3 toolkit, taking advantage of the GTKSourceView, VTE and other tools. 
 
